@@ -18,7 +18,7 @@ class CategoryController extends BaseController
      */
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('auth');
     }
 
     /**

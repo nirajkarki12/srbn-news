@@ -29,7 +29,7 @@ class LoginController extends BaseController
    */
    public function __construct()
    {
-     $this->middleware('guestadmin')->except('logout');
+     $this->middleware('guest')->except('logout');
    }
 
    protected function redirectTo()
