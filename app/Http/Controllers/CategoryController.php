@@ -28,24 +28,22 @@ class CategoryController extends BaseApiController
     public function index()
     {
       try {
-         $paginator = Category::orderBy('name', 'asc')
-               ->where('status', 1)
-               ->paginate(Setting::get('data_per_page', 25));
 
-         $categories = $paginator->each(function ($category) {
+         $categories = Category::orderBy('name', 'asc')
+                     ->where('status', 1)
+                     ->get();
+         $categories = $categories->each(function ($category) {
                      $category->makeHidden([
                         'image_file',
                         'status',
                         'parent_id',
                         'updated_at',
-                        'pivot',
                         'slug'
                      ]);
                   });
-
-         $paginator->data = $categories;
-
-         return $this->successResponse($paginator, 'Category data fetched successfully');
+         $arrCategory = $this->buildCategoryTree($categories);
+        
+         return $this->successResponse($arrCategory, 'Category data fetched successfully');
 
       } catch (\Exception $e) {
          return $this->errorResponse($e->getMessage(), 406);
