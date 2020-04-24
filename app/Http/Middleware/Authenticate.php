@@ -15,17 +15,16 @@ class Authenticate
      * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = 'user')
+    public function handle($request, Closure $next, $guard = 'admin')
     {
         if (!Auth::guard($guard)->check()) {
             if ($request->ajax() || $request->wantsJson()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->guest(route('login'));
+                return redirect()->guest(route('admin.login'));
             }
         }
 
         return $next($request);
     }
 }
-
