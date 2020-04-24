@@ -168,6 +168,7 @@ return [
          */
         Orangehill\Iseed\IseedServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class,
         /*
          * Application Service Providers...
          */

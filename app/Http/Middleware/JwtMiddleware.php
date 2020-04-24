@@ -38,6 +38,8 @@ class JwtMiddleware extends BaseMiddleware
                 if($token = JWTAuth::refresh()) return $next($request)->header('X-Authorization', $token);
                 
             }else{
+               return $next($request);
+
                 return response()->json([
                         'status' => false,
                         'message' => 'Unauthorized Access',

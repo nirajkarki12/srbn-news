@@ -22,47 +22,100 @@ class UserController extends BaseApiController
       parent::__construct();
    }
 
-    /**
-     * Get the authenticated User
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-   public function getUser()
-   {
-      try {
-         if(!$user = $this->guard->user()) throw new \Exception("User not found", 1);
-
-         $response = [
-            'name' => $user->name,
-            'email' => $user->email,
-            'address' => $user->address,
-            'image' => $user->image,
-         ];
-
-         return $this->successResponse($response, 'User info fetched successfully');
-      } catch (\Exception $e) {
-         return $this->errorResponse($e->getMessage(), 406);
-      }
-   }
-
+   /**
+   * Login APIs
+   * User Login
+   * @group User
+   * APIs for User Login
+   * @bodyParam email string required valid email address.
+   * @bodyParam password string required min 6 in length.
+   * @response {
+   *  "status": true,
+   *  "data": {
+   *   "name": "Name Example",
+   *   "email": "example@gmail.com",
+   *   "address": "Somewhere",
+   *   "image": null,
+   *   "created_at": "2020-04-14 15:00",
+   *   "token": "JWT Token"
+   *  },
+   * "message": "Logged in successfully",
+   * "code": 200
+   * }
+   * @response 401 {
+   *  "status": false,
+   *  "message": "Username/Password Mismatched",
+   *  "code": 401
+   * }
+   */
    public function login(Request $request)
    {
       try {
             
          $credentials = $request->only('email', 'password');
 
-         if (!$token = $this->guard->attempt($credentials)) throw new \Exception('Username/Password Mismatched', 1);
+         if (!$token = $this->guard->attempt($credentials)) throw new \Exception('Username/Password Mismatched', Response::HTTP_UNAUTHORIZED);
             
-         if(!$user = $this->guard->user()) throw new \Exception("User not found", 1);
+         if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_UNAUTHORIZED);
             
-         // $user->notify(new \App\User\Notifications\LoginEmail($user));
-         return $this->successResponse($user, 'Logged in successfully', 200, ['X-Authorization' => $token]);
+         $response = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'address' => $user->address,
+            'image' => $user->image,
+            'created_at' => $user->created_at,
+            'token' => $token
+         ];
+         return $this->successResponse($response, 'Logged in successfully');
 
      } catch (\Exception $e) {
-         return $this->errorResponse($e->getMessage(), 406);
+         return $this->errorResponse($e->getMessage(), $e->getCode());
      }
    }
 
+   /**
+   * Registration APIs
+   * User Registration
+   * @group User
+   * @bodyParam name string required max 100 in length.
+   * @bodyParam email string required valid email address.
+   * @bodyParam address string max 100 in length.
+   * @bodyParam password string required min 6 in length.
+   * @bodyParam image file accepts: jpeg,png,gif, filesize upto 2MB.
+   * @response 201 {
+   *  "status": true,
+   *  "data": {
+   *   "name": "Name Example",
+   *   "email": "example@gmail.com",
+   *   "address": "Somewhere",
+   *   "image": null,
+   *   "created_at": "2020-04-14 15:00",
+   *   "token": "JWT Token"
+   *  },
+   * "message": "Registered successfully",
+   * "code": 201
+   * }
+   * @response 406 {
+   *  "status": false,
+   *  "message": "The Full Name field is required.",
+   *  "code": 406
+   * }
+   * @response 406 {
+   *  "status": false,
+   *  "message": "The email has already been taken.",
+   *  "code": 406
+   * }
+   * @response 406 {
+   *  "status": false,
+   *  "message": "The password must be at least 6 characters.",
+   *  "code": 406
+   * }
+   * @response 406 {
+   *  "status": false,
+   *  "message": "The Image failed to upload.",
+   *  "code": 406
+   * }
+   */
    public function register(Request $request)
    {
       try {
@@ -70,7 +123,7 @@ class UserController extends BaseApiController
          $data = $request->except('_token');
 
          $validator = Validator::make( $data, [
-               'name' => 'required|max:255',
+               'name' => 'required|max:100',
                'email' => 'required|email|unique:users',
                'image' => 'nullable|mimes:jpeg,png,jpg,gif|max:2058',
                'address' => 'nullable|max:100',
@@ -82,7 +135,7 @@ class UserController extends BaseApiController
                'image' => 'Image',
             ]
          );
-         if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
+         if($validator->fails()) throw new \Exception($validator->messages()->first(), Response::HTTP_NOT_ACCEPTABLE);
 
          $user = new User;
          $user->name = $request->name;
@@ -91,24 +144,181 @@ class UserController extends BaseApiController
          $user->password = Hash::make($request->password);
 
          if($request->file('image')) {
-            if(!$file = Helper::uploadImage($request->file('image'), 'user')) throw new \Exception("Cannot Save Image", 1);
+            if(!$file = Helper::uploadImage($request->file('image'), 'user')) throw new \Exception("Cannot Save Image", Response::HTTP_NOT_ACCEPTABLE);
             $user->image_file = $file;
          }
 
          $user->save();
             
-         if (!$token = $this->guard->attempt(['email' => $user->email, 'password' => $request->password])) throw new \Exception('Something went wrong', 1);
+         if (!$token = $this->guard->attempt(['email' => $user->email, 'password' => $request->password])) throw new \Exception('Something went wrong', Response::HTTP_UNAUTHORIZED);
          
          $response = [
             'name' => $user->name,
             'email' => $user->email,
             'address' => $user->address,
             'image' => $user->image,
+            'created_at' => $user->created_at,
+            'token' => $token
          ];
-         return $this->successResponse($response, 'Registered successfully', 200, ['X-Authorization' => $token]);
+         return $this->successResponse($response, 'Registered successfully', Response::HTTP_CREATED);
 
      } catch (\Exception $e) {
-         return $this->errorResponse($e->getMessage(), 406);
+         return $this->errorResponse($e->getMessage(), $e->getCode());
+     }
+   }
+
+   /**
+   * Authenticated User
+   * Header: X-Authorization: Bearer {token}
+   * @group User
+   * @response {
+   *  "status": true,
+   *  "data": {
+   *   "name": "Name Example",
+   *   "email": "example@gmail.com",
+   *   "address": "Somewhere",
+   *   "image": null,
+   *   "categories": [
+   *     {
+   *        "id": 2,
+   *        "name": "News",
+   *        "description": null,
+   *        "image": null,
+   *        "created_at": "2020-04-14 15:00"
+   *     }
+   *    ],
+   *   "created_at": "2020-04-14 15:00"
+   *  },
+   * "message": "User info fetched successfully",
+   * "code": 200
+   * }
+   * @response 401 {
+   *  "status": false,
+   *  "message": "User not found",
+   *  "code": 401
+   * }
+   * @response 400 {
+   *  "status": false,
+   *  "message": "Invalid Request",
+   *  "code": 400
+   * }
+   */
+   public function getUser()
+   {
+      try {
+         if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_UNAUTHORIZED);
+
+         $categories = $user->userCategories->each(function ($category) {
+                     $category->makeHidden([
+                        'image_file',
+                        'status',
+                        'parent_id',
+                        'updated_at',
+                        'slug',
+                        'pivot'
+                     ]);
+                  });
+
+         $response = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'address' => $user->address,
+            'image' => $user->image,
+            'categories' => $categories,
+            'created_at' => $user->created_at,
+         ];
+
+         return $this->successResponse($response, 'User info fetched successfully');
+      } catch (\Exception $e) {
+         return $this->errorResponse($e->getMessage(), $e->getCode());
+      }
+   }
+
+   /**
+   * Set Category APIs
+   * Header: X-Authorization: Bearer {token}
+   * @group User
+   * @bodyParam categories array required [categories ID].
+   * @response {
+   *  "status": true,
+   *  "data": {
+   *   "name": "Name Example",
+   *   "email": "example@gmail.com",
+   *   "address": "Somewhere",
+   *   "image": null,
+   *   "categories": [
+   *     {
+   *        "id": 2,
+   *        "name": "News",
+   *        "description": null,
+   *        "image": null,
+   *        "created_at": "2020-04-14 15:00"
+   *     }
+   *    ],
+   *   "created_at": "2020-04-14 15:00"
+   *  },
+   * "message": "User Categories Added successfully",
+   * "code": 200
+   * }
+   * @response 401 {
+   *  "status": false,
+   *  "message": "User not found",
+   *  "code": 401
+   * }
+   * @response 406 {
+   *  "status": false,
+   *  "message": "The categories field is required.",
+   *  "code": 406
+   * }
+   * @response 400 {
+   *  "status": false,
+   *  "message": "Invalid Request",
+   *  "code": 400
+   * }
+   */
+   public function setUserCategories(Request $request)
+   {
+      try {
+
+         if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_UNAUTHORIZED);
+
+         $data = $request->except('_token');
+
+         $validator = Validator::make( $data, [
+               'categories' => 'required',
+            ]
+         );
+         if($validator->fails()) throw new \Exception($validator->messages()->first(),  Response::HTTP_NOT_ACCEPTABLE);
+
+         if(isset($data['categories']))
+         {
+             $user->userCategories()->detach();
+             $user->userCategories()->attach($data['categories']);
+         }
+
+         $categories = $user->userCategories->each(function ($category) {
+                     $category->makeHidden([
+                        'image_file',
+                        'status',
+                        'parent_id',
+                        'updated_at',
+                        'slug',
+                        'pivot'
+                     ]);
+                  });
+         
+         $response = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'address' => $user->address,
+            'image' => $user->image,
+            'categories' => $categories,
+            'created_at' => $user->created_at,
+         ];
+         return $this->successResponse($response, 'User Categories Added successfully');
+
+     } catch (\Exception $e) {
+         return $this->errorResponse($e->getMessage(), $e->getCode());
      }
    }
 

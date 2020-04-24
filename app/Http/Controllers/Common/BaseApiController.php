@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Common;
 
+use Illuminate\Http\Response;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -19,7 +20,7 @@ class BaseApiController extends Controller
       $this->guard = Auth::guard('api');
    }
 
-   public function successResponse($data = array(), string $message = 'Successful', int $code = 200, array $header = []) {
+   public function successResponse($data = array(), string $message = 'Successful', int $code = Response::HTTP_OK) {
       $res = response()->json([
          'status' => true,
          'data' => $data,
@@ -27,16 +28,10 @@ class BaseApiController extends Controller
          'code' => $code,
       ], $code);
 
-      if($header && is_array($header)) {
-         foreach ($header as $key => $value) {
-            $res->header($key, $value);
-         }
-      }
-
       return $res;
    }
 
-   public function errorResponse(string $message = 'error', int $code = 404) {
+   public function errorResponse(string $message = 'error', int $code = Response::HTTP_INTERNAL_SERVER_ERROR) {
       return response()->json([
          'status' => false,
          'message' => $message,

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Common\BaseApiController;
 use anlutro\LaravelSettings\Facade as Setting;
 use App\Models\Category;
@@ -10,23 +11,74 @@ use App\Models\Post;
 
 class PostController extends BaseApiController
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-         parent::__construct();
-    }
+   /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+   public function __construct()
+   {
+      parent::__construct();
+   }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(int $categoryId = null)
-    {
+   /**
+   * Posts List
+   * Optional Header for User's Category Posts: X-Authorization: Bearer {token}
+   * @queryParam ?page= next page - pagination 
+   * @queryParam /categoryId specific category Posts
+   * @group Post
+   * @response {
+   *  "status": true,
+   *  "data": {
+   *   "current_page": 2,
+   *   "data": [
+   *    {
+   *     "id": 2,
+   *     "title": "News Title",
+   *     "description": "News Long Description",
+   *     "source": "News Source",
+   *     "source_url": "Source URL",
+   *     "audio_url": null,
+   *     "image": "Feature Image",
+   *     "created_at": "2020-04-14 15:00",
+   *     "categories": [
+   *      {
+   *        "id": 2,
+   *        "name": "News",
+   *        "description": null,
+   *        "image": null,
+   *        "created_at": "2020-04-14 15:00"
+   *      }
+   *     ]
+   *    }
+   *   ],
+   *   "first_page_url": "URL/api/posts?page=1",
+   *   "from": 16,
+   *   "last_page": 4,
+   *   "last_page_url": "URL/api/posts?page=4",
+   *   "next_page_url": "URL/api/posts?page=3",
+   *   "path": "URL/api/posts",
+   *   "per_page": 15,
+   *   "prev_page_url": "URL/api/posts?page=1",
+   *   "to": 30,
+   *   "total": 55
+   * },
+   * "message": "Post data fetched successfully",
+   * "code": 200
+   * }
+   * @response 404 {
+   *  "status": false,
+   *  "message": "No Posts found",
+   *  "code": 404
+   * }
+   * @response 400 {
+   *  "status": false,
+   *  "message": "Invalid Request",
+   *  "code": 400
+   * }
+   */
+   public function index(int $categoryId = null)
+   {
       try {
 
          $paginator = Post::with('categories')
@@ -35,8 +87,23 @@ class PostController extends BaseApiController
 
          if($categoryId) {
             $paginator = $paginator->whereHas('categories', function($q) use($categoryId) {
-                           $q->where('categories.id', $categoryId);
-                        });
+                        $q->where('categories.id', $categoryId);
+                     });
+
+         }elseif($user = $this->guard->user()) {
+            $categories = $user->userCategories;
+
+            $ids = [];
+            foreach ($categories as $cat) {
+               array_push($ids, $cat->id);
+            }
+
+            if(count($ids) > 0) {
+               $paginator = $paginator->whereHas('categories', function($q) use($ids) {
+                        $q->whereIn('categories.id', $ids);
+                     });
+            }
+
          }
 
          $paginator = $paginator->paginate(Setting::get('data_per_page', 25));
@@ -63,12 +130,14 @@ class PostController extends BaseApiController
 
          $paginator->data = $posts;
 
+         if (!$paginator->count()) throw new \Exception("No Posts found", Response::HTTP_NOT_FOUND);
+
          return $this->successResponse($paginator, 'Post data fetched successfully');
 
       } catch (\Exception $e) {
-         return $this->errorResponse($e->getMessage(), 406);
+         return $this->errorResponse($e->getMessage(), $e->getCode());
       }
         
-    }
+   }
 
 }
