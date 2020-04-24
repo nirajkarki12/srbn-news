@@ -155,7 +155,25 @@ fetch(url, {
             "name": "News",
             "description": null,
             "image": null,
-            "created_at": "2020-04-14 15:00"
+            "created_at": "2020-04-14 15:00",
+            "children": [
+                {
+                    "id": 3,
+                    "name": "News Children",
+                    "description": null,
+                    "image": null,
+                    "created_at": "2020-04-14 15:00",
+                    "children": [
+                        {
+                            "id": 4,
+                            "name": "Sub News Children",
+                            "description": null,
+                            "image": null,
+                            "created_at": "2020-04-14 15:00"
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "message": "Categories data fetched successfully",
@@ -180,7 +198,7 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=12&amp;%2FcategoryId=quos" \
+    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=4&amp;%2FcategoryId=sit" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
@@ -188,8 +206,8 @@ fetch(url, {
 );
 
 let params = {
-    "?page=": "12",
-    "/categoryId": "quos",
+    "?page=": "4",
+    "/categoryId": "sit",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -301,7 +319,7 @@ fetch(url, {
     "http://localhost/srbn-news/public/api/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"email":"quos","password":"incidunt"}'
+    -d '{"email":"sed","password":"fuga"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/srbn-news/public/api/login"
@@ -314,8 +332,8 @@ let headers = {
 };
 
 let body = {
-    "email": "quos",
-    "password": "incidunt"
+    "email": "sed",
+    "password": "fuga"
 }
 
 fetch(url, {
@@ -387,7 +405,7 @@ fetch(url, {
     "http://localhost/srbn-news/public/api/register" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"quis","email":"laudantium","address":"aut","password":"quia","image":"provident"}'
+    -d '{"name":"aut","email":"commodi","address":"accusamus","password":"suscipit","image":"non"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/srbn-news/public/api/register"
@@ -400,11 +418,11 @@ let headers = {
 };
 
 let body = {
-    "name": "quis",
-    "email": "laudantium",
-    "address": "aut",
-    "password": "quia",
-    "image": "provident"
+    "name": "aut",
+    "email": "commodi",
+    "address": "accusamus",
+    "password": "suscipit",
+    "image": "non"
 }
 
 fetch(url, {

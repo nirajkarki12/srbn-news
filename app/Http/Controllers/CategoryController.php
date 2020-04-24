@@ -33,7 +33,25 @@ class CategoryController extends BaseApiController
    *    "name": "News",
    *    "description": null,
    *    "image": null,
-   *    "created_at": "2020-04-14 15:00"
+   *    "created_at": "2020-04-14 15:00",
+   *    "children": [
+   *     {
+   *      "id": 3,
+   *      "name": "News Children",
+   *      "description": null,
+   *      "image": null,
+   *      "created_at": "2020-04-14 15:00",
+   *      "children": [
+   *       {
+   *        "id": 4,
+   *        "name": "Sub News Children",
+   *        "description": null,
+   *        "image": null,
+   *        "created_at": "2020-04-14 15:00"
+   *       }
+   *      ]
+   *     }
+   *    ]
    *   }
    *  ],
    * "message": "Categories data fetched successfully",
