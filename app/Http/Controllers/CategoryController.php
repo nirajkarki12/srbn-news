@@ -28,7 +28,7 @@ class CategoryController extends BaseApiController
     public function index()
     {
       try {
-         $paginator = Category::orderBy('created_at', 'desc')
+         $paginator = Category::orderBy('name', 'asc')
                ->where('status', 1)
                ->paginate(Setting::get('data_per_page', 25));
 
