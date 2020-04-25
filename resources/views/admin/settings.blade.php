@@ -29,10 +29,13 @@
 
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
-                            <b>General Settings</b> <a class="pull-right">Site Name, Tagline, Description</a>
+                            <b>APIs Doc</b> <a href="{{route('apidoc')}}" class="pull-right" target="_new" title="APIs Docs">View</a>
                         </li>
                         <li class="list-group-item">
-                            <b>Data Format</b> <a class="pull-right">Data Per Page, Date Format, Time Format</a>
+                            <b>General Settings</b> <a class="pull-right" title="General Settings">Site Name, Tagline, Description</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Data Format</b> <a class="pull-right" title="Data Format">Data Per Page, Date Format, Time Format</a>
                         </li>
 
                     </ul>

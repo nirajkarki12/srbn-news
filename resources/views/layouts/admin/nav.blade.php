@@ -23,12 +23,6 @@
               </a>
             </li>
             
-            <li id="apidoc">
-              <a href="{{route('apidoc')}}" target="_new">
-                <i class="fa fa-info"></i> <span>APIs Docs</span>
-              </a>
-            </li>
-
             <li id="dashboard">
               <a href="{{route('admin.dashboard')}}">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
