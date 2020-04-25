@@ -203,7 +203,7 @@ Optional Header for User&#039;s Category Posts: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=4&%2FcategoryId=sit" \
+    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=17" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -214,8 +214,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "4",
-    "/categoryId": "sit",
+    "?page=": "17",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -300,12 +299,16 @@ fetch(url, {
 ### HTTP Request
 `GET api/posts/{categoryId?}`
 
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `/categoryId` |  optional  | specific category Posts
 #### Query Parameters
 
 Parameter | Status | Description
 --------- | ------- | ------- | -----------
     `?page=` |  optional  | next page - pagination
-    `/categoryId` |  optional  | specific category Posts
 
 <!-- END_fd1746447c684f78c26acc72a048bdab -->
 
@@ -323,7 +326,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"email":"sed","password":"fuga"}'
+    -d '{"email":"maxime","password":"inventore"}'
 
 ```
 
@@ -339,8 +342,8 @@ let headers = {
 };
 
 let body = {
-    "email": "sed",
-    "password": "fuga"
+    "email": "maxime",
+    "password": "inventore"
 }
 
 fetch(url, {
@@ -402,7 +405,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/register" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"aut","email":"commodi","address":"accusamus","password":"suscipit","image":"non"}'
+    -d '{"name":"veniam","email":"ratione","address":"autem","password":"expedita","image":"nihil"}'
 
 ```
 
@@ -418,11 +421,11 @@ let headers = {
 };
 
 let body = {
-    "name": "aut",
-    "email": "commodi",
-    "address": "accusamus",
-    "password": "suscipit",
-    "image": "non"
+    "name": "veniam",
+    "email": "ratione",
+    "address": "autem",
+    "password": "expedita",
+    "image": "nihil"
 }
 
 fetch(url, {

@@ -7,7 +7,7 @@ return [
      * - "laravel" will generate the documentation as a Blade view,
      * so you can add routing and authentication.
      */
-    'type' => 'static',
+    'type' => 'laravel',
 
     /*
      * Static output folder: HTML documentation and assets will be generated in this folder.
@@ -22,14 +22,14 @@ return [
          * Whether to automatically create a docs endpoint for you to view your generated docs.
          * If this is false, you can still set up routing manually.
          */
-        'autoload' => true,
+        'autoload' => false,
 
         /*
          * URL path to use for the docs endpoint (if `autoload` is true).
          *
          * By default, `/doc` opens the HTML page, and `/doc.json` downloads the Postman collection.
          */
-        'docs_url' => '/doc',
+        'docs_url' => '/docs',
 
         /*
          * Middleware to attach to the docs endpoint (if `autoload` is true).

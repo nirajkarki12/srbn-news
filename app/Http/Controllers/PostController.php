@@ -25,7 +25,7 @@ class PostController extends BaseApiController
    * Posts List
    * Optional Header for User's Category Posts: X-Authorization: Bearer {token}
    * @queryParam ?page= next page - pagination 
-   * @queryParam /categoryId specific category Posts
+   * @urlParam /categoryId specific category Posts
    * @group Post
    * @response {
    *  "status": true,

@@ -5,8 +5,8 @@ use Illuminate\Support\Facades\Route;
 // Backend
 Route::group(['prefix' => 'admin'], function(){
 
-	Route::get('login', 'Auth\LoginController@showLoginForm')->name('admin.login');
-  Route::post('login', 'Auth\LoginController@login')->name('admin.login.post');
+   Route::get('login', 'Auth\LoginController@showLoginForm')->name('admin.login');
+   Route::post('login', 'Auth\LoginController@login')->name('admin.login.post');
 
 	Route::get('/', 'DashboardController@index')->name('admin.dashboard');
 
@@ -40,3 +40,5 @@ Route::group(['prefix' => 'admin'], function(){
    /* */
 
 });
+
+
