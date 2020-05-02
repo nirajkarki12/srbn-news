@@ -59,7 +59,7 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="image_file" class=" control-label">Image</label>
               </div>
@@ -67,7 +67,17 @@
                 <input type="file" accept="image/png, image/jpeg, image/jpg" id="image_file" name="image_file" required>
                 <p class="help-block">Please enter .png .jpeg .jpg images only.</p>
               </div>
+            </div> -->
+
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="image" class=" control-label">Image URL</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  <input type="url" class="form-control" id="image" name="image" value="{{ old('image') }}"  placeholder="Image URL">
+              </div>
             </div>
+
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">

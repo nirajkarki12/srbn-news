@@ -45,12 +45,12 @@ class Post extends Model
       return $this->hasMany(PostView::class);
    }
 
-   public function setImageFileAttribute($image) {
-      if($image) {
-      	$this->attributes['image_file'] = $image;
-      	$this->attributes['image'] = env('APP_URL') .'/storage/post/' .$image;
-      }
-   }
+   // public function setImageFileAttribute($image) {
+   //    if($image) {
+   //    	$this->attributes['image_file'] = $image;
+   //    	$this->attributes['image'] = env('APP_URL') .'/storage/post/' .$image;
+   //    }
+   // }
 
 	public function sluggable()
    {

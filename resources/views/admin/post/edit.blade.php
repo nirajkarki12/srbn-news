@@ -46,7 +46,7 @@
                 @endphp
 
                 <select class="form-control" id="category" name="category[]" multiple="multiple" required>
-                  {!! $controller->printCategoryTree($arrCategory, $selectedId, $postEdit->id) !!}
+                  {!! $controller->printCategoryTree($arrCategory, $selectedId) !!}
                 </select>
               </div>
             </div>
@@ -59,17 +59,26 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="image_file" class=" control-label">Image</label>
               </div>
               <div class="col-sm-9 pull-left">
-                @if($postEdit->image)
-                  <img class="img-responsive" src="{{ $postEdit->image }}" style="margin-bottom:10px;width:150px;">
-                @endif
 
                 <input type="file" accept="image/png, image/jpeg, image/jpg" id="image_file" name="image_file">
                 <p class="help-block">Please enter .png .jpeg .jpg images only.</p>
+              </div>
+            </div> -->
+
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="image" class=" control-label">Image URL</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  @if($postEdit->image)
+                     <img class="img-responsive" src="{{ $postEdit->image }}" style="margin-bottom:10px;width:150px;">
+                   @endif
+                  <input type="url" class="form-control" id="image" name="image" value="{{ old('image') ?: $postEdit->image }}"  placeholder="Image URL">
               </div>
             </div>
 
