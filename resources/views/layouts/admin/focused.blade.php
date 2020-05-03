@@ -32,7 +32,7 @@
 
         <div class="login-logo">
              <a href="{{route('admin.login')}}"><b> 
-                <img class="adm-log-logo" style="width:50%;height:auto" src="@if(Setting::get('site_logo_path')) {{Setting::get('site_logo_path')}} @else {{asset('images/logo.png')}} @endif" /></b></a>
+                <img class="adm-log-logo" style="width:120px;" src="@if(Setting::get('site_logo_path')) {{Setting::get('site_logo_path')}} @else {{asset('images/logo.png')}} @endif" /></b></a>
         </div>
 
         @yield('content')
