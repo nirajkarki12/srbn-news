@@ -8,6 +8,7 @@ use App\Http\Controllers\Common\BaseApiController;
 use anlutro\LaravelSettings\Facade as Setting;
 use App\Models\Category;
 use App\Models\Post;
+use Auth;
 
 class PostController extends BaseApiController
 {
@@ -23,7 +24,7 @@ class PostController extends BaseApiController
 
    /**
    * Posts List
-   * Optional Header for User's Category Posts: X-Authorization: Bearer {token}
+   * All posts list
    * @queryParam ?page= next page - pagination 
    * @urlParam /categoryId specific category Posts
    * @group Post
@@ -87,23 +88,125 @@ class PostController extends BaseApiController
 
          if($categoryId) {
             $paginator = $paginator->whereHas('categories', function($q) use($categoryId) {
-                        $q->where('categories.id', $categoryId);
+               $q->where('categories.id', $categoryId);
+            });
+         }
+
+         $paginator = $paginator->paginate(Setting::get('data_per_page', 25));
+
+         $posts = $paginator->each(function ($post) {
+                     $post->makeHidden([
+                        'image_file',
+                        'status',
+                        'category_id',
+                        'updated_at',
+                        'slug'
+                     ]);
+                     $post->categories->each(function($category) {
+                        $category->makeHidden([
+                           'image_file',
+                           'status',
+                           'parent_id',
+                           'updated_at',
+                           'pivot',
+                           'slug'
+                        ]);
                      });
+                  });
 
-         }elseif($user = $this->guard->user()) {
-            $categories = $user->userCategories;
+         $paginator->data = $posts;
 
-            $ids = [];
-            foreach ($categories as $cat) {
-               array_push($ids, $cat->id);
-            }
+         if (!$paginator->count()) throw new \Exception("No Posts found", Response::HTTP_NOT_FOUND);
 
-            if(count($ids) > 0) {
-               $paginator = $paginator->whereHas('categories', function($q) use($ids) {
-                        $q->whereIn('categories.id', $ids);
-                     });
-            }
+         return $this->successResponse($paginator, 'Post data fetched successfully');
 
+      } catch (\Exception $e) {
+         return $this->errorResponse($e->getMessage(), $e->getCode());
+      }
+        
+   }
+
+   /**
+   * User's Posts List
+   * Header for User's Category Posts: X-Authorization: Bearer {token}
+   * @queryParam ?page= next page - pagination 
+   * @group Post
+   * @response {
+   *  "status": true,
+   *  "data": {
+   *   "current_page": 2,
+   *   "data": [
+   *    {
+   *     "id": 2,
+   *     "title": "News Title",
+   *     "description": "News Long Description",
+   *     "source": "News Source",
+   *     "source_url": "Source URL",
+   *     "audio_url": null,
+   *     "image": "Feature Image",
+   *     "created_at": "2020-04-14 15:00",
+   *     "categories": [
+   *      {
+   *        "id": 2,
+   *        "name": "News",
+   *        "description": null,
+   *        "image": null,
+   *        "created_at": "2020-04-14 15:00"
+   *      }
+   *     ]
+   *    }
+   *   ],
+   *   "first_page_url": "URL/api/posts/user?page=1",
+   *   "from": 16,
+   *   "last_page": 4,
+   *   "last_page_url": "URL/api/posts/user?page=4",
+   *   "next_page_url": "URL/api/posts/user?page=3",
+   *   "path": "URL/api/posts/user",
+   *   "per_page": 15,
+   *   "prev_page_url": "URL/api/posts/user?page=1",
+   *   "to": 30,
+   *   "total": 55
+   * },
+   * "message": "Post data fetched successfully",
+   * "code": 200
+   * }
+   * @response 401 {
+   *  "status": false,
+   *  "message": "User not found",
+   *  "code": 401
+   * }
+   * @response 404 {
+   *  "status": false,
+   *  "message": "No Posts found",
+   *  "code": 404
+   * }
+   * @response 400 {
+   *  "status": false,
+   *  "message": "Invalid Request",
+   *  "code": 400
+   * }
+   */
+   public function userPosts()
+   {
+      try {
+
+         if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_UNAUTHORIZED);
+
+         $paginator = Post::with('categories')
+               ->orderBy('created_at', 'desc')
+               ->where('status', 1);
+
+         $ids = [];
+         $categories = $user->userCategories;
+
+         foreach ($categories as $cat) {
+            array_push($ids, $cat->id);
+         }
+
+         if(count($ids) > 0) {
+            $paginator = $paginator->whereHas('categories', function($q) use($ids) {
+               $q->whereIn('categories.id', $ids);
+            });
          }
 
          $paginator = $paginator->paginate(Setting::get('data_per_page', 25));

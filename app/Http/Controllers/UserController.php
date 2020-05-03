@@ -358,10 +358,10 @@ class UserController extends BaseApiController
    * "message": "Logged in successfully",
    * "code": 200
    * }
-   * @response 401 {
+   * @response 406 {
    *  "status": false,
-   *  "message": "Something is wrong try again",
-   *  "code": 401
+   *  "message": "The social id field is required.",
+   *  "code": 406
    * }
    */
    public function socialLogin(Request $request)
@@ -371,8 +371,8 @@ class UserController extends BaseApiController
             'social_id' => 'required',
             'provider' => 'required'
          ]);
-         
-         if($validator->fails()) throw new \Exception($validator->errors()->first());
+
+         if($validator->fails()) throw new \Exception($validator->errors()->first(),  Response::HTTP_NOT_ACCEPTABLE);
          
          $user = User::where('social_id', $request->social_id)->where('provider', $request->provider)->first();
 
@@ -401,7 +401,7 @@ class UserController extends BaseApiController
          return $this->successResponse($response, 'Logged in successfully');
 
      } catch (\Exception $e) {
-         return $this->errorResponse($e->getMessage(), 500);
+         return $this->errorResponse($e->getMessage(), $e->getCode());
      }
    }
 
