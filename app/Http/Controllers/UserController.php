@@ -336,12 +336,12 @@ class UserController extends BaseApiController
 
     /**
    * Social Login APIs
-   * User Login
+   * Social User Login
    * @group User
    * APIs for Social User Login
-   * @bodyParam name string required name of user.
-   * @bodyParam email string required valid email address.
-   * @bodyParam image string required image link of user.
+   * @bodyParam name string optional name of user.
+   * @bodyParam email string optional valid email address.
+   * @bodyParam image string optional image link of user.
    * @bodyParam social_id string required social id of user.
    * @bodyParam provider string required social provider eg.facebook.
    * 
@@ -367,7 +367,13 @@ class UserController extends BaseApiController
    public function socialLogin(Request $request)
    {
       try {
-            
+         $validator = Validator::make($request->all(), [
+            'social_id' => 'required',
+            'provider' => 'required'
+         ]);
+         
+         if($validator->fails()) throw new \Exception($validator->errors()->first());
+         
          $user = User::where('social_id', $request->social_id)->where('provider', $request->provider)->first();
 
          if(!$user) {
