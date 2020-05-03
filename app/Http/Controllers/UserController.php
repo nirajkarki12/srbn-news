@@ -334,4 +334,69 @@ class UserController extends BaseApiController
         return $this->successResponse([], 'Successfully logged out');
     }
 
+    /**
+   * Social Login APIs
+   * User Login
+   * @group User
+   * APIs for Social User Login
+   * @bodyParam name string required name of user.
+   * @bodyParam email string required valid email address.
+   * @bodyParam image string required image link of user.
+   * @bodyParam social_id string required social id of user.
+   * @bodyParam provider string required social provider eg.facebook.
+   * 
+   * @response {
+   *  "status": true,
+   *  "data": {
+   *   "name": "Name Example",
+   *   "email": "example@gmail.com",
+   *   "address": "Somewhere",
+   *   "image": null,
+   *   "created_at": "2020-04-14 15:00",
+   *   "token": "JWT Token"
+   *  },
+   * "message": "Logged in successfully",
+   * "code": 200
+   * }
+   * @response 401 {
+   *  "status": false,
+   *  "message": "Something is wrong try again",
+   *  "code": 401
+   * }
+   */
+   public function socialLogin(Request $request)
+   {
+      try {
+            
+         $user = User::where('social_id', $request->social_id)->where('provider', $request->provider)->first();
+
+         if(!$user) {
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->social_id = $request->social_id;
+            $user->provider = $request->provider;
+            $user->image = $request->image;
+            $user->save();
+         }
+    
+         $user->updated_at = new \DateTime();
+         $user->save();
+         
+         $response = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'address' => $user->address,
+            'image' => $user->image,
+            'created_at' => $user->created_at,
+            'token' => auth()->login($user)
+         ];
+
+         return $this->successResponse($response, 'Logged in successfully');
+
+     } catch (\Exception $e) {
+         return $this->errorResponse($e->getMessage(), $e->getCode());
+     }
+   }
+
 }
