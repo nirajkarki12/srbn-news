@@ -395,7 +395,7 @@ class UserController extends BaseApiController
          return $this->successResponse($response, 'Logged in successfully');
 
      } catch (\Exception $e) {
-         return $this->errorResponse($e->getMessage(), $e->getCode());
+         return $this->errorResponse($e->getMessage(), 500);
      }
    }
 

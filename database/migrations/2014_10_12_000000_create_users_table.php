@@ -26,8 +26,8 @@ class CreateUsersTable extends Migration
 
             $table->string('slug')->unique();
 
-            $table->string('social_id')->unique();
-            $table->string('provider')->unique();
+            $table->string('social_id')->nullable();
+            $table->string('provider')->nullable();
 
             $table->rememberToken();
             $table->timestamps();
