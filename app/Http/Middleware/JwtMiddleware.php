@@ -31,8 +31,8 @@ class JwtMiddleware extends BaseMiddleware
                 return response()->json([
                         'status' => false,
                         'message' => 'Invalid Request',
-                        'code' => 400,
-                    ], 400);
+                        'code' => 200,
+                    ], 200);
             }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
 
                 if($token = JWTAuth::refresh()) return $next($request)->header('X-Authorization', $token);
@@ -41,8 +41,8 @@ class JwtMiddleware extends BaseMiddleware
                 return response()->json([
                         'status' => false,
                         'message' => 'Unauthorized Access',
-                        'code' => 401,
-                    ], 401);
+                        'code' => 200,
+                    ], 200);
             }
         }
     }

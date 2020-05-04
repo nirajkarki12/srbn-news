@@ -73,31 +73,31 @@ fetch(url, {
     "code": 200
 }
 ```
-> Example response (401):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "User not found",
-    "code": 401
+    "code": 200
 }
 ```
-> Example response (404):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "Categories not found",
-    "code": 404
+    "code": 200
 }
 ```
-> Example response (400):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "Invalid Request",
-    "code": 400
+    "code": 200
 }
 ```
 
@@ -107,22 +107,101 @@ fetch(url, {
 
 <!-- END_33861d0c40ad6fc3c83572667744074b -->
 
-<!-- START_db20564ba266cd451caac114b3eac8ab -->
-## All Categories
-All Active Categories
+<!-- START_16d14ae050e1d02cfec8e9d382eec891 -->
+## Root Categories
+Active Root Categories
 
 > Example request:
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/category" \
+    -G "http://localhost/srbn-news/public/api/category/" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/category"
+    "http://localhost/srbn-news/public/api/category/"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "X-Authorization": "Bearer {token}",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "status": true,
+    "data": [
+        {
+            "id": 2,
+            "name": "News",
+            "description": null,
+            "image": null,
+            "created_at": "2020-04-14 15:00"
+        },
+        {
+            "id": 3,
+            "name": "Entertainment",
+            "description": null,
+            "image": null,
+            "created_at": "2020-04-14 15:10"
+        }
+    ],
+    "message": "Categories data fetched successfully",
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "Categories not found",
+    "code": 200
+}
+```
+
+### HTTP Request
+`GET api/category/{parentId?}`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `/parentId` |  optional  | category childs
+
+<!-- END_16d14ae050e1d02cfec8e9d382eec891 -->
+
+<!-- START_2ccc924521835169507dcad9b468f840 -->
+## Categories Tree
+Active Categories Tree Structure
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://localhost/srbn-news/public/api/category-tree" \
+    -H "Content-Type: application/json" \
+    -H "X-Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://localhost/srbn-news/public/api/category-tree"
 );
 
 let headers = {
@@ -176,21 +255,21 @@ fetch(url, {
     "code": 200
 }
 ```
-> Example response (404):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "Categories not found",
-    "code": 404
+    "code": 200
 }
 ```
 
 ### HTTP Request
-`GET api/category`
+`GET api/category-tree`
 
 
-<!-- END_db20564ba266cd451caac114b3eac8ab -->
+<!-- END_2ccc924521835169507dcad9b468f840 -->
 
 #Post
 
@@ -203,7 +282,7 @@ Header for User&#039;s Category Posts: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=12" \
+    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=9" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -214,7 +293,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "12",
+    "?page=": "9",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -277,31 +356,31 @@ fetch(url, {
     "code": 200
 }
 ```
-> Example response (401):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "User not found",
-    "code": 401
+    "code": 200
 }
 ```
-> Example response (404):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "No Posts found",
-    "code": 404
+    "code": 200
 }
 ```
-> Example response (400):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "Invalid Request",
-    "code": 400
+    "code": 200
 }
 ```
 
@@ -324,7 +403,7 @@ All posts list
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=12" \
+    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=15" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -335,7 +414,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "12",
+    "?page=": "15",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -398,22 +477,22 @@ fetch(url, {
     "code": 200
 }
 ```
-> Example response (404):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "No Posts found",
-    "code": 404
+    "code": 200
 }
 ```
-> Example response (400):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "Invalid Request",
-    "code": 400
+    "code": 200
 }
 ```
 
@@ -435,10 +514,11 @@ Parameter | Status | Description
 
 #User
 
-APIs for User Login
+
 <!-- START_c3fa189a6c95ca36ad6ac4791a873d23 -->
 ## Login APIs
 User Login
+APIs for User Login
 
 > Example request:
 
@@ -447,7 +527,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"email":"exercitationem","password":"officiis"}'
+    -d '{"email":"blanditiis","password":"illo"}'
 
 ```
 
@@ -463,8 +543,8 @@ let headers = {
 };
 
 let body = {
-    "email": "exercitationem",
-    "password": "officiis"
+    "email": "blanditiis",
+    "password": "illo"
 }
 
 fetch(url, {
@@ -494,13 +574,13 @@ fetch(url, {
     "code": 200
 }
 ```
-> Example response (401):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "Username\/Password Mismatched",
-    "code": 401
+    "code": 200
 }
 ```
 
@@ -518,6 +598,7 @@ Parameter | Type | Status | Description
 <!-- START_444008ca6541ddc5d3dae8434120a6d1 -->
 ## Social Login APIs
 Social User Login
+APIs for Social User Login
 
 > Example request:
 
@@ -526,7 +607,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/social/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"molestiae","email":"necessitatibus","image":"perspiciatis","social_id":"voluptates","provider":"et"}'
+    -d '{"name":"vero","email":"non","image":"voluptas","social_id":"ut","provider":"incidunt"}'
 
 ```
 
@@ -542,11 +623,11 @@ let headers = {
 };
 
 let body = {
-    "name": "molestiae",
-    "email": "necessitatibus",
-    "image": "perspiciatis",
-    "social_id": "voluptates",
-    "provider": "et"
+    "name": "vero",
+    "email": "non",
+    "image": "voluptas",
+    "social_id": "ut",
+    "provider": "incidunt"
 }
 
 fetch(url, {
@@ -559,7 +640,7 @@ fetch(url, {
 ```
 
 
-> Example response (200):
+> Example response (201):
 
 ```json
 {
@@ -573,16 +654,16 @@ fetch(url, {
         "token": "JWT Token"
     },
     "message": "Logged in successfully",
-    "code": 200
+    "code": 201
 }
 ```
-> Example response (406):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "The social id field is required.",
-    "code": 406
+    "code": 200
 }
 ```
 
@@ -611,7 +692,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/register" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"aut","email":"sunt","address":"rerum","password":"aut","image":"cumque"}'
+    -d '{"name":"dicta","email":"omnis","address":"ipsa","password":"ab","image":"quisquam"}'
 
 ```
 
@@ -627,11 +708,11 @@ let headers = {
 };
 
 let body = {
-    "name": "aut",
-    "email": "sunt",
-    "address": "rerum",
-    "password": "aut",
-    "image": "cumque"
+    "name": "dicta",
+    "email": "omnis",
+    "address": "ipsa",
+    "password": "ab",
+    "image": "quisquam"
 }
 
 fetch(url, {
@@ -661,40 +742,49 @@ fetch(url, {
     "code": 201
 }
 ```
-> Example response (406):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "The Full Name field is required.",
-    "code": 406
+    "code": 200
 }
 ```
-> Example response (406):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "The email has already been taken.",
-    "code": 406
+    "code": 200
 }
 ```
-> Example response (406):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "The password must be at least 6 characters.",
-    "code": 406
+    "code": 200
 }
 ```
-> Example response (406):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "The Image failed to upload.",
-    "code": 406
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "Login error",
+    "code": 200
 }
 ```
 
@@ -770,22 +860,22 @@ fetch(url, {
     "code": 200
 }
 ```
-> Example response (401):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "User not found",
-    "code": 401
+    "code": 200
 }
 ```
-> Example response (400):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "Invalid Request",
-    "code": 400
+    "code": 200
 }
 ```
 
@@ -835,7 +925,7 @@ fetch(url, {
 ```
 
 
-> Example response (200):
+> Example response (201):
 
 ```json
 {
@@ -857,34 +947,34 @@ fetch(url, {
         "created_at": "2020-04-14 15:00"
     },
     "message": "User Categories Added successfully",
-    "code": 200
+    "code": 201
 }
 ```
-> Example response (401):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "User not found",
-    "code": 401
+    "code": 200
 }
 ```
-> Example response (406):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "The categories field is required.",
-    "code": 406
+    "code": 200
 }
 ```
-> Example response (400):
+> Example response (200):
 
 ```json
 {
     "status": false,
     "message": "Invalid Request",
-    "code": 400
+    "code": 200
 }
 ```
 

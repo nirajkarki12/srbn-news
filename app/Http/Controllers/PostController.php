@@ -10,6 +10,9 @@ use App\Models\Category;
 use App\Models\Post;
 use Auth;
 
+/**
+* @group Post
+*/
 class PostController extends BaseApiController
 {
    /**
@@ -27,7 +30,6 @@ class PostController extends BaseApiController
    * All posts list
    * @queryParam ?page= next page - pagination 
    * @urlParam /categoryId specific category Posts
-   * @group Post
    * @response {
    *  "status": true,
    *  "data": {
@@ -67,15 +69,15 @@ class PostController extends BaseApiController
    * "message": "Post data fetched successfully",
    * "code": 200
    * }
-   * @response 404 {
+   * @response 200 {
    *  "status": false,
    *  "message": "No Posts found",
-   *  "code": 404
+   *  "code": 200
    * }
-   * @response 400 {
+   * @response 200 {
    *  "status": false,
    *  "message": "Invalid Request",
-   *  "code": 400
+   *  "code": 200
    * }
    */
    public function index(int $categoryId = null)
@@ -116,7 +118,7 @@ class PostController extends BaseApiController
 
          $paginator->data = $posts;
 
-         if (!$paginator->count()) throw new \Exception("No Posts found", Response::HTTP_NOT_FOUND);
+         if (!$paginator->count()) throw new \Exception("No Posts found", Response::HTTP_OK);
 
          return $this->successResponse($paginator, 'Post data fetched successfully');
 
@@ -130,7 +132,6 @@ class PostController extends BaseApiController
    * User's Posts List
    * Header for User's Category Posts: X-Authorization: Bearer {token}
    * @queryParam ?page= next page - pagination 
-   * @group Post
    * @response {
    *  "status": true,
    *  "data": {
@@ -170,27 +171,27 @@ class PostController extends BaseApiController
    * "message": "Post data fetched successfully",
    * "code": 200
    * }
-   * @response 401 {
+   * @response 200 {
    *  "status": false,
    *  "message": "User not found",
-   *  "code": 401
+   *  "code": 200
    * }
-   * @response 404 {
+   * @response 200 {
    *  "status": false,
    *  "message": "No Posts found",
-   *  "code": 404
+   *  "code": 200
    * }
-   * @response 400 {
+   * @response 200 {
    *  "status": false,
    *  "message": "Invalid Request",
-   *  "code": 400
+   *  "code": 200
    * }
    */
    public function userPosts()
    {
       try {
 
-         if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_UNAUTHORIZED);
+         if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_OK);
 
          $paginator = Post::with('categories')
                ->orderBy('created_at', 'desc')
@@ -233,7 +234,7 @@ class PostController extends BaseApiController
 
          $paginator->data = $posts;
 
-         if (!$paginator->count()) throw new \Exception("No Posts found", Response::HTTP_NOT_FOUND);
+         if (!$paginator->count()) throw new \Exception("No Posts found", Response::HTTP_OK);
 
          return $this->successResponse($paginator, 'Post data fetched successfully');
 

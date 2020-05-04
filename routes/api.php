@@ -14,7 +14,8 @@ Route::group(['middleware'=>['jwt.verify']],function(){
 });
 
 /* Category/Post API  */
-Route::get('/category','CategoryController@index')->name('api-category');
+Route::get('/category/{parentId?}','CategoryController@index')->name('api-category');
+Route::get('/category-tree','CategoryController@categoryTree')->name('api-category-tree');
 Route::get('/posts/{categoryId?}','PostController@index')->name('api-posts');
 /* */
 

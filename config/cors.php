@@ -48,6 +48,7 @@ return [
         'Pragma',
         'Content-Disposition',
         'X-Authorization',
+        'X-Requested-With',
     ],
 
     'max_age' => 60 * 60,

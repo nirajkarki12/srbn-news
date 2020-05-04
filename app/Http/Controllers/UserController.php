@@ -10,6 +10,9 @@ use Validator;
 use App\Http\Helpers\Helper;
 use App\Models\User;
 
+/**
+* @group User
+*/
 class UserController extends BaseApiController
 {
    /**
@@ -25,7 +28,6 @@ class UserController extends BaseApiController
    /**
    * Login APIs
    * User Login
-   * @group User
    * APIs for User Login
    * @bodyParam email string required valid email address.
    * @bodyParam password string required min 6 in length.
@@ -42,10 +44,10 @@ class UserController extends BaseApiController
    * "message": "Logged in successfully",
    * "code": 200
    * }
-   * @response 401 {
+   * @response 200 {
    *  "status": false,
    *  "message": "Username/Password Mismatched",
-   *  "code": 401
+   *  "code": 200
    * }
    */
    public function login(Request $request)
@@ -54,9 +56,9 @@ class UserController extends BaseApiController
             
          $credentials = $request->only('email', 'password');
 
-         if (!$token = $this->guard->attempt($credentials)) throw new \Exception('Username/Password Mismatched', Response::HTTP_UNAUTHORIZED);
+         if (!$token = $this->guard->attempt($credentials)) throw new \Exception('Username/Password Mismatched', Response::HTTP_OK);
             
-         if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_UNAUTHORIZED);
+         if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_OK);
             
          $response = [
             'name' => $user->name,
@@ -76,7 +78,6 @@ class UserController extends BaseApiController
    /**
    * Registration APIs
    * User Registration
-   * @group User
    * @bodyParam name string required max 100 in length.
    * @bodyParam email string required valid email address.
    * @bodyParam address string max 100 in length.
@@ -95,25 +96,30 @@ class UserController extends BaseApiController
    * "message": "Registered successfully",
    * "code": 201
    * }
-   * @response 406 {
+   * @response 200 {
    *  "status": false,
    *  "message": "The Full Name field is required.",
-   *  "code": 406
+   *  "code": 200
    * }
-   * @response 406 {
+   * @response 200 {
    *  "status": false,
    *  "message": "The email has already been taken.",
-   *  "code": 406
+   *  "code": 200
    * }
-   * @response 406 {
+   * @response 200 {
    *  "status": false,
    *  "message": "The password must be at least 6 characters.",
-   *  "code": 406
+   *  "code": 200
    * }
-   * @response 406 {
+   * @response 200 {
    *  "status": false,
    *  "message": "The Image failed to upload.",
-   *  "code": 406
+   *  "code": 200
+   * }
+   * @response 200 {
+   *  "status": false,
+   *  "message": "Login error",
+   *  "code": 200
    * }
    */
    public function register(Request $request)
@@ -135,7 +141,7 @@ class UserController extends BaseApiController
                'image' => 'Image',
             ]
          );
-         if($validator->fails()) throw new \Exception($validator->messages()->first(), Response::HTTP_NOT_ACCEPTABLE);
+         if($validator->fails()) throw new \Exception($validator->messages()->first(), Response::HTTP_OK);
 
          $user = new User;
          $user->name = $request->name;
@@ -144,13 +150,13 @@ class UserController extends BaseApiController
          $user->password = Hash::make($request->password);
 
          if($request->file('image')) {
-            if(!$file = Helper::uploadImage($request->file('image'), 'user')) throw new \Exception("Cannot Save Image", Response::HTTP_NOT_ACCEPTABLE);
+            if(!$file = Helper::uploadImage($request->file('image'), 'user')) throw new \Exception("Cannot Save Image", Response::HTTP_OK);
             $user->image_file = $file;
          }
 
          $user->save();
             
-         if (!$token = $this->guard->attempt(['email' => $user->email, 'password' => $request->password])) throw new \Exception('Something went wrong', Response::HTTP_UNAUTHORIZED);
+         if (!$token = $this->guard->attempt(['email' => $user->email, 'password' => $request->password])) throw new \Exception('Login error', Response::HTTP_OK);
          
          $response = [
             'name' => $user->name,
@@ -170,7 +176,6 @@ class UserController extends BaseApiController
    /**
    * Authenticated User
    * Header: X-Authorization: Bearer {token}
-   * @group User
    * @response {
    *  "status": true,
    *  "data": {
@@ -192,21 +197,21 @@ class UserController extends BaseApiController
    * "message": "User info fetched successfully",
    * "code": 200
    * }
-   * @response 401 {
+   * @response 200 {
    *  "status": false,
    *  "message": "User not found",
-   *  "code": 401
+   *  "code": 200
    * }
-   * @response 400 {
+   * @response 200 {
    *  "status": false,
    *  "message": "Invalid Request",
-   *  "code": 400
+   *  "code": 200
    * }
    */
    public function getUser()
    {
       try {
-         if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_UNAUTHORIZED);
+         if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_OK);
 
          $categories = $user->userCategories->each(function ($category) {
                      $category->makeHidden([
@@ -237,9 +242,8 @@ class UserController extends BaseApiController
    /**
    * Set Category APIs
    * Header: X-Authorization: Bearer {token}
-   * @group User
    * @bodyParam categories array required [categories ID].
-   * @response {
+   * @response 201 {
    *  "status": true,
    *  "data": {
    *   "name": "Name Example",
@@ -258,29 +262,29 @@ class UserController extends BaseApiController
    *   "created_at": "2020-04-14 15:00"
    *  },
    * "message": "User Categories Added successfully",
-   * "code": 200
+   * "code": 201
    * }
-   * @response 401 {
+   * @response 200 {
    *  "status": false,
    *  "message": "User not found",
-   *  "code": 401
+   *  "code": 200
    * }
-   * @response 406 {
+   * @response 200 {
    *  "status": false,
    *  "message": "The categories field is required.",
-   *  "code": 406
+   *  "code": 200
    * }
-   * @response 400 {
+   * @response 200 {
    *  "status": false,
    *  "message": "Invalid Request",
-   *  "code": 400
+   *  "code": 200
    * }
    */
    public function setUserCategories(Request $request)
    {
       try {
 
-         if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_UNAUTHORIZED);
+         if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_OK);
 
          $data = $request->except('_token');
 
@@ -288,7 +292,7 @@ class UserController extends BaseApiController
                'categories' => 'required',
             ]
          );
-         if($validator->fails()) throw new \Exception($validator->messages()->first(),  Response::HTTP_NOT_ACCEPTABLE);
+         if($validator->fails()) throw new \Exception($validator->messages()->first(), Response::HTTP_OK);
 
          if(isset($data['categories']))
          {
@@ -315,7 +319,7 @@ class UserController extends BaseApiController
             'categories' => $categories,
             'created_at' => $user->created_at,
          ];
-         return $this->successResponse($response, 'User Categories Added successfully');
+         return $this->successResponse($response, 'User Categories Added successfully', Response::HTTP_CREATED);
 
      } catch (\Exception $e) {
          return $this->errorResponse($e->getMessage(), $e->getCode());
@@ -337,7 +341,6 @@ class UserController extends BaseApiController
     /**
    * Social Login APIs
    * Social User Login
-   * @group User
    * APIs for Social User Login
    * @bodyParam name string optional name of user.
    * @bodyParam email string optional valid email address.
@@ -345,7 +348,7 @@ class UserController extends BaseApiController
    * @bodyParam social_id string required social id of user.
    * @bodyParam provider string required social provider eg.facebook.
    * 
-   * @response {
+   * @response 201 {
    *  "status": true,
    *  "data": {
    *   "name": "Name Example",
@@ -356,12 +359,12 @@ class UserController extends BaseApiController
    *   "token": "JWT Token"
    *  },
    * "message": "Logged in successfully",
-   * "code": 200
+   * "code": 201
    * }
-   * @response 406 {
+   * @response 200 {
    *  "status": false,
    *  "message": "The social id field is required.",
-   *  "code": 406
+   *  "code": 200
    * }
    */
    public function socialLogin(Request $request)
@@ -372,7 +375,7 @@ class UserController extends BaseApiController
             'provider' => 'required'
          ]);
 
-         if($validator->fails()) throw new \Exception($validator->errors()->first(),  Response::HTTP_NOT_ACCEPTABLE);
+         if($validator->fails()) throw new \Exception($validator->errors()->first(),  Response::HTTP_OK);
          
          $user = User::where('social_id', $request->social_id)->where('provider', $request->provider)->first();
 
@@ -398,7 +401,7 @@ class UserController extends BaseApiController
             'token' => auth()->login($user)
          ];
 
-         return $this->successResponse($response, 'Logged in successfully');
+         return $this->successResponse($response, 'Logged in successfully', Response::HTTP_CREATED);
 
      } catch (\Exception $e) {
          return $this->errorResponse($e->getMessage(), $e->getCode());

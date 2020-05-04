@@ -50,6 +50,39 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+      if ($request->ajax() || $request->wantsJson()) 
+      {
+         $exception = $this->prepareException($exception);
+
+         if ($exception instanceof \Illuminate\Http\Exception\HttpResponseException) {
+            return $exception->getResponse();
+         }
+         if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
+            return $this->unauthenticated($request, $exception);
+         }
+         if ($exception instanceof \Illuminate\Validation\ValidationException) {
+            return $this->convertValidationExceptionToResponse($exception, $request);
+         }
+
+         // Default response of 400
+         $status = method_exists($exception, 'getStatusCode') ? ($exception->getStatusCode() ?: 400) : 400;
+
+         //response
+         $response = [];
+         $response['status'] = false;
+         $response['code'] = $status;
+         $response['message'] = 'Something went wrong, Please try again later.';
+
+         // If the app is in debug mode
+         if (config('app.debug')) {
+            $response['message'] = $exception->getMessage();
+            $response['line'] = $exception->getCode();
+            $response['exception'] = get_class($exception);
+            $response['trace'] = $exception->getTrace();
+         }
+
+         return response()->json($response, $status);
+      }
         return parent::render($request, $exception);
     }
 }

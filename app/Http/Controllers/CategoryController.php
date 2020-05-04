@@ -9,6 +9,9 @@ use anlutro\LaravelSettings\Facade as Setting;
 use App\Models\Category;
 use App\Models\Post;
 
+/**
+* @group Category
+*/
 class CategoryController extends BaseApiController
 {
    /**
@@ -22,9 +25,67 @@ class CategoryController extends BaseApiController
    }
 
    /**
-   * All Categories 
-   * All Active Categories
-   * @group Category
+   * Root Categories
+   * Active Root Categories
+   * @urlParam /parentId category childs
+   * @response {
+   *  "status": true,
+   *  "data": [
+   *   {
+   *    "id": 2,
+   *    "name": "News",
+   *    "description": null,
+   *    "image": null,
+   *    "created_at": "2020-04-14 15:00"
+   *   },
+   *   {
+   *    "id": 3,
+   *    "name": "Entertainment",
+   *    "description": null,
+   *    "image": null,
+   *    "created_at": "2020-04-14 15:10"
+   *   }
+   *  ],
+   * "message": "Categories data fetched successfully",
+   * "code": 200
+   * }
+   * @response 200 {
+   *  "status": false,
+   *  "message": "Categories not found",
+   *  "code": 200
+   * }
+   */
+   public function index(int $parentId = null)
+   {
+      try {
+
+         $categories = Category::orderBy('name', 'asc')
+                     ->where(['status' => 1, 'parent_id' => $parentId])
+                     ->get();
+
+         $categories = $categories->each(function ($category) {
+                     $category->makeHidden([
+                        'image_file',
+                        'status',
+                        'parent_id',
+                        'updated_at',
+                        'slug'
+                     ]);
+                  })->toArray();
+
+         if(count($categories) === 0) throw new \Exception("Categories not found", Response::HTTP_OK);
+        
+         return $this->successResponse($categories, 'Categories data fetched successfully');
+
+      } catch (\Exception $e) {
+         return $this->errorResponse($e->getMessage(), $e->getCode());
+      }
+        
+   }
+
+   /**
+   * Categories Tree
+   * Active Categories Tree Structure
    * @response {
    *  "status": true,
    *  "data": [
@@ -57,13 +118,13 @@ class CategoryController extends BaseApiController
    * "message": "Categories data fetched successfully",
    * "code": 200
    * }
-   * @response 404 {
+   * @response 200 {
    *  "status": false,
    *  "message": "Categories not found",
-   *  "code": 404
+   *  "code": 200
    * }
    */
-   public function index()
+   public function categoryTree()
    {
       try {
 
@@ -82,7 +143,7 @@ class CategoryController extends BaseApiController
                   });
          $arrCategory = $this->buildCategoryTree($categories);
 
-         if(count($arrCategory) === 0) throw new \Exception("Categories not found", Response::HTTP_NOT_FOUND);
+         if(count($arrCategory) === 0) throw new \Exception("Categories not found", Response::HTTP_OK);
         
          return $this->successResponse($arrCategory, 'Categories data fetched successfully');
 
@@ -95,7 +156,6 @@ class CategoryController extends BaseApiController
    /**
    * User's Categories 
    * Header: X-Authorization: Bearer {token}
-   * @group Category
    * @response {
    *  "status": true,
    *  "data": [
@@ -110,27 +170,27 @@ class CategoryController extends BaseApiController
    * "message": "Categories data fetched successfully",
    * "code": 200
    * }
-   * @response 401 {
+   * @response 200 {
    *  "status": false,
    *  "message": "User not found",
-   *  "code": 401
+   *  "code": 200
    * }
-   * @response 404 {
+   * @response 200 {
    *  "status": false,
    *  "message": "Categories not found",
-   *  "code": 404
+   *  "code": 200
    * }
-   * @response 400 {
+   * @response 200 {
    *  "status": false,
    *  "message": "Invalid Request",
-   *  "code": 400
+   *  "code": 200
    * }
    */
    public function userCategories()
    {
       try {
 
-         if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_UNAUTHORIZED);
+         if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_OK);
 
          $usrCategories = $user->userCategories;
 
@@ -155,7 +215,7 @@ class CategoryController extends BaseApiController
                   });
          $arrCategory = $this->buildCategoryTree($categories);
 
-         if(count($arrCategory) === 0) throw new \Exception("Categories not found", Response::HTTP_NOT_FOUND);
+         if(count($arrCategory) === 0) throw new \Exception("Categories not found", Response::HTTP_OK);
         
          return $this->successResponse($arrCategory, 'Categories data fetched successfully');
 
