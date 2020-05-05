@@ -118,3 +118,7 @@
 .select2-container--default .select2-selection--multiple .select2-selection__rendered{
   padding-bottom: 5px;
 }
+/* CKeditor 5 */
+.ck-editor__editable_inline {
+    min-height: 200px;
+}

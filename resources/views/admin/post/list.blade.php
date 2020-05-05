@@ -37,6 +37,7 @@
 						    <tr>
 						      <th width="4%">#</th>
 						      <th width="18%">Title</th>
+                        <th>Type</th>
 						      <th width="30%">Description</th>
 						      <th>Images</th>
                         <th>Source</th>
@@ -51,6 +52,34 @@
 							    <tr>
 						      	<td style="vertical-align:middle">{{ $posts->firstItem() + $key }}</td>
 						      	<td style="vertical-align:middle">{{ $post->title }}</td>
+                           <td style="vertical-align:middle">
+                              @if($post->type && array_key_exists($post->type, \App\Models\Post::$postTypes)) 
+                                 @switch($post->type)
+                                    @case(\App\Models\Post::TYPE_TEXT)
+                                       <p class="text-muted">
+                                          {{ \App\Models\Post::$postTypes[$post->type] }}
+                                       </p> 
+                                    @break
+
+                                    @case(\App\Models\Post::TYPE_VIDEO)
+                                       <p class="text-info" title="{{ $post->video_url }}">
+                                          {{ \App\Models\Post::$postTypes[$post->type] }}
+                                       </p>
+                                    @break
+
+                                    @case(\App\Models\Post::TYPE_AD)
+                                       <p class="text-info" title="{{ $post->ad_url }}">
+                                          {{ \App\Models\Post::$postTypes[$post->type] }}
+                                       </p>
+                                    @break
+
+                                    @default
+                                       <p class="text-muted">
+                                          {{ \App\Models\Post::$postTypes[$post->type] }}
+                                       </p> 
+                                 @endswitch
+                              @endif
+                           </td>
 						      	<td style="vertical-align:middle" class="minimize">{!! $post->description ?: '-' !!}</td>
 						      	<td style="vertical-align:middle">
 						      		@if($post->image)

@@ -282,7 +282,7 @@ Header for User&#039;s Category Posts: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=9" \
+    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=15" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -293,7 +293,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "9",
+    "?page=": "15",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -322,14 +322,15 @@ fetch(url, {
         "current_page": 2,
         "data": [
             {
-                "id": 2,
                 "title": "News Title",
                 "description": "News Long Description",
                 "source": "News Source",
                 "source_url": "Source URL",
-                "audio_url": null,
+                "audio_url": "URL|null",
                 "image": "Feature Image",
                 "created_at": "2020-04-14 15:00",
+                "type": "Text|Video|Advertisement",
+                "content": "Video URL|Advertisement URL|null",
                 "categories": [
                     {
                         "id": 2,
@@ -403,7 +404,7 @@ All posts list
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=15" \
+    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=9" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -414,7 +415,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "15",
+    "?page=": "9",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -443,14 +444,15 @@ fetch(url, {
         "current_page": 2,
         "data": [
             {
-                "id": 2,
                 "title": "News Title",
                 "description": "News Long Description",
                 "source": "News Source",
                 "source_url": "Source URL",
-                "audio_url": null,
+                "audio_url": "URL|null",
                 "image": "Feature Image",
                 "created_at": "2020-04-14 15:00",
+                "type": "Text|Video|Advertisement",
+                "content": "Video URL|Advertisement URL|null",
                 "categories": [
                     {
                         "id": 2,
@@ -527,7 +529,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"email":"blanditiis","password":"illo"}'
+    -d '{"email":"qui","password":"aliquid"}'
 
 ```
 
@@ -543,8 +545,8 @@ let headers = {
 };
 
 let body = {
-    "email": "blanditiis",
-    "password": "illo"
+    "email": "qui",
+    "password": "aliquid"
 }
 
 fetch(url, {
@@ -607,7 +609,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/social/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"vero","email":"non","image":"voluptas","social_id":"ut","provider":"incidunt"}'
+    -d '{"name":"ut","email":"vitae","image":"consequatur","social_id":"sed","provider":"rerum"}'
 
 ```
 
@@ -623,11 +625,11 @@ let headers = {
 };
 
 let body = {
-    "name": "vero",
-    "email": "non",
-    "image": "voluptas",
-    "social_id": "ut",
-    "provider": "incidunt"
+    "name": "ut",
+    "email": "vitae",
+    "image": "consequatur",
+    "social_id": "sed",
+    "provider": "rerum"
 }
 
 fetch(url, {
@@ -692,7 +694,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/register" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"dicta","email":"omnis","address":"ipsa","password":"ab","image":"quisquam"}'
+    -d '{"name":"et","email":"ipsum","address":"voluptatum","password":"perspiciatis","image":"in"}'
 
 ```
 
@@ -708,11 +710,11 @@ let headers = {
 };
 
 let body = {
-    "name": "dicta",
-    "email": "omnis",
-    "address": "ipsa",
-    "password": "ab",
-    "image": "quisquam"
+    "name": "et",
+    "email": "ipsum",
+    "address": "voluptatum",
+    "password": "perspiciatis",
+    "image": "in"
 }
 
 fetch(url, {

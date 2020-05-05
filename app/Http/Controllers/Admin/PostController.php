@@ -65,16 +65,13 @@ class PostController extends BaseController
                    'title' => 'required|max:255',
                    'category' => 'required',
                    'description' => 'required|min:50',
-                   'image' => 'required',
                    // 'image_file' => 'required|mimes:jpeg,png,jpg,gif|max:2058',
-                   'source' => 'nullable|max:100',
+                   'video_url' => 'nullable|url',
+                   'ad_url' => 'nullable|url',
+                   'source' => 'nullable|max:150',
                    'source_url' => 'nullable|url',
                    'audio_url' => 'nullable|url',
                    'status' => 'required',
-               ],
-               [],
-               [
-                  'image' => 'Image URL',
                ]
             );
             if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
@@ -88,8 +85,10 @@ class PostController extends BaseController
             $post->title = $data['title'];
             $post->description = $data['description'];
             $post->image = $data['image'];
-            // $post->image_file = array_key_exists('image_file', $data) ? $data['image_file'] : null;
             $post->source = $data['source'] ?: $data['source_url'];
+            $post->type = $data['type'];
+            $post->video_url = (isset($data['video_url']) && $data['type'] == Post::TYPE_VIDEO) ? $data['video_url'] : null;
+            $post->ad_url = (isset($data['ad_url']) && $data['type'] == Post::TYPE_AD) ? $data['ad_url'] : null;
             $post->source_url = $data['source_url'];
             $post->audio_url = $data['audio_url'];
             $post->status = $data['status'];
@@ -149,16 +148,13 @@ class PostController extends BaseController
                    'title' => 'required|max:255',
                    'category' => 'required',
                    'description' => 'required|min:50',
-                   'image' => 'required',
                    // 'image_file' => 'nullable|mimes:jpeg,png,jpg,gif|max:2058',
-                   'source' => 'nullable|max:100',
+                   'video_url' => 'nullable|url',
+                   'ad_url' => 'nullable|url',
+                   'source' => 'nullable|max:150',
                    'source_url' => 'nullable|url',
                    'audio_url' => 'nullable|url',
                    'status' => 'required',
-               ],
-               [],
-               [
-                  'image' => 'Image URL',
                ]
             );
 
@@ -177,6 +173,9 @@ class PostController extends BaseController
             $post->image = $data['image'];
             // $post->image_file = array_key_exists('image_file', $data) ? $data['image_file'] : null;
             $post->source = $data['source'] ?: $data['source_url'];
+            $post->type = $data['type'];
+            $post->video_url = (isset($data['video_url']) && $data['type'] == Post::TYPE_VIDEO) ? $data['video_url'] : null;
+            $post->ad_url = (isset($data['ad_url']) && $data['type'] == Post::TYPE_AD) ? $data['ad_url'] : null;
             $post->source_url = $data['source_url'];
             $post->audio_url = $data['audio_url'];
             $post->status = $data['status'];

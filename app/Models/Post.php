@@ -13,13 +13,23 @@ class Post extends Model
 	use Notifiable;
 	use Sluggable;
 
+   const TYPE_TEXT = 1;
+   const TYPE_VIDEO = 2;
+   const TYPE_AD = 3;
+
+   public static $postTypes = [
+      self::TYPE_TEXT => 'Text',
+      self::TYPE_VIDEO => 'Video',
+      self::TYPE_AD => 'Advertisement',
+   ];
+
 	/**
 	 * The categories that are mass assignable.
 	 *
 	 * @var array
 	 */
 	protected $fillable = [
-	    'title', 'description', 'image_file', 'image', 'source', 'source_url', 'audio_url', 'status', 
+	    'title', 'description', 'image', 'source', 'source_url', 'type', 'video_url', 'ad_url', 'audio_url', 'status', 
 	];
 
    /**

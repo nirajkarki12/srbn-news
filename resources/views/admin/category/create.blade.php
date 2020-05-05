@@ -101,10 +101,20 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('vendor/bower_components/ckeditor/ckeditor.js') }}"></script>
+<script src="{{ asset('vendor/ckeditor5/build/ckeditor.js') }}"></script>
 <script type="text/javascript">
+   ClassicEditor
+   .create( document.querySelector('#description'), {
+      toolbar: {
+         items: [
+            'bold', 'italic', 'underline', 'strikethrough', '|', 
+            'fontColor', 'fontBackgroundColor', 'link', '|', 
+            'insertTable', 'bulletedList', 'numberedList','|',
+            'blockQuote', 'subscript', 'superscript', 'horizontalLine', 
+         ]
+      },
+   });
   $(function () {
-    CKEDITOR.replace('description');
 
     $('#category_parent').bind("change", function() {
       var space_offset = 8;

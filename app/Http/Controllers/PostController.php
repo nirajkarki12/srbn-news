@@ -9,6 +9,7 @@ use anlutro\LaravelSettings\Facade as Setting;
 use App\Models\Category;
 use App\Models\Post;
 use Auth;
+use DB;
 
 /**
 * @group Post
@@ -36,14 +37,15 @@ class PostController extends BaseApiController
    *   "current_page": 2,
    *   "data": [
    *    {
-   *     "id": 2,
    *     "title": "News Title",
    *     "description": "News Long Description",
    *     "source": "News Source",
    *     "source_url": "Source URL",
-   *     "audio_url": null,
+   *     "audio_url": "URL|null",
    *     "image": "Feature Image",
    *     "created_at": "2020-04-14 15:00",
+   *     "type": "Text|Video|Advertisement",
+   *     "content": "Video URL|Advertisement URL|null",
    *     "categories": [
    *      {
    *        "id": 2,
@@ -84,7 +86,27 @@ class PostController extends BaseApiController
    {
       try {
 
-         $paginator = Post::with('categories')
+         $paginator = Post::select([
+               'posts.*',
+               DB::raw('
+                     (
+                        CASE 
+                        WHEN posts.type = ' .Post::TYPE_TEXT .' THEN "' .Post::$postTypes[Post::TYPE_TEXT] .'"'
+                        .' WHEN posts.type = ' .Post::TYPE_VIDEO .' THEN "' .Post::$postTypes[Post::TYPE_VIDEO] .'"'
+                        .' WHEN posts.type = ' .Post::TYPE_AD .' THEN "' .Post::$postTypes[Post::TYPE_AD] .'"'
+                        .' ELSE null
+                        END
+                     ) AS type,
+                     (
+                        CASE 
+                        WHEN posts.type = ' .Post::TYPE_VIDEO .' THEN video_url'
+                        .' WHEN posts.type = ' .Post::TYPE_AD .' THEN ad_url'
+                        .' ELSE null
+                        END
+                     ) AS content
+                  '),
+               ])
+               ->with('categories')
                ->orderBy('created_at', 'desc')
                ->where('status', 1);
 
@@ -98,7 +120,9 @@ class PostController extends BaseApiController
 
          $posts = $paginator->each(function ($post) {
                      $post->makeHidden([
-                        'image_file',
+                        'id',
+                        'video_url',
+                        'ad_url',
                         'status',
                         'category_id',
                         'updated_at',
@@ -138,14 +162,15 @@ class PostController extends BaseApiController
    *   "current_page": 2,
    *   "data": [
    *    {
-   *     "id": 2,
    *     "title": "News Title",
    *     "description": "News Long Description",
    *     "source": "News Source",
    *     "source_url": "Source URL",
-   *     "audio_url": null,
+   *     "audio_url": "URL|null",
    *     "image": "Feature Image",
    *     "created_at": "2020-04-14 15:00",
+   *     "type": "Text|Video|Advertisement",
+   *     "content": "Video URL|Advertisement URL|null",
    *     "categories": [
    *      {
    *        "id": 2,
@@ -193,7 +218,27 @@ class PostController extends BaseApiController
 
          if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_OK);
 
-         $paginator = Post::with('categories')
+         $paginator = Post::select([
+               'posts.*',
+               DB::raw('
+                     (
+                        CASE 
+                        WHEN posts.type = ' .Post::TYPE_TEXT .' THEN "' .Post::$postTypes[Post::TYPE_TEXT] .'"'
+                        .' WHEN posts.type = ' .Post::TYPE_VIDEO .' THEN "' .Post::$postTypes[Post::TYPE_VIDEO] .'"'
+                        .' WHEN posts.type = ' .Post::TYPE_AD .' THEN "' .Post::$postTypes[Post::TYPE_AD] .'"'
+                        .' ELSE null
+                        END
+                     ) AS type,
+                     (
+                        CASE 
+                        WHEN posts.type = ' .Post::TYPE_VIDEO .' THEN video_url'
+                        .' WHEN posts.type = ' .Post::TYPE_AD .' THEN ad_url'
+                        .' ELSE null
+                        END
+                     ) AS content
+                  '),
+               ])
+               ->with('categories')
                ->orderBy('created_at', 'desc')
                ->where('status', 1);
 
@@ -214,7 +259,9 @@ class PostController extends BaseApiController
 
          $posts = $paginator->each(function ($post) {
                      $post->makeHidden([
-                        'image_file',
+                        'id',
+                        'video_url',
+                        'ad_url',
                         'status',
                         'category_id',
                         'updated_at',

@@ -50,6 +50,20 @@
                 </select>
               </div>
             </div>
+
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="type" class="control-label">Type</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                <select class="form-control" id="type" name="type" required>
+                  @foreach(\App\Models\Post::$postTypes as $key => $val)
+                     <option value="{{ $key }}" @if($key == (old('type') ?: $postEdit->type)) selected @endif>{{ $val }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="description" class=" control-label">Description</label>
@@ -69,6 +83,24 @@
                 <p class="help-block">Please enter .png .jpeg .jpg images only.</p>
               </div>
             </div> -->
+
+            <div class="form-group" id="video" style="display:none">
+              <div class="col-sm-2 pull-left">
+                <label for="video_url" class=" control-label">Video URL</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  <input type="url" class="form-control" id="video_url" name="video_url" value="{{ old('video_url') ?: $postEdit->video_url }}"  placeholder="Video URL">
+              </div>
+            </div>
+
+            <div class="form-group" id="ad" style="display:none">
+              <div class="col-sm-2 pull-left">
+                <label for="ad_url" class=" control-label">Ad URL</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  <input type="url" class="form-control" id="ad_url" name="ad_url" value="{{ old('ad_url') ?: $postEdit->ad_url }}"  placeholder="AD URL">
+              </div>
+            </div>
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -144,10 +176,20 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('vendor/bower_components/ckeditor/ckeditor.js') }}"></script>
+<script src="{{ asset('vendor/ckeditor5/build/ckeditor.js') }}"></script>
 <script type="text/javascript">
+   ClassicEditor
+   .create( document.querySelector('#description'), {
+      toolbar: {
+         items: [
+            'bold', 'italic', 'underline', 'strikethrough', '|', 
+            'fontColor', 'fontBackgroundColor', 'link', '|', 
+            'insertTable', 'bulletedList', 'numberedList','|',
+            'blockQuote', 'subscript', 'superscript', 'horizontalLine', 
+         ]
+      },
+   });
   $(function () {
-    CKEDITOR.replace('description');
     $("#category").select2();
 
     $('#category').bind("change", function() {
@@ -156,6 +198,27 @@
       var n_spaces = (matches) ? matches.length : 0;
       $(this).css('text-indent', -(n_spaces * space_offset));
     });
+
+    var type = $('#type option:selected').val();
+    if(type) toggleType(type);
+
+    $('#type').on('change', function() {
+      var type = $(this).val();
+      toggleType(type);
+    });
+
+    function toggleType(type){
+      if(type == '{{ \App\Models\Post::TYPE_VIDEO}}') {
+         $('#ad').css('display', 'none');
+         $('#video').css('display', 'block');
+      } else if(type == '{{ \App\Models\Post::TYPE_AD}}') {
+         $('#video').css('display', 'none');
+         $('#ad').css('display', 'block');
+      }else {
+         $('#ad').css('display', 'none');
+         $('#video').css('display', 'none');
+      }
+    }
 
   });
 

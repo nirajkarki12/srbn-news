@@ -20,8 +20,10 @@ class CreatePostsTable extends Migration
             $table->string('source')->nullable();
             $table->string('source_url')->nullable();
             $table->string('audio_url')->nullable();
-            $table->string('image_file')->nullable();
             $table->string('image')->nullable();
+            $table->integer('type')->default(1);
+            $table->string('video_url')->nullable();
+            $table->string('ad_url')->nullable();
             $table->boolean('status')->default(1);
             $table->unsignedBigInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('set null');

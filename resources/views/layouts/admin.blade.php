@@ -29,8 +29,6 @@
 
     <link rel="stylesheet" href="{{ asset('vendor/admin-css/dist/css/skins/_all-skins.min.css')}}">
 
-    <link rel="stylesheet" href="{{ asset('vendor/tags-input/jquery.tagsinput.css')}}">
-
     <link rel="stylesheet" href="{{ asset('vendor/admin-css/dist/css/custom.css')}}">
 
     @yield('styles')
@@ -93,10 +91,6 @@
 
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <!-- <script src="{{asset('vendor/admin-css/dist/js/pages/dashboard2.js')}}"></script> -->
-
-    <script src="{{asset('vendor/admin-css/dist/js/demo.js')}}"></script>
-
-    <script src="{{asset('vendor/tags-input/jquery.tagsinput.js')}}"></script>
 
     @yield('scripts')
 
