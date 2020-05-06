@@ -59,7 +59,15 @@ return [
      *    'method' => array('Str','slug'),
      */
 
-    'method' => null,
+    // 'method' => array('Slugify','generate'),
+    'method' => function($string, $sep) {
+
+      // $generator = new Ausi\SlugGenerator\SlugGenerator;
+      // return $generator->generate($string);
+
+      return (date('Y-m-d-') .time());
+    },
+
 
     /**
      * Separator to use when generating slugs.  Defaults to a hyphen.

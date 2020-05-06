@@ -37,15 +37,16 @@ class PostController extends BaseApiController
    *   "current_page": 2,
    *   "data": [
    *    {
+   *     "id": 1,
    *     "title": "News Title",
    *     "description": "News Long Description",
+   *     "type": "Image|Video|Advertisement",
+   *     "content": "Image URL|Video URL|Advertisement URL",
+   *     "note": "News notes",
    *     "source": "News Source",
    *     "source_url": "Source URL",
    *     "audio_url": "URL|null",
-   *     "image": "Feature Image",
    *     "created_at": "2020-04-14 15:00",
-   *     "type": "Text|Video|Advertisement",
-   *     "content": "Video URL|Advertisement URL|null",
    *     "categories": [
    *      {
    *        "id": 2,
@@ -91,19 +92,12 @@ class PostController extends BaseApiController
                DB::raw('
                      (
                         CASE 
-                        WHEN posts.type = ' .Post::TYPE_TEXT .' THEN "' .Post::$postTypes[Post::TYPE_TEXT] .'"'
+                        WHEN posts.type = ' .Post::TYPE_IMAGE .' THEN "' .Post::$postTypes[Post::TYPE_IMAGE] .'"'
                         .' WHEN posts.type = ' .Post::TYPE_VIDEO .' THEN "' .Post::$postTypes[Post::TYPE_VIDEO] .'"'
                         .' WHEN posts.type = ' .Post::TYPE_AD .' THEN "' .Post::$postTypes[Post::TYPE_AD] .'"'
                         .' ELSE null
                         END
-                     ) AS type,
-                     (
-                        CASE 
-                        WHEN posts.type = ' .Post::TYPE_VIDEO .' THEN video_url'
-                        .' WHEN posts.type = ' .Post::TYPE_AD .' THEN ad_url'
-                        .' ELSE null
-                        END
-                     ) AS content
+                     ) AS type
                   '),
                ])
                ->with('categories')
@@ -120,9 +114,6 @@ class PostController extends BaseApiController
 
          $posts = $paginator->each(function ($post) {
                      $post->makeHidden([
-                        'id',
-                        'video_url',
-                        'ad_url',
                         'status',
                         'category_id',
                         'updated_at',
@@ -162,15 +153,16 @@ class PostController extends BaseApiController
    *   "current_page": 2,
    *   "data": [
    *    {
+   *     "id": 1,
    *     "title": "News Title",
    *     "description": "News Long Description",
+   *     "type": "Image|Video|Advertisement",
+   *     "content": "Image URL|Video URL|Advertisement URL",
+   *     "note": "News notes",
    *     "source": "News Source",
    *     "source_url": "Source URL",
    *     "audio_url": "URL|null",
-   *     "image": "Feature Image",
    *     "created_at": "2020-04-14 15:00",
-   *     "type": "Text|Video|Advertisement",
-   *     "content": "Video URL|Advertisement URL|null",
    *     "categories": [
    *      {
    *        "id": 2,
@@ -223,19 +215,12 @@ class PostController extends BaseApiController
                DB::raw('
                      (
                         CASE 
-                        WHEN posts.type = ' .Post::TYPE_TEXT .' THEN "' .Post::$postTypes[Post::TYPE_TEXT] .'"'
+                        WHEN posts.type = ' .Post::TYPE_IMAGE .' THEN "' .Post::$postTypes[Post::TYPE_IMAGE] .'"'
                         .' WHEN posts.type = ' .Post::TYPE_VIDEO .' THEN "' .Post::$postTypes[Post::TYPE_VIDEO] .'"'
                         .' WHEN posts.type = ' .Post::TYPE_AD .' THEN "' .Post::$postTypes[Post::TYPE_AD] .'"'
                         .' ELSE null
                         END
-                     ) AS type,
-                     (
-                        CASE 
-                        WHEN posts.type = ' .Post::TYPE_VIDEO .' THEN video_url'
-                        .' WHEN posts.type = ' .Post::TYPE_AD .' THEN ad_url'
-                        .' ELSE null
-                        END
-                     ) AS content
+                     ) AS type
                   '),
                ])
                ->with('categories')
@@ -259,9 +244,6 @@ class PostController extends BaseApiController
 
          $posts = $paginator->each(function ($post) {
                      $post->makeHidden([
-                        'id',
-                        'video_url',
-                        'ad_url',
                         'status',
                         'category_id',
                         'updated_at',

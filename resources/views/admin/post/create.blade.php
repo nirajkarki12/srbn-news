@@ -52,6 +52,24 @@
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
+                <label for="description" class=" control-label">Description</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                <textarea class="form-control" id="description" name="description" rows="3" cols="80">{{ old('description') }}</textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="note" class=" control-label">Note</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  <textarea class="form-control" id="note" name="note" rows="2" cols="80">{{ old('note') }}</textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
                 <label for="type" class="control-label">Type</label>
               </div>
               <div class="col-sm-9 pull-left">
@@ -65,47 +83,10 @@
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
-                <label for="description" class=" control-label">Description</label>
+                <label for="content" class=" control-label">URL</label>
               </div>
               <div class="col-sm-9 pull-left">
-                <textarea class="form-control" id="description" name="description" rows="3" cols="80">{{ old('description') }}</textarea>
-              </div>
-            </div>
-
-            <!-- <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="image_file" class=" control-label">Image</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                <input type="file" accept="image/png, image/jpeg, image/jpg" id="image_file" name="image_file" required>
-                <p class="help-block">Please enter .png .jpeg .jpg images only.</p>
-              </div>
-            </div> -->
-
-            <div class="form-group" id="video" style="display:none">
-              <div class="col-sm-2 pull-left">
-                <label for="video_url" class=" control-label">Video URL</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                  <input type="url" class="form-control" id="video_url" name="video_url" value="{{ old('video_url') }}"  placeholder="Video URL">
-              </div>
-            </div>
-
-            <div class="form-group" id="ad" style="display:none">
-              <div class="col-sm-2 pull-left">
-                <label for="ad_url" class=" control-label">Ad URL</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                  <input type="url" class="form-control" id="ad_url" name="ad_url" value="{{ old('ad_url') }}"  placeholder="AD URL">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="image" class=" control-label">Image URL</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                  <input type="url" class="form-control" id="image" name="image" value="{{ old('image') }}"  placeholder="Image URL">
+                  <input type="url" class="form-control" id="content" name="content" value="{{ old('content') }}"  placeholder="URL">
               </div>
             </div>
 
@@ -204,14 +185,11 @@
 
     function toggleType(type){
       if(type == '{{ \App\Models\Post::TYPE_VIDEO}}') {
-         $('#ad').css('display', 'none');
-         $('#video').css('display', 'block');
+         $('#content').parents('.form-group').find('label').html('Video URL');
       } else if(type == '{{ \App\Models\Post::TYPE_AD}}') {
-         $('#video').css('display', 'none');
-         $('#ad').css('display', 'block');
+         $('#content').parents('.form-group').find('label').html('AD URL');
       }else {
-         $('#ad').css('display', 'none');
-         $('#video').css('display', 'none');
+         $('#content').parents('.form-group').find('label').html('Image URL');
       }
     }
 

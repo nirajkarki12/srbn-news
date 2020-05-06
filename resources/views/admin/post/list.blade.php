@@ -36,10 +36,10 @@
 							<thead>
 						    <tr>
 						      <th width="4%">#</th>
-						      <th width="18%">Title</th>
+						      <th>Title</th>
                         <th>Type</th>
 						      <th width="30%">Description</th>
-						      <th>Images</th>
+						      <th>Note</th>
                         <th>Source</th>
                         <th>Categories</th>
 						      <th>Status</th>
@@ -54,40 +54,17 @@
 						      	<td style="vertical-align:middle">{{ $post->title }}</td>
                            <td style="vertical-align:middle">
                               @if($post->type && array_key_exists($post->type, \App\Models\Post::$postTypes)) 
-                                 @switch($post->type)
-                                    @case(\App\Models\Post::TYPE_TEXT)
-                                       <p class="text-muted">
-                                          {{ \App\Models\Post::$postTypes[$post->type] }}
-                                       </p> 
-                                    @break
-
-                                    @case(\App\Models\Post::TYPE_VIDEO)
-                                       <p class="text-info" title="{{ $post->video_url }}">
-                                          {{ \App\Models\Post::$postTypes[$post->type] }}
-                                       </p>
-                                    @break
-
-                                    @case(\App\Models\Post::TYPE_AD)
-                                       <p class="text-info" title="{{ $post->ad_url }}">
-                                          {{ \App\Models\Post::$postTypes[$post->type] }}
-                                       </p>
-                                    @break
-
-                                    @default
-                                       <p class="text-muted">
-                                          {{ \App\Models\Post::$postTypes[$post->type] }}
-                                       </p> 
-                                 @endswitch
+                                 <p class="text-info" title="{{ $post->content }}">
+                                    {{ \App\Models\Post::$postTypes[$post->type] }}
+                                 </p>
                               @endif
                            </td>
-						      	<td style="vertical-align:middle" class="minimize">{!! $post->description ?: '-' !!}</td>
-						      	<td style="vertical-align:middle">
-						      		@if($post->image)
-						      			<img src="{{ $post->image }}" class="img-responsive" style="width:120px;">
-						      		@else
-						      			-
-						      		@endif
-						      	</td>
+						      	<td style="vertical-align:middle" class="minimize text-justify">{!! $post->description ?: '-' !!}</td>
+                           <td style="vertical-align:middle">
+                              <p class="text-muted">
+                                 {{ $post->note ?: '-' }}
+                              </p>
+                           </td>
                            <td style="vertical-align:middle">
                               @if($post->source)
                                  <a href="{{ $post->source_url }}" target="_new" title="{{ $post->source }}">{{ $post->source }}</a>

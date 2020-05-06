@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Common\BaseController;
 use Validator;
 use anlutro\LaravelSettings\Facade as Setting;
-use App\Http\Helpers\Helper;
 use App\Models\Category;
 use App\Models\Post;
 
@@ -65,9 +64,8 @@ class PostController extends BaseController
                    'title' => 'required|max:255',
                    'category' => 'required',
                    'description' => 'required|min:50',
-                   // 'image_file' => 'required|mimes:jpeg,png,jpg,gif|max:2058',
-                   'video_url' => 'nullable|url',
-                   'ad_url' => 'nullable|url',
+                   'type' => 'required',
+                   'content' => 'required|url',
                    'source' => 'nullable|max:150',
                    'source_url' => 'nullable|url',
                    'audio_url' => 'nullable|url',
@@ -76,19 +74,13 @@ class PostController extends BaseController
             );
             if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
 
-            // if($request->file('image_file')) {
-            //     if(!$file = Helper::uploadImage($request->file('image_file'), 'post')) throw new \Exception("Cannot Save Image", 1);
-            //     $data['image_file'] = $file;
-            // }
-
             $post = new Post;
             $post->title = $data['title'];
             $post->description = $data['description'];
-            $post->image = $data['image'];
-            $post->source = $data['source'] ?: $data['source_url'];
+            $post->note = $data['note'];
             $post->type = $data['type'];
-            $post->video_url = (isset($data['video_url']) && $data['type'] == Post::TYPE_VIDEO) ? $data['video_url'] : null;
-            $post->ad_url = (isset($data['ad_url']) && $data['type'] == Post::TYPE_AD) ? $data['ad_url'] : null;
+            $post->content = $data['content'];
+            $post->source = $data['source'] ?: $data['source_url'];
             $post->source_url = $data['source_url'];
             $post->audio_url = $data['audio_url'];
             $post->status = $data['status'];
@@ -148,9 +140,8 @@ class PostController extends BaseController
                    'title' => 'required|max:255',
                    'category' => 'required',
                    'description' => 'required|min:50',
-                   // 'image_file' => 'nullable|mimes:jpeg,png,jpg,gif|max:2058',
-                   'video_url' => 'nullable|url',
-                   'ad_url' => 'nullable|url',
+                   'type' => 'required',
+                   'content' => 'required|url',
                    'source' => 'nullable|max:150',
                    'source_url' => 'nullable|url',
                    'audio_url' => 'nullable|url',
@@ -162,20 +153,12 @@ class PostController extends BaseController
 
             if(!$post = Post::where('slug', $slug)->first()) throw new \Exception("Error Processing Request", 1);
 
-            // if($request->file('image_file')) {
-            //     if(!$file = Helper::uploadImage($request->file('image_file'), 'post')) throw new \Exception("Cannot Save Image", 1);
-            //     $data['image_file'] = $file;
-            //     if(!Helper::deleteImage($post->image_file, 'post')) throw new Exception("Error Processing Request", 1);
-            // }
-
             $post->title = $data['title'];
             $post->description = $data['description'];
-            $post->image = $data['image'];
-            // $post->image_file = array_key_exists('image_file', $data) ? $data['image_file'] : null;
-            $post->source = $data['source'] ?: $data['source_url'];
+            $post->note = $data['note'];
             $post->type = $data['type'];
-            $post->video_url = (isset($data['video_url']) && $data['type'] == Post::TYPE_VIDEO) ? $data['video_url'] : null;
-            $post->ad_url = (isset($data['ad_url']) && $data['type'] == Post::TYPE_AD) ? $data['ad_url'] : null;
+            $post->content = $data['content'];
+            $post->source = $data['source'] ?: $data['source_url'];
             $post->source_url = $data['source_url'];
             $post->audio_url = $data['audio_url'];
             $post->status = $data['status'];
@@ -205,11 +188,7 @@ class PostController extends BaseController
         try {
             if(!$slug) throw new \Exception("Error Processing Request", 1);
             
-            if(!$post = Post::where('slug', $slug)->first()) throw new \Exception("Error Processing Request", 1);
-
-            // if(!Helper::deleteImage($post->image_file, 'post')) throw new Exception("Error Processing Request", 1);
-
-            if(!$post->delete()) throw new \Exception("Error Processing Request", 1);
+            if(!Post::where('slug', $slug)->delete()) throw new \Exception("Error Processing Request", 1);
 
             return redirect()->route('admin.post', ['page' => $page])->with('flash_success', 'Post removed Successfully');
                

@@ -276,7 +276,7 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=15" \
+    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=17" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
@@ -284,7 +284,7 @@ fetch(url, {
 );
 
 let params = {
-    "?page=": "15",
+    "?page=": "17",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -310,15 +310,16 @@ fetch(url, {
         "current_page": 2,
         "data": [
             {
+                "id": 1,
                 "title": "News Title",
                 "description": "News Long Description",
+                "type": "Image|Video|Advertisement",
+                "content": "Image URL|Video URL|Advertisement URL",
+                "note": "News notes",
                 "source": "News Source",
                 "source_url": "Source URL",
                 "audio_url": "URL|null",
-                "image": "Feature Image",
                 "created_at": "2020-04-14 15:00",
-                "type": "Text|Video|Advertisement",
-                "content": "Video URL|Advertisement URL|null",
                 "categories": [
                     {
                         "id": 2,
@@ -395,7 +396,7 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=9" \
+    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=17" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
@@ -403,7 +404,7 @@ fetch(url, {
 );
 
 let params = {
-    "?page=": "9",
+    "?page=": "17",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -429,15 +430,16 @@ fetch(url, {
         "current_page": 2,
         "data": [
             {
+                "id": 1,
                 "title": "News Title",
                 "description": "News Long Description",
+                "type": "Image|Video|Advertisement",
+                "content": "Image URL|Video URL|Advertisement URL",
+                "note": "News notes",
                 "source": "News Source",
                 "source_url": "Source URL",
                 "audio_url": "URL|null",
-                "image": "Feature Image",
                 "created_at": "2020-04-14 15:00",
-                "type": "Text|Video|Advertisement",
-                "content": "Video URL|Advertisement URL|null",
                 "categories": [
                     {
                         "id": 2,
@@ -528,7 +530,7 @@ APIs for User Login</p>
     "http://localhost/srbn-news/public/api/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"email":"qui","password":"aliquid"}'
+    -d '{"email":"repellat","password":"repellendus"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/srbn-news/public/api/login"
@@ -541,8 +543,8 @@ let headers = {
 };
 
 let body = {
-    "email": "qui",
-    "password": "aliquid"
+    "email": "repellat",
+    "password": "repellendus"
 }
 
 fetch(url, {
@@ -615,7 +617,7 @@ APIs for Social User Login</p>
     "http://localhost/srbn-news/public/api/social/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"ut","email":"vitae","image":"consequatur","social_id":"sed","provider":"rerum"}'
+    -d '{"name":"enim","email":"consequatur","image":"quos","social_id":"culpa","provider":"tenetur"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/srbn-news/public/api/social/login"
@@ -628,11 +630,11 @@ let headers = {
 };
 
 let body = {
-    "name": "ut",
-    "email": "vitae",
-    "image": "consequatur",
-    "social_id": "sed",
-    "provider": "rerum"
+    "name": "enim",
+    "email": "consequatur",
+    "image": "quos",
+    "social_id": "culpa",
+    "provider": "tenetur"
 }
 
 fetch(url, {
@@ -722,7 +724,7 @@ fetch(url, {
     "http://localhost/srbn-news/public/api/register" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"et","email":"ipsum","address":"voluptatum","password":"perspiciatis","image":"in"}'
+    -d '{"name":"ex","email":"est","address":"fugit","password":"et","image":"atque"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/srbn-news/public/api/register"
@@ -735,11 +737,11 @@ let headers = {
 };
 
 let body = {
-    "name": "et",
-    "email": "ipsum",
-    "address": "voluptatum",
-    "password": "perspiciatis",
-    "image": "in"
+    "name": "ex",
+    "email": "est",
+    "address": "fugit",
+    "password": "et",
+    "image": "atque"
 }
 
 fetch(url, {

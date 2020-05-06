@@ -44,7 +44,7 @@
 							<thead>
 						    <tr>
 						      <th width="4%">#</th>
-						      <th width="12%">Name</th>
+						      <th>Name</th>
 						      <th width="30%">Description</th>
 						      <th>Images</th>
 						      <th>Status</th>
@@ -65,7 +65,7 @@
    					      			{{ $category->name }}
    					      		@endif
 						      	</td>
-						      	<td style="vertical-align:middle">
+						      	<td style="vertical-align:middle" class="text-justify">
 					      			{!! $category->description ?: '-' !!}
 						      	</td>
 						      	<td style="vertical-align:middle">
