@@ -27,6 +27,25 @@
         <form class="form-horizontal" action="{{route('admin.post.update', ['slug' => $postEdit->slug, 'page' => isset($_REQUEST['page']) ? $_REQUEST['page'] : null])}}" method="POST" enctype="multipart/form-data" role="form">
           {{ csrf_field() }}
           <div class="box-body">
+
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="source_url" class=" control-label">Source URL</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  <input type="url" class="form-control" id="source_url" name="source_url" value="{{ old('source_url') ?: $postEdit->source_url }}"  placeholder="Source URL">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="source" class=" control-label">Source</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  <input type="text" class="form-control" id="source" name="source" value="{{ old('source') ?: $postEdit->source }}"  placeholder="Post Source">
+              </div>
+            </div>
+
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="title" class=" control-label">Title</label>
@@ -74,9 +93,12 @@
                 <label for="type" class="control-label">Type</label>
               </div>
               <div class="col-sm-9 pull-left">
+               @php
+                  $selectedType = (old('type') ?: $postEdit->type);
+               @endphp
                 <select class="form-control" id="type" name="type" required>
                   @foreach(\App\Models\Post::$postTypes as $key => $val)
-                     <option value="{{ $key }}" @if($key == (old('type') ?: $postEdit->type)) selected @endif>{{ $val }}</option>
+                     <option value="{{ $key }}" @if($key == $selectedType) selected @endif>{{ $val }}</option>
                   @endforeach
                 </select>
               </div>
@@ -87,27 +109,12 @@
                 <label for="content" class=" control-label">URL</label>
               </div>
               <div class="col-sm-9 pull-left">
+                  <img class="img-responsive" id="image" src="@if($selectedType == \App\Models\Post::TYPE_IMAGE) {{ $postEdit->content }} @endif" style="margin-bottom:10px;width:180px;display:none;">
                   <input type="url" class="form-control" id="content" name="content" value="{{ old('content') ?: $postEdit->content }}"  placeholder="URL">
               </div>
             </div>
 
-            <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="source" class=" control-label">Source</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                  <input type="text" class="form-control" id="source" name="source" value="{{ old('source') ?: $postEdit->source }}"  placeholder="Post Source">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="source_url" class=" control-label">Source URL</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                  <input type="url" class="form-control" id="source_url" name="source_url" value="{{ old('source_url') ?: $postEdit->source_url }}"  placeholder="Source URL">
-              </div>
-            </div>
+            
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -186,13 +193,30 @@
 
     function toggleType(type){
       if(type == '{{ \App\Models\Post::TYPE_VIDEO}}') {
+         $('#image').css('display', 'none');
          $('#content').parents('.form-group').find('label').html('Video URL');
       } else if(type == '{{ \App\Models\Post::TYPE_AD}}') {
+         $('#image').css('display', 'none');
          $('#content').parents('.form-group').find('label').html('AD URL');
       }else {
+         if($('#image').attr('src')) $('#image').css('display', 'block');
          $('#content').parents('.form-group').find('label').html('Image URL');
       }
     }
+
+    $('#content').on('change', function() {
+      var value = $(this).val();
+      var type = $('#type option:selected').val();
+
+      if(type == '{{ \App\Models\Post::TYPE_IMAGE}}') {
+         $("#overlay").fadeIn(200);
+         
+         $('#image').css('display', 'block');
+         $('#image').attr('src', value);
+         
+         $("#overlay").fadeOut(200);
+      }
+    });
 
   });
 

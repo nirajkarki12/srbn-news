@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3182cd6fbaf2e958da9074d96acba192",
+    "content-hash": "5967833db20ec74d0ac3e7ff6fb753ee",
     "packages": [
         {
             "name": "anlutro/l4-settings",
@@ -1452,6 +1452,49 @@
                 "storage"
             ],
             "time": "2020-03-17T18:58:12+00:00"
+        },
+        {
+            "name": "mobiosolutions/metatags",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mobiosolutions/metatags.git",
+                "reference": "c851726ee3e2345a7749023950e5fd67867ee8c2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mobiosolutions/metatags/zipball/c851726ee3e2345a7749023950e5fd67867ee8c2",
+                "reference": "c851726ee3e2345a7749023950e5fd67867ee8c2",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "mobiosolutions\\metatags\\Providers\\MetatagsProvider"
+                    ],
+                    "aliases": {
+                        "Metatags": "mobiosolutions\\metatags\\Facades\\MetatagsFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "mobiosolutions\\metatags\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mobio Solutions",
+                    "email": "contact@mobiosolutions.com"
+                }
+            ],
+            "description": "A Laravel package to fetch webpage metadata ( Open Graph | Twitter | Facebook | Article ) ect...",
+            "time": "2018-09-25T10:58:47+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -6966,7 +7009,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "mobiosolutions/metatags": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

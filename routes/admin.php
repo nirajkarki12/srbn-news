@@ -37,6 +37,8 @@ Route::group(['prefix' => 'admin'], function(){
 
    Route::post('post/store', 'PostController@store')->name('admin.post.store');
    Route::post('post/update/{slug}/{page?}', 'PostController@update')->name('admin.post.update');
+   Route::post('post/get-web-content', 'PostController@getWebContent')->name('admin.post.get-web-content');
+
    /* */
 
 });

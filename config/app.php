@@ -170,7 +170,7 @@ return [
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class,
         Vedmant\FeedReader\FeedReaderServiceProvider::class,
-        
+        mobiosolutions\metatags\Providers\MetatagsProvider::class,
         /*
          * Application Service Providers...
          */
@@ -232,6 +232,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
          'FeedReader' => Vedmant\FeedReader\Facades\FeedReader::class,
+         'Metatags' => mobiosolutions\metatags\Facades\MetatagsFacade::class
     ],
 
 ];

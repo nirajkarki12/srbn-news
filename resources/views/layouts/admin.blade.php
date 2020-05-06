@@ -39,7 +39,16 @@
 
 
 <body class="hold-transition skin-blue sidebar-mini">
-
+   <div id="overlay">
+      <div class="sk-chase">
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+      </div>
+   </div>
     <div class="wrapper">
 
         @include('layouts.admin.header')

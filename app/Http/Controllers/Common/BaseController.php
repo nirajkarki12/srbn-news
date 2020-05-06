@@ -75,4 +75,12 @@ class BaseController extends Controller
       echo $html;
    }
 
+   public function ajaxResponse($data, string $message = 'Successful', $status = true) {
+      return response()->json([
+         'status' => $status,
+         'data' => $data,
+         'message' => $message,
+      ]);
+   }
+
 }

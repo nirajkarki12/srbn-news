@@ -27,6 +27,25 @@
         <form class="form-horizontal" action="{{route('admin.post.store')}}" method="POST" enctype="multipart/form-data" role="form">
           {{ csrf_field() }}
           <div class="box-body">
+
+             <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="source_url" class=" control-label">Source URL</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  <input type="url" class="form-control" id="source_url" name="source_url" value="{{ old('source_url') }}"  placeholder="Source URL">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="source" class=" control-label">Source</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  <input type="text" class="form-control" id="source" name="source" value="{{ old('source') }}"  placeholder="Post Source">
+              </div>
+            </div>
+
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="title" class=" control-label">Title</label>
@@ -86,25 +105,8 @@
                 <label for="content" class=" control-label">URL</label>
               </div>
               <div class="col-sm-9 pull-left">
+                  <img class="img-responsive" id="image" src="" style="margin-bottom:10px;width:180px;display:none;">
                   <input type="url" class="form-control" id="content" name="content" value="{{ old('content') }}"  placeholder="URL">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="source" class=" control-label">Source</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                  <input type="text" class="form-control" id="source" name="source" value="{{ old('source') }}"  placeholder="Post Source">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="source_url" class=" control-label">Source URL</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                  <input type="url" class="form-control" id="source_url" name="source_url" value="{{ old('source_url') }}"  placeholder="Source URL">
               </div>
             </div>
 
@@ -185,13 +187,71 @@
 
     function toggleType(type){
       if(type == '{{ \App\Models\Post::TYPE_VIDEO}}') {
+         $('#image').css('display', 'none');
          $('#content').parents('.form-group').find('label').html('Video URL');
       } else if(type == '{{ \App\Models\Post::TYPE_AD}}') {
+         $('#image').css('display', 'none');
          $('#content').parents('.form-group').find('label').html('AD URL');
       }else {
+         if($('#image').attr('src')) $('#image').css('display', 'block');
          $('#content').parents('.form-group').find('label').html('Image URL');
       }
     }
+
+   $('#source_url').bind('blur', function() {
+      var sourceUrl = $(this).val();
+      getUrlData(sourceUrl);
+
+   });
+
+   function getUrlData(sourceUrl) {
+      $.ajax({
+         type: 'post',
+         dataType: 'json',
+         data: { "_token": "{{ csrf_token() }}", "url": sourceUrl },
+         url: '{!! route("admin.post.get-web-content") !!}',
+         beforeSend: function() {
+            $("#overlay").fadeIn(200);
+            $('#title').val('');
+            $('#note').val('');
+            $('#content').val('');
+            $('#source').val('');
+            $('#image').css('display', 'none');
+         },
+         success:function(res){
+           $("#overlay").fadeOut(200);
+            if(res.status == true) {
+               $('#type').val('{{ \App\Models\Post::TYPE_IMAGE }}')
+               $('#title').val(res.data.title);
+               $('#note').val(res.data.description);
+               $('#content').val(res.data.image);
+               $('#source').val(res.data.source);
+               $('#image').css('display', 'block');
+               $('#image').attr('src', res.data.image);
+            }else{
+               alert(res.message);
+            }
+         },
+         error: function(jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            // window.location.href = loginUrl;
+         }
+      });
+
+      $('#content').on('change', function() {
+         var value = $(this).val();
+         var type = $('#type option:selected').val();
+
+         if(type == '{{ \App\Models\Post::TYPE_IMAGE}}') {
+            $("#overlay").fadeIn(200);
+
+            $('#image').css('display', 'block');
+            $('#image').attr('src', value);
+            $("#overlay").fadeOut(200);
+
+         }
+       });
+   }
 
   });
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Common\BaseController;
 use Validator;
 use anlutro\LaravelSettings\Facade as Setting;
+use Metatags;
 use App\Models\Category;
 use App\Models\Post;
 
@@ -196,6 +197,55 @@ class PostController extends BaseController
         } catch (\Exception $e) {
             return back()->with('flash_error', $e->getMessage());
         }
+    }
+
+    public function getWebContent(Request $request)
+    {
+      try {
+         $validator = Validator::make($request->all(), [
+               'url' => 'required|url',
+            ]
+         );
+
+         if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
+
+         $url = $request->url;
+
+         $metadata = Metatags::get($url);
+
+         if(array_key_exists('og:title', $metadata)) {
+            $data['title'] = $metadata['og:title'];
+         } elseif(array_key_exists('twitter:title', $metadata)) {
+            $data['title'] = $metadata['twitter:title'];
+         } else{
+            $data['title'] = null;
+         }
+
+         if(array_key_exists('description', $metadata)) {
+            $data['description'] = $metadata['description'];
+         } elseif(array_key_exists('og:title', $metadata)) {
+            $data['description'] = $metadata['og:description'];
+         } elseif(array_key_exists('twitter:title', $metadata)) {
+            $data['description'] = $metadata['twitter:description'];
+         } else{
+            $data['description'] = null;
+         }
+
+         if(array_key_exists('og:image', $metadata)) {
+            $data['image'] = $metadata['og:image'];
+         } elseif(array_key_exists('twitter:title', $metadata)) {
+            $data['image'] = $metadata['twitter:image'];
+         } else{
+            $data['image'] = null;
+         }
+
+         $data['source'] = preg_replace("/^www\./", "", parse_url($url, PHP_URL_HOST));
+
+         return $this->ajaxResponse($data);
+         
+      } catch (\Exception $e) {
+         return $this->ajaxResponse(null, $e->getMessage(), false);
+      }
     }
 
 }
