@@ -28,11 +28,12 @@ class PostController extends BaseController
      */
     public function index(string $parentSlug = null)
     {
-        $posts = Post::orderBy('created_at', 'desc')->paginate(Setting::get('data_per_page', 25));
-        if($posts->count() == 0 && $posts->currentPage() !== 1) {
-            return redirect()->route('admin.attribute');
-        }
-        return view('admin.post.list', compact('posts'));
+
+      $posts = Post::orderBy('created_at', 'desc')->paginate(Setting::get('data_per_page', 25));
+      if($posts->count() == 0 && $posts->currentPage() !== 1) {
+         return redirect()->route('admin.attribute');
+      }
+      return view('admin.post.list', compact('posts'));
     }
 
     /**

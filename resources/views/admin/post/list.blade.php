@@ -54,7 +54,9 @@
 						      	<td style="vertical-align:middle">{{ $post->title }}</td>
                            <td style="vertical-align:middle">
                               @if($post->type && array_key_exists($post->type, \App\Models\Post::$postTypes)) 
-                                 <p class="text-info" title="{{ $post->content }}">
+                                 <p class="text-info" title="
+                                    <img src='{{ $post->content }}'>
+                                    ">
                                     {{ \App\Models\Post::$postTypes[$post->type] }}
                                  </p>
                               @endif

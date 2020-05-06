@@ -282,7 +282,7 @@ Header for User&#039;s Category Posts: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=17" \
+    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=19" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -293,7 +293,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "17",
+    "?page=": "19",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -405,7 +405,7 @@ All posts list
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=17" \
+    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=1" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -416,7 +416,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "17",
+    "?page=": "1",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -516,6 +516,87 @@ Parameter | Status | Description
 
 <!-- END_fd1746447c684f78c26acc72a048bdab -->
 
+#RSS
+
+
+fetch record from cache, currently online khabar as demo
+<!-- START_fcf551e160e07d87b23798910a604cd4 -->
+## Pull RSS Feed
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://localhost/srbn-news/public/api/rss-feed" \
+    -H "Content-Type: application/json" \
+    -H "X-Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://localhost/srbn-news/public/api/rss-feed"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "X-Authorization": "Bearer {token}",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "status": true,
+    "data": [
+        {
+            "title": "News Title",
+            "description": "News Long Description",
+            "image_url": "Image URL|null",
+            "source": "News Source",
+            "source_url": "Source URL",
+            "author": "author name|null",
+            "date": "2020-04-14 15:00"
+        },
+        {
+            "title": "News Title",
+            "description": "News Long Description",
+            "image_url": "Image URL|null",
+            "source": "News Source",
+            "source_url": "Source URL",
+            "author": "author name|null",
+            "date": "2020-04-14 15:10"
+        }
+    ],
+    "message": "RSS data fetched successfully",
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "RSS not found",
+    "code": 200
+}
+```
+
+### HTTP Request
+`GET api/rss-feed`
+
+
+<!-- END_fcf551e160e07d87b23798910a604cd4 -->
+
 #User
 
 
@@ -531,7 +612,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"email":"repellat","password":"repellendus"}'
+    -d '{"email":"voluptatem","password":"quas"}'
 
 ```
 
@@ -547,8 +628,8 @@ let headers = {
 };
 
 let body = {
-    "email": "repellat",
-    "password": "repellendus"
+    "email": "voluptatem",
+    "password": "quas"
 }
 
 fetch(url, {
@@ -611,7 +692,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/social/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"enim","email":"consequatur","image":"quos","social_id":"culpa","provider":"tenetur"}'
+    -d '{"name":"fugit","email":"et","image":"maxime","social_id":"quidem","provider":"incidunt"}'
 
 ```
 
@@ -627,11 +708,11 @@ let headers = {
 };
 
 let body = {
-    "name": "enim",
-    "email": "consequatur",
-    "image": "quos",
-    "social_id": "culpa",
-    "provider": "tenetur"
+    "name": "fugit",
+    "email": "et",
+    "image": "maxime",
+    "social_id": "quidem",
+    "provider": "incidunt"
 }
 
 fetch(url, {
@@ -696,7 +777,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/register" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"ex","email":"est","address":"fugit","password":"et","image":"atque"}'
+    -d '{"name":"enim","email":"aliquam","address":"accusamus","password":"mollitia","image":"omnis"}'
 
 ```
 
@@ -712,11 +793,11 @@ let headers = {
 };
 
 let body = {
-    "name": "ex",
-    "email": "est",
-    "address": "fugit",
-    "password": "et",
-    "image": "atque"
+    "name": "enim",
+    "email": "aliquam",
+    "address": "accusamus",
+    "password": "mollitia",
+    "image": "omnis"
 }
 
 fetch(url, {

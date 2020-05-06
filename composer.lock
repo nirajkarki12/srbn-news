@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7016100f183e7c510abd81a6f16a66cd",
+    "content-hash": "3182cd6fbaf2e958da9074d96acba192",
     "packages": [
         {
             "name": "anlutro/l4-settings",
@@ -2332,6 +2332,73 @@
             "time": "2020-03-29T20:13:32+00:00"
         },
         {
+            "name": "simplepie/simplepie",
+            "version": "1.5.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/simplepie/simplepie.git",
+                "reference": "ae49e2201b6da9c808e5dac437aca356a11831b4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/simplepie/simplepie/zipball/ae49e2201b6da9c808e5dac437aca356a11831b4",
+                "reference": "ae49e2201b6da9c808e5dac437aca356a11831b4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcre": "*",
+                "ext-xml": "*",
+                "ext-xmlreader": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.4.3 || ~6.5"
+            },
+            "suggest": {
+                "ext-curl": "",
+                "ext-iconv": "",
+                "ext-intl": "",
+                "ext-mbstring": "",
+                "mf2/mf2": "Microformat module that allows for parsing HTML for microformats"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "SimplePie": "library"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ryan Parman",
+                    "homepage": "http://ryanparman.com/",
+                    "role": "Creator, alumnus developer"
+                },
+                {
+                    "name": "Sam Sneddon",
+                    "homepage": "https://gsnedders.com/",
+                    "role": "Alumnus developer"
+                },
+                {
+                    "name": "Ryan McCue",
+                    "email": "me@ryanmccue.info",
+                    "homepage": "http://ryanmccue.info/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple Atom/RSS parsing library for PHP",
+            "homepage": "http://simplepie.org/",
+            "keywords": [
+                "atom",
+                "feeds",
+                "rss"
+            ],
+            "time": "2020-05-01T12:23:14+00:00"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v6.2.3",
             "source": {
@@ -3942,6 +4009,62 @@
             "time": "2020-03-04T11:21:28+00:00"
         },
         {
+            "name": "vedmant/laravel-feed-reader",
+            "version": "1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vedmant/laravel-feed-reader.git",
+                "reference": "082fc52f3f53012337cdf740dff3003e03a4e468"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vedmant/laravel-feed-reader/zipball/082fc52f3f53012337cdf740dff3003e03a4e468",
+                "reference": "082fc52f3f53012337cdf740dff3003e03a4e468",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.5.0|~5.6.0|~5.7.0|~5.8.0|^6.0|^7.0",
+                "php": ">=5.6.0",
+                "simplepie/simplepie": "^1.5"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^5.0",
+                "phpunit/phpunit": "^8.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Vedmant\\FeedReader\\FeedReaderServiceProvider"
+                    ],
+                    "aliases": {
+                        "FeedReader": "Vedmant\\FeedReader\\Facades\\FeedReader"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Vedmant\\FeedReader\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vedmant",
+                    "email": "vedmant@gmail.com"
+                },
+                {
+                    "name": "Andrew Judd",
+                    "email": "contact@andrewjudd.ca"
+                }
+            ],
+            "description": "A simple RSS feed reader for Laravel 5|6",
+            "time": "2020-03-18T02:53:51+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v4.1.3",
             "source": {
@@ -4053,6 +4176,65 @@
                 "php"
             ],
             "time": "2020-03-13T01:23:26+00:00"
+        },
+        {
+            "name": "voku/simple_html_dom",
+            "version": "4.7.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/voku/simple_html_dom.git",
+                "reference": "804aca422f1fe0104b1320ca09fd06cd0062782c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/voku/simple_html_dom/zipball/804aca422f1fe0104b1320ca09fd06cd0062782c",
+                "reference": "804aca422f1fe0104b1320ca09fd06cd0062782c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "ext-simplexml": "*",
+                "php": ">=7.0.0",
+                "symfony/css-selector": "~3.0 || ~4.0 || ~5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~6.0 || ~7.0"
+            },
+            "suggest": {
+                "voku/portable-utf8": "If you need e.g. UTF-8 fixed output."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "voku\\helper\\": "src/voku/helper/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "dimabdc",
+                    "email": "support@titor.ru",
+                    "homepage": "http://github.com/dimabdc",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Lars Moelleken",
+                    "homepage": "http://www.moelleken.org/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Simple HTML DOM package.",
+            "homepage": "http://simplehtmldom.sourceforge.net/",
+            "keywords": [
+                "HTML Parser",
+                "dom",
+                "php dom"
+            ],
+            "time": "2020-04-09T21:20:43+00:00"
         }
     ],
     "packages-dev": [

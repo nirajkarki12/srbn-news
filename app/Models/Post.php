@@ -53,7 +53,9 @@ class Post extends Model
    {
       return [
           'slug' => [
-              'source' => 'title'
+              'method' => function($string, $sep) {
+                  return (date('Y-m-d-') .time());
+              }
           ]
       ];
    }

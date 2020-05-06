@@ -169,6 +169,8 @@ return [
         Orangehill\Iseed\IseedServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class,
+        Vedmant\FeedReader\FeedReaderServiceProvider::class,
+        
         /*
          * Application Service Providers...
          */
@@ -229,7 +231,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+         'FeedReader' => Vedmant\FeedReader\Facades\FeedReader::class,
     ],
 
 ];

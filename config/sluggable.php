@@ -60,14 +60,14 @@ return [
      */
 
     // 'method' => array('Slugify','generate'),
-    'method' => function($string, $sep) {
+    // 'method' => function($string, $sep) {
 
       // $generator = new Ausi\SlugGenerator\SlugGenerator;
       // return $generator->generate($string);
 
-      return (date('Y-m-d-') .time());
-    },
+    // },
 
+    'method' => null,
 
     /**
      * Separator to use when generating slugs.  Defaults to a hyphen.
