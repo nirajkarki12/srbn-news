@@ -8,12 +8,11 @@ use App\Http\Controllers\Common\BaseApiController;
 use anlutro\LaravelSettings\Facade as Setting;
 use Vedmant\FeedReader\Facades\FeedReader;
 use voku\helper\HtmlDomParser;
+use App\Models\Rss;
 
 /**
-* @group RSS
+* @group RSS Feed
 *
-* fetch record from cache, currently online khabar as demo
-* 
 */
 class RssController extends BaseApiController
 {
@@ -28,7 +27,59 @@ class RssController extends BaseApiController
    }
 
    /**
+   * RSS Feed Lists
+   * Active RSS Feeds
+   * @response {
+   *  "status": true,
+   *  "data": [
+   *   {
+   *    "id": 1,
+   *    "name": "Feed Name",
+   *    "tagline": "Feed Tagline",
+   *    "logo": "Feed Logo URL"
+   *   }
+   *  ],
+   * "message": "RSS Feed data fetched successfully",
+   * "code": 200
+   * }
+   * @response 200 {
+   *  "status": false,
+   *  "message": "RSS Feed data not found",
+   *  "code": 200
+   * }
+   */
+   public function index()
+   {
+      try {
+
+         $data = Rss::orderBy('name', 'asc')
+                     ->where(['status' => 1])
+                     ->get();
+
+         $data = $data->each(function ($category) {
+                     $category->makeHidden([
+                        'url',
+                        'logo_file',
+                        'status',
+                        'created_at',
+                        'updated_at',
+                        'slug'
+                     ]);
+                  })->toArray();
+
+         if(count($data) === 0) throw new \Exception("RSS Feed data not found", Response::HTTP_OK);
+        
+         return $this->successResponse($data, 'RSS Feed data fetched successfully');
+
+      } catch (\Exception $e) {
+         return $this->errorResponse($e->getMessage(), $e->getCode());
+      }
+        
+   }
+
+   /**
    * Pull RSS Feed
+   * @urlParam /id required rss feed id
    * @response {
    *  "status": true,
    *  "data": [
@@ -51,20 +102,22 @@ class RssController extends BaseApiController
    *    "date": "2020-04-14 15:10"
    *   }
    *  ],
-   * "message": "RSS data fetched successfully",
+   * "message": "RSS Feed data fetched successfully",
    * "code": 200
    * }
    * @response 200 {
    *  "status": false,
-   *  "message": "RSS not found",
+   *  "message": "RSS Feed data not found",
    *  "code": 200
    * }
    */
-   public function index()
+   public function getFeedData(int $id)
    {
       try {
 
-         $feed = \FeedReader::read('https://english.onlinekhabar.com/feed');
+         if(!$data = Rss::find($id)) throw new \Exception("RSS Feed data not found", Response::HTTP_OK);
+
+         $feed = \FeedReader::read($data->url);
 
          $rss = [];
          $tmp = [];
@@ -90,9 +143,9 @@ class RssController extends BaseApiController
             }
          }
 
-         if (!$rss) throw new \Exception("RSS Posts found", Response::HTTP_OK);
+         if (!$rss) throw new \Exception("RSS Feed data not found", Response::HTTP_OK);
 
-         return $this->successResponse($rss, 'RSS data fetched successfully');
+         return $this->successResponse($rss, 'RSS Feed data fetched successfully');
 
       } catch (\Exception $e) {
          return $this->errorResponse($e->getMessage(), $e->getCode());

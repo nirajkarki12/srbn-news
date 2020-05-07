@@ -29,6 +29,12 @@
               </a>
             </li>
 
+            <li id="rss-feed">
+              <a href="{{route('admin.rss')}}">
+                <i class="fa fa-rss"></i> <span>RSS Feed</span>
+              </a>
+            </li>
+
             <li class="treeview" id="attribute">
                 <a href="{{route('admin.category')}}">
                     <i class="fa fa-folder-o"></i> <span>Category</span> <i class="fa fa-angle-left pull-right"></i>

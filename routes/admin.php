@@ -38,7 +38,15 @@ Route::group(['prefix' => 'admin'], function(){
    Route::post('post/store', 'PostController@store')->name('admin.post.store');
    Route::post('post/update/{slug}/{page?}', 'PostController@update')->name('admin.post.update');
    Route::post('post/get-web-content', 'PostController@getWebContent')->name('admin.post.get-web-content');
+   /* */
 
+   /* RSS CRUD  */
+   Route::get('rss', 'RssController@index')->name('admin.rss');
+   Route::get('rss/edit/{slug}', 'RssController@edit')->name('admin.rss.edit');
+   Route::get('rss/remove/{slug}/{page?}', 'RssController@destroy')->name('admin.rss.destroy');
+
+   Route::post('rss/store', 'RssController@store')->name('admin.rss.store');
+   Route::post('rss/update/{slug}/{page?}', 'RssController@update')->name('admin.rss.update');
    /* */
 
 });

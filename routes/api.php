@@ -17,7 +17,11 @@ Route::group(['middleware'=>['jwt.verify']],function(){
 Route::get('/category/{parentId?}','CategoryController@index')->name('api-category');
 Route::get('/category-tree','CategoryController@categoryTree')->name('api-category-tree');
 Route::get('/posts/{categoryId?}','PostController@index')->name('api-posts');
-Route::get('/rss-feed','RssController@index')->name('api-rss-feed');
 
+/* */
+
+/* RSS Feed API  */
+Route::get('/rss-feed','RssController@index')->name('api-rss-feed');
+Route::get('/rss-feed/{id}','RssController@getFeedData')->name('api-rss-feed.data');
 /* */
 
