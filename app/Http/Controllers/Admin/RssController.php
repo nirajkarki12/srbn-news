@@ -120,12 +120,14 @@ class RssController extends BaseController
       $validator = Validator::make( $data, array(
            'name' => 'required|max:255',
            'tagline' => 'required|max:100',
-            'url' => 'required|url',
+           'url' => 'required|url',
            'status' => 'required',
         )
       );
 
       if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
+
+      if(strpos(file_get_contents($data['url']),'<?xml') === false) throw new \Exception("Invalid RSS Feed URL", 1);
 
       if(!$rss = Rss::where('slug', $slug)->first()) throw new \Exception("Error Processing Request", 1);
 
