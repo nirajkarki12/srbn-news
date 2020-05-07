@@ -161,7 +161,7 @@
 
                 <div class="form-group">
                   <label for="url">URL</label>
-                  <input type="text" class="form-control" id="url" name="url" value="{{ old('url') ?: $rssEdit->tagline }}" required placeholder="RSS Feed URL">
+                  <input type="text" class="form-control" id="url" name="url" value="{{ old('url') ?: $rssEdit->url }}" required placeholder="RSS Feed URL">
                 </div>
 
               <div class="form-group">
