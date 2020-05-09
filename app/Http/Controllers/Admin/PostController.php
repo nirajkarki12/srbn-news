@@ -32,7 +32,7 @@ class PostController extends BaseController
 
       $posts = Post::orderBy('created_at', 'desc')->paginate(Setting::get('data_per_page', 25));
       if($posts->count() == 0 && $posts->currentPage() !== 1) {
-         return redirect()->route('admin.attribute');
+         return redirect()->route('admin.post');
       }
       return view('admin.post.list', compact('posts'));
     }
@@ -44,10 +44,8 @@ class PostController extends BaseController
      */
     public function create()
     {
-        $categories = Category::where('status', 1)->get()->toArray();
-        $arrCategory = $this->buildCategoryTree($categories);
-        $controller = $this;
-        return view('admin.post.create', compact('categories', 'arrCategory', 'controller'));
+        $categories = Category::where('status', 1)->get();
+        return view('admin.post.create', compact('categories'));
     }
 
     /**
@@ -119,11 +117,9 @@ class PostController extends BaseController
             }
         }
 
-        $categories = Category::where('status', 1)->get()->toArray();
-        $arrCategory = $this->buildCategoryTree($categories);
-        $controller = $this;
+        $categories = Category::where('status', 1)->get();
 
-        return view('admin.post.edit', compact('postEdit', 'arrCategory', 'selectedCategories', 'controller'));
+        return view('admin.post.edit', compact('postEdit', 'categories', 'selectedCategories'));
     }
 
     /**
@@ -223,9 +219,9 @@ class PostController extends BaseController
 
          if(array_key_exists('description', $metadata)) {
             $data['description'] = $metadata['description'];
-         } elseif(array_key_exists('og:title', $metadata)) {
+         } elseif(array_key_exists('og:description', $metadata)) {
             $data['description'] = $metadata['og:description'];
-         } elseif(array_key_exists('twitter:title', $metadata)) {
+         } elseif(array_key_exists('twitter:description', $metadata)) {
             $data['description'] = $metadata['twitter:description'];
          } else{
             $data['description'] = null;
@@ -233,7 +229,7 @@ class PostController extends BaseController
 
          if(array_key_exists('og:image', $metadata)) {
             $data['image'] = $metadata['og:image'];
-         } elseif(array_key_exists('twitter:title', $metadata)) {
+         } elseif(array_key_exists('twitter:image', $metadata)) {
             $data['image'] = $metadata['twitter:image'];
          } else{
             $data['image'] = null;

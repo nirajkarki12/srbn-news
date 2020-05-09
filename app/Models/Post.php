@@ -14,12 +14,10 @@ class Post extends Model
 
    const TYPE_IMAGE = 1;
    const TYPE_VIDEO = 2;
-   const TYPE_AD = 3;
 
    public static $postTypes = [
       self::TYPE_IMAGE => 'Image',
       self::TYPE_VIDEO => 'Video',
-      self::TYPE_AD => 'Advertisement',
    ];
 
 	/**

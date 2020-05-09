@@ -9,6 +9,8 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use App\Notifications\Auth\VerifyEmailQueued;
 use App\Notifications\Auth\ResetPasswordQueued;
 use App\Models\Category;
+use App\Models\Polloption;
+
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -50,6 +52,14 @@ class User extends Authenticatable implements JWTSubject
    public function userCategories()
    {
       return $this->belongsToMany(Category::class, 'user_categories');
+   }
+
+   /**
+   * The polls that belong to the user.
+   */
+   public function polls()
+   {
+      return $this->belongsToMany(Polloption::class, 'user_polls');
    }
 
    public function setImageFileAttribute($image) {

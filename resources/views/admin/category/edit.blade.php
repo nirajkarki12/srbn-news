@@ -20,10 +20,7 @@
         <div class="box-header with-border">
            <h3 class="box-title">Edit a Category ({{ $categoryEdit->name }})</h3>
            <div class="box-tools pull-right">
-              @php
-                $parent = ($categoryEdit) ? ($categoryEdit->parent ?: null) : null;
-              @endphp
-              <a href="{{route('admin.category', ['parentSlug' => $parent ? $parent->slug : null])}}" class="btn btn-default pull-right">{{ $parent ? $parent->name  ."'s Categories" : 'Categories' }}</a>
+              <a href="{{route('admin.category')}}" class="btn btn-default pull-right">Categories</a>
            </div>
         </div>
 
@@ -39,19 +36,6 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="category_parent" class=" control-label">Parent Category</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                @php
-                  $selectedId = old('parent_id') ?: ($categoryEdit->parent_id ?: null);
-                @endphp
-                <select class="form-control" id="category_parent" name="parent_id">
-                  {!! $controller->printCategoryTree($arrCategory, $selectedId, $categoryEdit->id) !!}
-                </select>
-              </div>
-            </div>
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="description" class=" control-label">Description</label>
@@ -126,14 +110,6 @@
    
   $(function () {
 
-    $('#category_parent').bind("change", function() {
-      var space_offset = 8;
-      var matches = $("#category_parent option:selected").text().match(/\s{3}/g);
-      var n_spaces = (matches) ? matches.length : 0;
-      $(this).css('text-indent', -(n_spaces * space_offset));
-    });
-
-    $('#category_parent').val('{{ $selectedId }}').change();
   });
 
 </script>

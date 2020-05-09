@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-@section('title', 'Add a Post')
+@section('title', 'Add a Poll')
 
-@section('content-header', 'Add a Post')
+@section('content-header', 'Add a Poll')
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>Dasboard</a></li>
-    <li><a href="{{route('admin.post')}}"><i class="fa fa-newspaper-o"></i> Posts</a></li>
-    <li class="active"><i class="fa fa-plus"></i> Add a Post</li>
+   <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>Dasboard</a></li>
+   <li class="active"><a href="{{route('admin.poll')}}"><i class="fa fa-bar-chart"></i> Polls</a></li>
+   <li class="active"><i class="fa fa-plus"></i> Add a Poll</li>
 @endsection
 
 @section('content')
@@ -18,56 +18,22 @@
       <div class="box box-primary">
 
         <div class="box-header with-border">
-           <h3 class="box-title">Add a Post</h3>
+           <h3 class="box-title">Add a Poll</h3>
            <div class="box-tools pull-right">
-              <a href="{{route('admin.post')}}" class="btn btn-default pull-right">Posts</a>
+              <a href="{{route('admin.poll')}}" class="btn btn-default pull-right">Polls</a>
            </div>
         </div>
 
-        <form class="form-horizontal" action="{{route('admin.post.store')}}" method="POST" enctype="multipart/form-data" role="form">
+        <form class="form-horizontal" action="{{route('admin.poll.store')}}" method="POST" role="form">
           {{ csrf_field() }}
           <div class="box-body">
-
-             <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="source_url" class=" control-label">Source URL</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                  <input type="url" class="form-control" id="source_url" name="source_url" value="{{ old('source_url') }}"  placeholder="Source URL">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="source" class=" control-label">Source</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                  <input type="text" class="form-control" id="source" name="source" value="{{ old('source') }}"  placeholder="Post Source">
-              </div>
-            </div>
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="title" class=" control-label">Title</label>
               </div>
               <div class="col-sm-9 pull-left">
-                  <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}"  placeholder="Post Title" required>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="category" class="control-label">Post Category</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-               @php
-                  $selectedId = old('category') ?: [];
-                @endphp
-                <select class="form-control" id="category" name="category[]" multiple="multiple" required>
-                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}" @if($selectedId && in_array($category->id, $selectedId)) selected @endif>{{ $category->name }}</option>
-                     @endforeach
-                </select>
+                  <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" placeholder="Poll Title" required>
               </div>
             </div>
 
@@ -82,10 +48,27 @@
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
-                <label for="note" class=" control-label">Note</label>
+                <label for="question" class=" control-label">Question</label>
               </div>
               <div class="col-sm-9 pull-left">
-                  <textarea class="form-control" id="note" name="note" rows="2" cols="80">{{ old('note') }}</textarea>
+                  <textarea class="form-control" id="question" name="question" rows="2" cols="80" required>{{ old('question') }}</textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="option1" class=" control-label">Options</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  <div class="col-sm-4" style="padding:0 10px 0 0;">
+                     <input type="text" class="form-control" id="option1" name="options[]" value="Yes" required placeholder="Option 1">
+                  </div>
+                  <div class="col-sm-4" style="padding:0 10px 0 0">
+                     <input type="text" class="form-control" id="option2" name="options[]" value="No" required placeholder="Option 2">
+                  </div>
+                  <div class="col-sm-4" style="padding:0 0 0 0">
+                     <input type="text" class="form-control" id="optional" name="optional" value="{{ old('optional') ?: 'Something else' }}"  placeholder="Option 3">
+                  </div>
               </div>
             </div>
 
@@ -108,7 +91,7 @@
               </div>
               <div class="col-sm-9 pull-left">
                   <img class="img-responsive" id="image" src="" style="margin-bottom:10px;width:180px;display:none;">
-                  <input type="url" class="form-control" id="content" name="content" value="{{ old('content') }}"  placeholder="URL">
+                  <input type="url" class="form-control" id="content" name="content" value="{{ old('content') }}" required placeholder="URL">
               </div>
             </div>
 
@@ -170,8 +153,6 @@
       },
    });
   $(function () {
-    $("#category").select2();
-
     var type = $('#type option:selected').val();
     if(type) toggleType(type);
 
@@ -190,48 +171,6 @@
       }
     }
 
-   $('#source_url').bind('blur', function() {
-      var sourceUrl = $(this).val();
-      getUrlData(sourceUrl);
-
-   });
-
-   function getUrlData(sourceUrl) {
-      $.ajax({
-         type: 'post',
-         dataType: 'json',
-         data: { "_token": "{{ csrf_token() }}", "url": sourceUrl },
-         url: '{!! route("admin.post.get-web-content") !!}',
-         beforeSend: function() {
-            $("#overlay").fadeIn(200);
-            $('#title').val('');
-            $('#note').val('');
-            $('#content').val('');
-            $('#source').val('');
-            $('#image').css('display', 'none');
-         },
-         success:function(res){
-           $("#overlay").fadeOut(200);
-            if(res.status == true) {
-               $('#type').val('{{ \App\Models\Post::TYPE_IMAGE }}')
-               $('#title').val(res.data.title);
-               $('#note').val(res.data.description);
-               $('#content').val(res.data.image);
-               $('#source').val(res.data.source);
-               $('#image').css('display', 'block');
-               $('#image').attr('src', res.data.image);
-            }else{
-               alert(res.message);
-            }
-         },
-         error: function(jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR);
-            // window.location.href = loginUrl;
-         }
-      });
-      
-   }
-
    $('#content').on('change', function() {
       var value = $(this).val();
       var type = $('#type option:selected').val();
@@ -242,7 +181,6 @@
          $('#image').css('display', 'block');
          $('#image').attr('src', value);
          $("#overlay").fadeOut(200);
-
       }
     });
 

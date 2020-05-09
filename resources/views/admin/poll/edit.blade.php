@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit a Post')
+@section('title', 'Edit a Poll')
 
-@section('content-header', 'Edit a Post')
+@section('content-header', 'Edit a Poll')
 
 @section('breadcrumb')
-    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>Dasboard</a></li>
-    <li><a href="{{route('admin.post')}}"><i class="fa fa-newspaper-o"></i> Posts</a></li>
-    <li class="active"><i class="fa fa-plus"></i> Edit a Post</li>
+   <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>Dasboard</a></li>
+   <li class="active"><a href="{{route('admin.poll')}}"><i class="fa fa-bar-chart"></i> Polls</a></li>
+   <li class="active"><i class="fa fa-plus"></i> Edit a Poll</li>
 @endsection
 
 @section('content')
@@ -18,57 +18,22 @@
       <div class="box box-primary">
 
         <div class="box-header with-border">
-           <h3 class="box-title">Edit a Post ({{ $postEdit->title }})</h3>
+           <h3 class="box-title">Edit a Poll ({{ $pollEdit->title }})</h3>
            <div class="box-tools pull-right">
-              <a href="{{route('admin.post')}}" class="btn btn-default pull-right">Posts</a>
+              <a href="{{route('admin.poll')}}" class="btn btn-default pull-right">Polls</a>
            </div>
         </div>
 
-        <form class="form-horizontal" action="{{route('admin.post.update', ['slug' => $postEdit->slug, 'page' => isset($_REQUEST['page']) ? $_REQUEST['page'] : null])}}" method="POST" enctype="multipart/form-data" role="form">
+        <form class="form-horizontal" action="{{route('admin.poll.update', ['slug' => $pollEdit->slug, 'page' => isset($_REQUEST['page']) ? $_REQUEST['page'] : null])}}" method="POST" role="form">
           {{ csrf_field() }}
           <div class="box-body">
-
-            <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="source_url" class=" control-label">Source URL</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                  <input type="url" class="form-control" id="source_url" name="source_url" value="{{ old('source_url') ?: $postEdit->source_url }}"  placeholder="Source URL">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="source" class=" control-label">Source</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                  <input type="text" class="form-control" id="source" name="source" value="{{ old('source') ?: $postEdit->source }}"  placeholder="Post Source">
-              </div>
-            </div>
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="title" class=" control-label">Title</label>
               </div>
               <div class="col-sm-9 pull-left">
-                  <input type="text" class="form-control" id="title" name="title" value="{{ old('title') ?: $postEdit->title }}"  placeholder="Post Title" required>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="category" class=" control-label">Post Category</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                @php
-                  $selectedId = old('category') ?: ($selectedCategories ?: null);
-                @endphp
-
-                <select class="form-control" id="category" name="category[]" multiple="multiple" required>
-                  @foreach($categories as $category)
-                        <option value="{{ $category->id }}" @if($selectedId && in_array($category->id, $selectedId)) selected @endif>{{ $category->name }}</option>
-                  @endforeach
-                </select>
+                  <input type="text" class="form-control" id="title" name="title" value="{{ old('title') ?: $pollEdit->title }}"  placeholder="Post Title" required>
               </div>
             </div>
 
@@ -77,16 +42,34 @@
                 <label for="description" class=" control-label">Description</label>
               </div>
               <div class="col-sm-9 pull-left">
-                <textarea class="form-control" id="description" name="description" rows="3" cols="80" required>{{ old('description') ?: $postEdit->description }}</textarea>
+                <textarea class="form-control" id="description" name="description" rows="3" cols="80" required>{{ old('description') ?: $pollEdit->description }}</textarea>
               </div>
             </div>
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
-                <label for="note" class=" control-label">Note</label>
+                <label for="question" class=" control-label">Question</label>
               </div>
               <div class="col-sm-9 pull-left">
-                  <textarea class="form-control" id="note" name="note" rows="2" cols="80">{{ old('note') ?: $postEdit->note }}</textarea>
+                  <textarea class="form-control" id="question" name="question" rows="2" cols="80" required>{{ old('question') ?: $pollEdit->question }}</textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="options0" class=" control-label">Options</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  @foreach($pollEdit->options as $key => $option)
+                     <div class="col-sm-4" style="padding:0 10px 0 0;">
+                        <input type="text" class="form-control" id="options{{ $key }}" name="options[{{ $option->id }}]" @if($key < 2) required @endif value="{{ $option->value }}" placeholder="Option {{ $key + 1 }}">
+                     </div>
+                  @endforeach
+                  @if(count($pollEdit->options) <= 2)
+                     <div class="col-sm-4" style="padding:0 0 0 0">
+                        <input type="text" class="form-control" id="option2" name="optional" value="{{ old('optional') }}" placeholder="Option 3">
+                     </div>
+                  @endif
               </div>
             </div>
 
@@ -96,7 +79,7 @@
               </div>
               <div class="col-sm-9 pull-left">
                @php
-                  $selectedType = (old('type') ?: $postEdit->type);
+                  $selectedType = (old('type') ?: $pollEdit->type);
                @endphp
                 <select class="form-control" id="type" name="type" required>
                   @foreach(\App\Models\Post::$postTypes as $key => $val)
@@ -111,19 +94,17 @@
                 <label for="content" class=" control-label">URL</label>
               </div>
               <div class="col-sm-9 pull-left">
-                  <img class="img-responsive" id="image" src="@if($selectedType == \App\Models\Post::TYPE_IMAGE) {{ $postEdit->content }} @endif" style="margin-bottom:10px;width:180px;display:none;">
-                  <input type="url" class="form-control" id="content" name="content" value="{{ old('content') ?: $postEdit->content }}"  placeholder="URL">
+                  <img class="img-responsive" id="image" src="@if($selectedType == \App\Models\Post::TYPE_IMAGE) {{ $pollEdit->content }} @endif" style="margin-bottom:10px;width:180px;display:none;">
+                  <input type="url" class="form-control" id="content" name="content" value="{{ old('content') ?: $pollEdit->content }}"  placeholder="URL">
               </div>
             </div>
-
-            
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="audio_url" class=" control-label">Audio URL</label>
               </div>
               <div class="col-sm-9 pull-left">
-                  <input type="url" class="form-control" id="audio_url" name="audio_url" value="{{ old('audio_url') ?: $postEdit->audio_url }}"  placeholder="Audio URL">
+                  <input type="url" class="form-control" id="audio_url" name="audio_url" value="{{ old('audio_url') ?: $pollEdit->audio_url }}"  placeholder="Audio URL">
               </div>
             </div>
 
@@ -136,12 +117,12 @@
 
                 <div class="radio">
                   <label>
-                    <input type="radio" name="status" id="yes_option" value="1" @if((old('status') ?: $postEdit->status) == 1) checked @endif>
+                    <input type="radio" name="status" id="yes_option" value="1" @if((old('status') ?: $pollEdit->status) == 1) checked @endif>
                       Published
                   </label>
                   &nbsp;&nbsp;
                   <label>
-                    <input type="radio" name="status" id="no_option" value="0" @if((old('status') ?: $postEdit->status) == 0) checked @endif>
+                    <input type="radio" name="status" id="no_option" value="0" @if((old('status') ?: $pollEdit->status) == 0) checked @endif>
                       Unpublished
                   </label>
                 </div>
@@ -176,8 +157,6 @@
       },
    });
   $(function () {
-    $("#category").select2();
-
     var type = $('#type option:selected').val();
     if(type) toggleType(type);
 

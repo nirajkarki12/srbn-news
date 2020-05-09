@@ -18,7 +18,7 @@ class Category extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-	    'name', 'parent_id', 'description', 'image_file', 'image', 'status',
+	    'name', 'description', 'image_file', 'image', 'status',
 	];
 
    /**
@@ -30,19 +30,6 @@ class Category extends Model
         'created_at' => 'datetime:Y-m-d H:i',
         'updated_at' => 'datetime:Y-m-d H:i',
     ];
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function parent()
-	{
-	    return $this->belongsTo(self::class, 'parent_id');
-	}
-
-	public function childs()
-   {
-      return $this->hasMany(self::class,  'parent_id');
-   }
 
    /**
    * The posts that belong to the category.

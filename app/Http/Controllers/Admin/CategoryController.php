@@ -26,22 +26,15 @@ class CategoryController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(string $parentSlug = null)
+    public function index()
     {
-        $parentCategory = null;
-        if($parentSlug) {
-            $parentCategory = Category::where('slug', $parentSlug)->first();
-            $query = Category::select('categories.*')->join('categories AS parent', 'parent.id', 'categories.parent_id')->where('parent.slug', $parentSlug);
-        }else{
-            $query = Category::where('categories.parent_id', null);
-        }
-
-        $categories = $query->paginate(Setting::get('data_per_page', 25));
+        $categories = Category::orderBy('created_at', 'desc')
+                     ->paginate(Setting::get('data_per_page', 25));
 
         if($categories->count() == 0 && $categories->currentPage() !== 1) {
-            return redirect()->route('admin.category', ['parentSlug' => $parentSlug]);
+            return redirect()->route('admin.category');
         }
-        return view('admin.category.list', compact('categories', 'parentCategory'));
+        return view('admin.category.list', compact('categories'));
     }
 
     /**
@@ -51,10 +44,7 @@ class CategoryController extends BaseController
      */
     public function create()
     {
-        $categories = Category::where('status', 1)->get()->toArray();
-        $arrCategory = $this->buildCategoryTree($categories);
-        $controller = $this;
-        return view('admin.category.create', compact('categories', 'arrCategory', 'controller'));
+        return view('admin.category.create');
     }
 
     /**
@@ -91,25 +81,6 @@ class CategoryController extends BaseController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function createSubCategory(string $categorySlug)
-    {
-        try {
-            
-            $category = Category::with(['parent'])->where('slug', $categorySlug)->first()->toArray();
-            if(!$category['status']) throw new \Exception("{$category['name']} category is disabled", 1);
-            
-            return view('admin.category.create-sub-category', compact('category'));
-
-        } catch (\Exception $e) {
-            return back()->with('flash_error', $e->getMessage());
-        }
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  string  $slug
@@ -119,11 +90,7 @@ class CategoryController extends BaseController
     {
         $categoryEdit = Category::where('slug', $slug)->first();
 
-        $categories = Category::where('status', 1)->get()->toArray();
-        $arrCategory = $this->buildCategoryTree($categories);
-        $controller = $this;
-
-        return view('admin.category.edit', compact('categoryEdit', 'arrCategory', 'controller'));
+        return view('admin.category.edit', compact('categoryEdit'));
     }
 
     /**
@@ -155,7 +122,7 @@ class CategoryController extends BaseController
 
             if(!$category->update($data)) throw new \Exception("Error Processing Request", 1);
 
-            return redirect()->route('admin.category', ['page' => $page, 'parentSlug' => ($category->parent ? $category->parent->slug : null)])->with('flash_success', 'Category updated Successfully');
+            return redirect()->route('admin.category', ['page' => $page])->with('flash_success', 'Category updated Successfully');
 
         } catch (\Exception $e) {
             return back()->with('flash_error', $e->getMessage())->withInput();
@@ -174,13 +141,12 @@ class CategoryController extends BaseController
             if(!$slug) throw new \Exception("Error Processing Request", 1);
             
             if(!$category = Category::where('slug', $slug)->first()) throw new \Exception("Error Processing Request", 1);
-            $parentSlug = $category->parent ? $category->parent->slug : null;
 
             if(!Helper::deleteImage($category->image_file, 'category')) throw new Exception("Error Processing Request", 1);
 
             if(!$category->delete()) throw new \Exception("Error Processing Request", 1);
 
-            return redirect()->route('admin.category', ['page' => $page, 'parentSlug' => $parentSlug])->with('flash_success', 'Category removed Successfully');
+            return redirect()->route('admin.category', ['page' => $page])->with('flash_success', 'Category removed Successfully');
                
         } catch (\Exception $e) {
             return back()->with('flash_error', $e->getMessage());

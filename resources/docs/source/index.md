@@ -107,22 +107,22 @@ fetch(url, {
 
 <!-- END_33861d0c40ad6fc3c83572667744074b -->
 
-<!-- START_16d14ae050e1d02cfec8e9d382eec891 -->
-## Root Categories
-Active Root Categories
+<!-- START_db20564ba266cd451caac114b3eac8ab -->
+## Categories
+Active Categories
 
 > Example request:
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/category/" \
+    -G "http://localhost/srbn-news/public/api/category" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/category/"
+    "http://localhost/srbn-news/public/api/category"
 );
 
 let headers = {
@@ -176,32 +176,32 @@ fetch(url, {
 ```
 
 ### HTTP Request
-`GET api/category/{parentId?}`
+`GET api/category`
 
-#### URL Parameters
 
-Parameter | Status | Description
---------- | ------- | ------- | -------
-    `/parentId` |  optional  | category childs
+<!-- END_db20564ba266cd451caac114b3eac8ab -->
 
-<!-- END_16d14ae050e1d02cfec8e9d382eec891 -->
+#Poll
 
-<!-- START_2ccc924521835169507dcad9b468f840 -->
-## Categories Tree
-Active Categories Tree Structure
+
+<!-- START_c910dbeb0d7a4446d17f71c415b165b1 -->
+## Submit Poll
+Header: X-Authorization: Bearer {token}
 
 > Example request:
 
 ```bash
-curl -X GET \
-    -G "http://localhost/srbn-news/public/api/category-tree" \
+curl -X POST \
+    "http://localhost/srbn-news/public/api/polls" \
     -H "Content-Type: application/json" \
-    -H "X-Authorization: Bearer {token}"
+    -H "X-Authorization: Bearer {token}" \
+    -d '{"optionId":11}'
+
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/category-tree"
+    "http://localhost/srbn-news/public/api/polls"
 );
 
 let headers = {
@@ -210,48 +210,42 @@ let headers = {
     "Accept": "application/json",
 };
 
+let body = {
+    "optionId": 11
+}
+
 fetch(url, {
-    method: "GET",
+    method: "POST",
     headers: headers,
+    body: body
 })
     .then(response => response.json())
     .then(json => console.log(json));
 ```
 
 
-> Example response (200):
+> Example response (201):
 
 ```json
 {
     "status": true,
     "data": [
         {
-            "id": 2,
-            "name": "News",
-            "description": null,
-            "image": null,
-            "created_at": "2020-04-14 15:00",
-            "children": [
-                {
-                    "id": 3,
-                    "name": "News Children",
-                    "description": null,
-                    "image": null,
-                    "created_at": "2020-04-14 15:00",
-                    "children": [
-                        {
-                            "id": 4,
-                            "name": "Sub News Children",
-                            "description": null,
-                            "image": null,
-                            "created_at": "2020-04-14 15:00"
-                        }
-                    ]
-                }
-            ]
+            "id": 1,
+            "value": "yes",
+            "total": 67
         }
     ],
-    "message": "Categories data fetched successfully",
+    "message": "Done successfully",
+    "code": 201
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "User not found",
     "code": 200
 }
 ```
@@ -260,36 +254,46 @@ fetch(url, {
 ```json
 {
     "status": false,
-    "message": "Categories not found",
+    "message": "The options id field is required.",
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "Invalid Request",
     "code": 200
 }
 ```
 
 ### HTTP Request
-`GET api/category-tree`
+`POST api/polls`
 
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `optionId` | integer |  required  | option id.
+    
+<!-- END_c910dbeb0d7a4446d17f71c415b165b1 -->
 
-<!-- END_2ccc924521835169507dcad9b468f840 -->
-
-#Post
-
-
-<!-- START_60b18e7fe5d2ed6da6e8c38e34450dab -->
-## User&#039;s Posts List
-Header for User&#039;s Category Posts: X-Authorization: Bearer {token}
+<!-- START_5e2212a596ef344fd25bb3e585f8d725 -->
+## Polls List
+All Polls list
 
 > Example request:
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=19" \
+    -G "http://localhost/srbn-news/public/api/polls?%3Fpage%3D=19" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/posts/user"
+    "http://localhost/srbn-news/public/api/polls"
 );
 
 let params = {
@@ -325,8 +329,124 @@ fetch(url, {
                 "id": 1,
                 "title": "News Title",
                 "description": "News Long Description",
-                "type": "Image|Video|Advertisement",
-                "content": "Image URL|Video URL|Advertisement URL",
+                "question": "Poll question",
+                "type": "Image|Video",
+                "content": "Image URL|Video URL",
+                "audio_url": "URL|null",
+                "created_at": "2020-04-14 15:00",
+                "options": [
+                    {
+                        "id": 2,
+                        "value": "Yes"
+                    },
+                    {
+                        "id": 3,
+                        "value": "No"
+                    }
+                ]
+            }
+        ],
+        "first_page_url": "URL\/api\/polls?page=1",
+        "from": 16,
+        "last_page": 4,
+        "last_page_url": "URL\/api\/polls?page=4",
+        "next_page_url": "URL\/api\/polls?page=3",
+        "path": "URL\/api\/polls",
+        "per_page": 15,
+        "prev_page_url": "URL\/api\/polls?page=1",
+        "to": 30,
+        "total": 55
+    },
+    "message": "Poll data fetched successfully",
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "No Polls found",
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "Invalid Request",
+    "code": 200
+}
+```
+
+### HTTP Request
+`GET api/polls`
+
+#### Query Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -----------
+    `?page=` |  optional  | next page - pagination
+
+<!-- END_5e2212a596ef344fd25bb3e585f8d725 -->
+
+#Post
+
+
+<!-- START_60b18e7fe5d2ed6da6e8c38e34450dab -->
+## User&#039;s Posts List
+Header for User&#039;s Category Posts: X-Authorization: Bearer {token}
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=13" \
+    -H "Content-Type: application/json" \
+    -H "X-Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://localhost/srbn-news/public/api/posts/user"
+);
+
+let params = {
+    "?page=": "13",
+};
+Object.keys(params)
+    .forEach(key => url.searchParams.append(key, params[key]));
+
+let headers = {
+    "Content-Type": "application/json",
+    "X-Authorization": "Bearer {token}",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "status": true,
+    "data": {
+        "current_page": 2,
+        "data": [
+            {
+                "id": 1,
+                "title": "News Title",
+                "description": "News Long Description",
+                "type": "Image|Video",
+                "content": "Image URL|Video URL",
                 "note": "News notes",
                 "source": "News Source",
                 "source_url": "Source URL",
@@ -405,7 +525,7 @@ All posts list
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=5" \
+    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=17" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -416,7 +536,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "5",
+    "?page=": "17",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -448,8 +568,8 @@ fetch(url, {
                 "id": 1,
                 "title": "News Title",
                 "description": "News Long Description",
-                "type": "Image|Video|Advertisement",
-                "content": "Image URL|Video URL|Advertisement URL",
+                "type": "Image|Video",
+                "content": "Image URL|Video URL",
                 "note": "News notes",
                 "source": "News Source",
                 "source_url": "Source URL",
@@ -682,7 +802,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"email":"nulla","password":"ad"}'
+    -d '{"email":"veniam","password":"quo"}'
 
 ```
 
@@ -698,8 +818,8 @@ let headers = {
 };
 
 let body = {
-    "email": "nulla",
-    "password": "ad"
+    "email": "veniam",
+    "password": "quo"
 }
 
 fetch(url, {
@@ -762,7 +882,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/social/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"dolorem","email":"dolores","image":"quaerat","social_id":"et","provider":"deserunt"}'
+    -d '{"name":"in","email":"neque","image":"voluptates","social_id":"eligendi","provider":"iusto"}'
 
 ```
 
@@ -778,11 +898,11 @@ let headers = {
 };
 
 let body = {
-    "name": "dolorem",
-    "email": "dolores",
-    "image": "quaerat",
-    "social_id": "et",
-    "provider": "deserunt"
+    "name": "in",
+    "email": "neque",
+    "image": "voluptates",
+    "social_id": "eligendi",
+    "provider": "iusto"
 }
 
 fetch(url, {
@@ -847,7 +967,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/register" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"facere","email":"id","address":"et","password":"excepturi","image":"consequatur"}'
+    -d '{"name":"quasi","email":"voluptatum","address":"nobis","password":"id","image":"est"}'
 
 ```
 
@@ -863,11 +983,11 @@ let headers = {
 };
 
 let body = {
-    "name": "facere",
-    "email": "id",
-    "address": "et",
-    "password": "excepturi",
-    "image": "consequatur"
+    "name": "quasi",
+    "email": "voluptatum",
+    "address": "nobis",
+    "password": "id",
+    "image": "est"
 }
 
 fetch(url, {

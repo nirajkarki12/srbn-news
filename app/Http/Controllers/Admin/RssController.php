@@ -29,7 +29,8 @@ class RssController extends BaseController
    */
   public function index()
   {
-    $data = Rss::paginate(Setting::get('data_per_page', 25));
+    $data = Rss::orderBy('name', 'asc')
+         ->paginate(Setting::get('data_per_page', 25));
 
     if($data->count() == 0 && $data->currentPage() !== 1) {
       return redirect()->route('admin.rss');

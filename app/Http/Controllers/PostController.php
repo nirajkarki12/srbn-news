@@ -40,8 +40,8 @@ class PostController extends BaseApiController
    *     "id": 1,
    *     "title": "News Title",
    *     "description": "News Long Description",
-   *     "type": "Image|Video|Advertisement",
-   *     "content": "Image URL|Video URL|Advertisement URL",
+   *     "type": "Image|Video",
+   *     "content": "Image URL|Video URL",
    *     "note": "News notes",
    *     "source": "News Source",
    *     "source_url": "Source URL",
@@ -94,7 +94,6 @@ class PostController extends BaseApiController
                         CASE 
                         WHEN posts.type = ' .Post::TYPE_IMAGE .' THEN "' .Post::$postTypes[Post::TYPE_IMAGE] .'"'
                         .' WHEN posts.type = ' .Post::TYPE_VIDEO .' THEN "' .Post::$postTypes[Post::TYPE_VIDEO] .'"'
-                        .' WHEN posts.type = ' .Post::TYPE_AD .' THEN "' .Post::$postTypes[Post::TYPE_AD] .'"'
                         .' ELSE null
                         END
                      ) AS type
@@ -123,7 +122,6 @@ class PostController extends BaseApiController
                         $category->makeHidden([
                            'image_file',
                            'status',
-                           'parent_id',
                            'updated_at',
                            'pivot',
                            'slug'
@@ -156,8 +154,8 @@ class PostController extends BaseApiController
    *     "id": 1,
    *     "title": "News Title",
    *     "description": "News Long Description",
-   *     "type": "Image|Video|Advertisement",
-   *     "content": "Image URL|Video URL|Advertisement URL",
+   *     "type": "Image|Video",
+   *     "content": "Image URL|Video URL",
    *     "note": "News notes",
    *     "source": "News Source",
    *     "source_url": "Source URL",
@@ -217,7 +215,6 @@ class PostController extends BaseApiController
                         CASE 
                         WHEN posts.type = ' .Post::TYPE_IMAGE .' THEN "' .Post::$postTypes[Post::TYPE_IMAGE] .'"'
                         .' WHEN posts.type = ' .Post::TYPE_VIDEO .' THEN "' .Post::$postTypes[Post::TYPE_VIDEO] .'"'
-                        .' WHEN posts.type = ' .Post::TYPE_AD .' THEN "' .Post::$postTypes[Post::TYPE_AD] .'"'
                         .' ELSE null
                         END
                      ) AS type
@@ -253,7 +250,6 @@ class PostController extends BaseApiController
                         $category->makeHidden([
                            'image_file',
                            'status',
-                           'parent_id',
                            'updated_at',
                            'pivot',
                            'slug'

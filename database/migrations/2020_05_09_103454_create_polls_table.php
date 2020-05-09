@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoriesTable extends Migration
+class CreatePollsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('polls', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->string('image_file')->nullable();
-            $table->string('image')->nullable();
+            $table->string('title');
+            $table->text('description');
+            $table->string('question');
+            $table->integer('type')->default(1);
+            $table->string('content');
+            $table->string('audio_url')->nullable();
             $table->boolean('status')->default(1);
             $table->string('slug')->unique();
             $table->timestamps();
@@ -32,6 +34,6 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('polls');
     }
 }

@@ -19,9 +19,8 @@ Route::group(['prefix' => 'admin'], function(){
    Route::post('config', 'SettingController@update')->name('admin.config.save');
 
 	/* Category CRUD	*/
-	Route::get('category/list/{parentSlug?}', 'CategoryController@index')->name('admin.category');
+	Route::get('category/list', 'CategoryController@index')->name('admin.category');
 	Route::get('category/create', 'CategoryController@create')->name('admin.category.create');
-	Route::get('category/create/{categorySlug}', 'CategoryController@createSubCategory')->name('admin.category.createSubCategory');
 	Route::get('category/edit/{slug}', 'CategoryController@edit')->name('admin.category.edit');
 	Route::get('category/remove/{slug}/{page?}', 'CategoryController@destroy')->name('admin.category.destroy');
 
@@ -38,6 +37,16 @@ Route::group(['prefix' => 'admin'], function(){
    Route::post('post/store', 'PostController@store')->name('admin.post.store');
    Route::post('post/update/{slug}/{page?}', 'PostController@update')->name('admin.post.update');
    Route::post('post/get-web-content', 'PostController@getWebContent')->name('admin.post.get-web-content');
+   /* */
+
+   /* Poll CRUD  */
+   Route::get('poll/list', 'PollController@index')->name('admin.poll');
+   Route::get('poll/create', 'PollController@create')->name('admin.poll.create');
+   Route::get('poll/edit/{slug}', 'PollController@edit')->name('admin.poll.edit');
+   Route::get('poll/remove/{slug}/{page?}', 'PollController@destroy')->name('admin.poll.destroy');
+
+   Route::post('poll/store', 'PollController@store')->name('admin.poll.store');
+   Route::post('poll/update/{slug}/{page?}', 'PollController@update')->name('admin.poll.update');
    /* */
 
    /* RSS CRUD  */

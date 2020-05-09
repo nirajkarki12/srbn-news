@@ -25,9 +25,8 @@ class CategoryController extends BaseApiController
    }
 
    /**
-   * Root Categories
-   * Active Root Categories
-   * @urlParam /parentId category childs
+   * Categories
+   * Active Categories
    * @response {
    *  "status": true,
    *  "data": [
@@ -55,19 +54,18 @@ class CategoryController extends BaseApiController
    *  "code": 200
    * }
    */
-   public function index(int $parentId = null)
+   public function index()
    {
       try {
 
          $categories = Category::orderBy('name', 'asc')
-                     ->where(['status' => 1, 'parent_id' => $parentId])
+                     ->where(['status' => 1])
                      ->get();
 
          $categories = $categories->each(function ($category) {
                      $category->makeHidden([
                         'image_file',
                         'status',
-                        'parent_id',
                         'updated_at',
                         'slug'
                      ]);
@@ -76,76 +74,6 @@ class CategoryController extends BaseApiController
          if(count($categories) === 0) throw new \Exception("Categories not found", Response::HTTP_OK);
         
          return $this->successResponse($categories, 'Categories data fetched successfully');
-
-      } catch (\Exception $e) {
-         return $this->errorResponse($e->getMessage(), $e->getCode());
-      }
-        
-   }
-
-   /**
-   * Categories Tree
-   * Active Categories Tree Structure
-   * @response {
-   *  "status": true,
-   *  "data": [
-   *   {
-   *    "id": 2,
-   *    "name": "News",
-   *    "description": null,
-   *    "image": null,
-   *    "created_at": "2020-04-14 15:00",
-   *    "children": [
-   *     {
-   *      "id": 3,
-   *      "name": "News Children",
-   *      "description": null,
-   *      "image": null,
-   *      "created_at": "2020-04-14 15:00",
-   *      "children": [
-   *       {
-   *        "id": 4,
-   *        "name": "Sub News Children",
-   *        "description": null,
-   *        "image": null,
-   *        "created_at": "2020-04-14 15:00"
-   *       }
-   *      ]
-   *     }
-   *    ]
-   *   }
-   *  ],
-   * "message": "Categories data fetched successfully",
-   * "code": 200
-   * }
-   * @response 200 {
-   *  "status": false,
-   *  "message": "Categories not found",
-   *  "code": 200
-   * }
-   */
-   public function categoryTree()
-   {
-      try {
-
-         $categories = Category::orderBy('name', 'asc')
-                     ->where('status', 1)
-                     ->get();
-
-         $categories = $categories->each(function ($category) {
-                     $category->makeHidden([
-                        'image_file',
-                        'status',
-                        'parent_id',
-                        'updated_at',
-                        'slug'
-                     ]);
-                  });
-         $arrCategory = $this->buildCategoryTree($categories);
-
-         if(count($arrCategory) === 0) throw new \Exception("Categories not found", Response::HTTP_OK);
-        
-         return $this->successResponse($arrCategory, 'Categories data fetched successfully');
 
       } catch (\Exception $e) {
          return $this->errorResponse($e->getMessage(), $e->getCode());
@@ -199,6 +127,8 @@ class CategoryController extends BaseApiController
             array_push($ids, $cat->id);
          }
 
+         if(count($ids) === 0) throw new \Exception("Categories not found", Response::HTTP_OK);
+
          $categories = Category::orderBy('name', 'asc')
                      ->where('status', 1)
                      ->whereIn('categories.id', $ids)
@@ -208,16 +138,12 @@ class CategoryController extends BaseApiController
                      $category->makeHidden([
                         'image_file',
                         'status',
-                        'parent_id',
                         'updated_at',
                         'slug'
                      ]);
                   });
-         $arrCategory = $this->buildCategoryTree($categories);
-
-         if(count($arrCategory) === 0) throw new \Exception("Categories not found", Response::HTTP_OK);
         
-         return $this->successResponse($arrCategory, 'Categories data fetched successfully');
+         return $this->successResponse($categories, 'Categories data fetched successfully');
 
       } catch (\Exception $e) {
          return $this->errorResponse($e->getMessage(), $e->getCode());

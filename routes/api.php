@@ -11,13 +11,14 @@ Route::group(['middleware'=>['jwt.verify']],function(){
    Route::post('user/set-category','UserController@setUserCategories')->name('user.set-category');
    Route::get('/category/user','CategoryController@userCategories')->name('user.category');
    Route::get('/posts/user','PostController@userPosts')->name('api-posts-user');
+
+   Route::post('/polls','PollController@postPoll')->name('api-polls-post');
 });
 
-/* Category/Post API  */
-Route::get('/category/{parentId?}','CategoryController@index')->name('api-category');
-Route::get('/category-tree','CategoryController@categoryTree')->name('api-category-tree');
+/* Category/Post/Polls API  */
+Route::get('/category','CategoryController@index')->name('api-category');
 Route::get('/posts/{categoryId?}','PostController@index')->name('api-posts');
-
+Route::get('/polls','PollController@index')->name('api-polls');
 /* */
 
 /* RSS Feed API  */

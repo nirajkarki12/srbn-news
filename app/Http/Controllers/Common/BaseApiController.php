@@ -49,21 +49,4 @@ class BaseApiController extends Controller
       return Auth::user();
    }
 
-   public function buildCategoryTree($elements, $parentId = 0) {
-      $branch = array();
-
-      foreach ($elements as $element) {
-         if ($element['parent_id'] == $parentId) {
-
-            $children = $this->buildCategoryTree($elements, $element['id']);
-            if ($children) {
-               $element['children'] = $children;
-            }
-            $branch[] = $element;
-         }
-      }
-
-     return $branch;
-   }
-
 }

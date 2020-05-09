@@ -38,17 +38,6 @@
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
-                <label for="category_parent" class="control-label">Parent Category</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                <select class="form-control" id="category_parent" name="parent_id">
-                  {!! $controller->printCategoryTree($arrCategory, old('parent_id')) !!}
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-sm-2 pull-left">
                 <label for="description" class=" control-label">Description</label>
               </div>
               <div class="col-sm-9 pull-left">
@@ -115,15 +104,6 @@
       },
    });
   $(function () {
-
-    $('#category_parent').bind("change", function() {
-      var space_offset = 8;
-      var matches = $("#category_parent option:selected").text().match(/\s{3}/g);
-      var n_spaces = (matches) ? matches.length : 0;
-      $(this).css('text-indent', -(n_spaces * space_offset));
-    });
-
-    $('#category_parent').val('{{ old('parent_id')}}').change();
 
   });
 
