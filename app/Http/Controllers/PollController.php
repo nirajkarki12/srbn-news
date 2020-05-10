@@ -150,7 +150,12 @@ class PollController extends BaseApiController
    *   {
    *   "id": 1,
    *   "value": "yes",
-   *   "total": 67
+   *   "total": "33.3%"
+   *   },
+   *   {
+   *   "id": 2,
+   *   "value": "no",
+   *   "total": "66.7%"
    *  }
    *  ],
    * "message": "Done successfully",
@@ -224,8 +229,21 @@ class PollController extends BaseApiController
                         'updated_at',
                      ]);
                   });
-         
-         return $this->successResponse($data, 'Done successfully', Response::HTTP_CREATED);
+
+         $total = 0;
+         $response = [];
+
+         foreach ($data as $val) {
+            $total += $val->total; 
+         }
+
+         foreach ($data as $key => $value) {
+            $response[$key]['id'] = $value->id;
+            $response[$key]['value'] = $value->value;
+            $response[$key]['total'] = round($value->total / $total * 100, 1) . '%'; ($value->total);
+         }
+
+         return $this->successResponse($response, 'Done successfully', Response::HTTP_CREATED);
 
      } catch (\Exception $e) {
          return $this->errorResponse($e->getMessage(), $e->getCode());

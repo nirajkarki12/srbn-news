@@ -195,7 +195,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/polls" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"optionId":11}'
+    -d '{"optionId":16}'
 
 ```
 
@@ -211,7 +211,7 @@ let headers = {
 };
 
 let body = {
-    "optionId": 11
+    "optionId": 16
 }
 
 fetch(url, {
@@ -233,7 +233,12 @@ fetch(url, {
         {
             "id": 1,
             "value": "yes",
-            "total": 67
+            "total": "33.3%"
+        },
+        {
+            "id": 2,
+            "value": "no",
+            "total": "66.7%"
         }
     ],
     "message": "Done successfully",
@@ -286,7 +291,7 @@ All Polls list
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/polls?%3Fpage%3D=19" \
+    -G "http://localhost/srbn-news/public/api/polls?%3Fpage%3D=7" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -297,7 +302,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "19",
+    "?page=": "7",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -402,7 +407,7 @@ Header for User&#039;s Category Posts: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=13" \
+    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=6" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -413,7 +418,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "13",
+    "?page=": "6",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -525,7 +530,7 @@ All posts list
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=17" \
+    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=6" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -536,7 +541,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "17",
+    "?page=": "6",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -802,7 +807,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"email":"veniam","password":"quo"}'
+    -d '{"email":"assumenda","password":"nam"}'
 
 ```
 
@@ -818,8 +823,8 @@ let headers = {
 };
 
 let body = {
-    "email": "veniam",
-    "password": "quo"
+    "email": "assumenda",
+    "password": "nam"
 }
 
 fetch(url, {
@@ -882,7 +887,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/social/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"in","email":"neque","image":"voluptates","social_id":"eligendi","provider":"iusto"}'
+    -d '{"name":"ducimus","email":"aut","image":"sunt","social_id":"aliquam","provider":"placeat"}'
 
 ```
 
@@ -898,11 +903,11 @@ let headers = {
 };
 
 let body = {
-    "name": "in",
-    "email": "neque",
-    "image": "voluptates",
-    "social_id": "eligendi",
-    "provider": "iusto"
+    "name": "ducimus",
+    "email": "aut",
+    "image": "sunt",
+    "social_id": "aliquam",
+    "provider": "placeat"
 }
 
 fetch(url, {
@@ -967,7 +972,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/register" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"quasi","email":"voluptatum","address":"nobis","password":"id","image":"est"}'
+    -d '{"name":"commodi","email":"similique","address":"omnis","password":"ea","image":"nostrum"}'
 
 ```
 
@@ -983,11 +988,11 @@ let headers = {
 };
 
 let body = {
-    "name": "quasi",
-    "email": "voluptatum",
-    "address": "nobis",
-    "password": "id",
-    "image": "est"
+    "name": "commodi",
+    "email": "similique",
+    "address": "omnis",
+    "password": "ea",
+    "image": "nostrum"
 }
 
 fetch(url, {
