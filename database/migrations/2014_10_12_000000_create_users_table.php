@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
 
             $table->string('social_id')->nullable();
             $table->string('provider')->nullable();
+            $table->bigInteger('phone')->nullable()->unique();
 
             $table->rememberToken();
             $table->timestamps();

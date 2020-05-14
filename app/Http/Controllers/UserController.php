@@ -82,6 +82,7 @@ class UserController extends BaseApiController
    * @bodyParam email string required valid email address.
    * @bodyParam address string max 100 in length.
    * @bodyParam password string required min 6 in length.
+   * @bodyParam phone integer min 10 in length.
    * @bodyParam image file accepts: jpeg,png,gif, filesize upto 2MB.
    * @response 201 {
    *  "status": true,
@@ -134,6 +135,7 @@ class UserController extends BaseApiController
                'image' => 'nullable|mimes:jpeg,png,jpg,gif|max:2058',
                'address' => 'nullable|max:100',
                'password' => 'required|min:6',
+               'phone' => 'digits_between:10,15|unique:users',
             ],
             [],
             [
@@ -147,6 +149,7 @@ class UserController extends BaseApiController
          $user->name = $request->name;
          $user->email = $request->email;
          $user->address = $request->address;
+         $user->phone = $request->phone;
          $user->password = Hash::make($request->password);
 
          if($request->file('image')) {
@@ -229,6 +232,7 @@ class UserController extends BaseApiController
             'email' => $user->email,
             'address' => $user->address,
             'image' => $user->image,
+            'phone' => $user->phone,
             'categories' => $categories,
             'created_at' => $user->created_at,
          ];
@@ -316,6 +320,7 @@ class UserController extends BaseApiController
             'email' => $user->email,
             'address' => $user->address,
             'image' => $user->image,
+            'phone' => $user->phone,
             'categories' => $categories,
             'created_at' => $user->created_at,
          ];
@@ -397,6 +402,7 @@ class UserController extends BaseApiController
             'email' => $user->email,
             'address' => $user->address,
             'image' => $user->image,
+            'phone' => $user->phone,
             'created_at' => $user->created_at,
             'token' => auth()->login($user)
          ];
@@ -407,5 +413,66 @@ class UserController extends BaseApiController
          return $this->errorResponse($e->getMessage(), $e->getCode());
      }
    }
+
+    /**
+   * Phone Login APIs
+   * Phone User Login
+   * APIs for Phone User Login
+   * @bodyParam phone integer required phone of user.
+   * @bodyParam password string required password of user.
+   * 
+   * @response 201 {
+   *  "status": true,
+   *  "data": {
+   *   "name": "Name Example",
+   *   "email": "example@gmail.com",
+   *   "address": "Somewhere",
+   *   "image": null,
+   *   "phone": 98788499012,
+   *   "created_at": "2020-04-14 15:00",
+   *   "token": "JWT Token"
+   *  },
+   * "message": "Logged in successfully",
+   * "code": 201
+   * }
+   * @response 200 {
+   *  "status": false,
+   *  "message": "The social id field is required.",
+   *  "code": 200
+   * }
+   */
+  public function phoneLogin(Request $request)
+  {
+     try {
+        $validator = Validator::make($request->all(), [
+           'phone' => 'required',
+           'password' => 'required'
+        ]);
+
+        if($validator->fails()) throw new \Exception($validator->errors()->first(),  Response::HTTP_OK);
+        
+        $user = User::where('phone', $request->phone)->first();
+
+        if(!$user || !Hash::check($request->password, $user->password)) throw new \Exception('Phone/Password missmatch',  Response::HTTP_OK);
+        
+        $user->updated_at = new \DateTime();
+        $user->save();
+        
+        $response = [
+           'name' => $user->name,
+           'email' => $user->email,
+           'address' => $user->address,
+           'image' => $user->image,
+           'phone' => $user->phone,
+           'created_at' => $user->created_at,
+           'token' => auth()->login($user)
+        ];
+
+        return $this->successResponse($response, 'Logged in successfully', Response::HTTP_CREATED);
+
+    } catch (\Exception $e) {
+        return $this->errorResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
+    }
+  }
 
 }

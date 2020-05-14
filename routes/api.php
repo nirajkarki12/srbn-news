@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 /* Users  */
 Route::post('/login','UserController@login')->name('api-login');
 Route::post('/social/login','UserController@socialLogin')->name('api-social-login');
+Route::post('/phone/login','UserController@phoneLogin')->name('api-phone-login');
 Route::post('/register','UserController@register')->name('api-register');
 
 Route::group(['middleware'=>['jwt.verify']],function(){
