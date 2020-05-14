@@ -471,7 +471,7 @@ class UserController extends BaseApiController
         return $this->successResponse($response, 'Logged in successfully', Response::HTTP_CREATED);
 
     } catch (\Exception $e) {
-        return $this->errorResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
+        return $this->errorResponse($e->getMessage(), $e->getCode());
     }
   }
 
