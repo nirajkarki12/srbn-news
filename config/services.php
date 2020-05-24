@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'firebase' => [
+        'key' => env('FIREBASE_KEY'),
+        'url' => env('FIREBASE_URL')
+    ]
+
 ];

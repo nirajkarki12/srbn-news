@@ -9,6 +9,8 @@ use anlutro\LaravelSettings\Facade as Setting;
 use Metatags;
 use App\Models\Category;
 use App\Models\Post;
+use App\Controllers\NotificationController;
+use App\Models\User;
 
 class PostController extends BaseController
 {
@@ -20,6 +22,9 @@ class PostController extends BaseController
     public function __construct()
     {
         $this->middleware('auth');
+
+        /* firebase set values */
+        NotificationController::setValues();
     }
 
     /**
@@ -89,6 +94,20 @@ class PostController extends BaseController
             if(isset($data['category']))
             {
                 $post->categories()->attach($data['category']);
+
+                /* firebase notification sending */
+                try {
+                    /* get users subscribed to the categories the post belongs */
+                    $users = User::whereHas('userCategories', function($q) use ($data){
+                        $q->whereIn('id', $data['category']);
+                    })->get();
+
+                    foreach($users as $user) {
+                        NotificationController::newPost($user, $post);
+                    }
+                } catch (\Throwable $th) {
+                    
+                }
             }
 
             return back()->with('flash_success', 'Post added Successfully');
