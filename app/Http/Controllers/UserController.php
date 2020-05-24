@@ -475,4 +475,80 @@ class UserController extends BaseApiController
     }
   }
 
+  /**
+   * Profile APIs
+   * User Profile Image
+   * @bodyParam image file accepts: jpeg,png,gif, filesize upto 2MB.
+   * @response 201 {
+   *  "status": true,
+   *  "data": {
+   *   "name": "Name Example",
+   *   "email": "example@gmail.com",
+   *   "address": "Somewhere",
+   *   "image": null,
+   *   "created_at": "2020-04-14 15:00",
+   *  },
+   * "message": "Registered successfully",
+   * "code": 201
+   * }
+   * @response 200 {
+   *  "status": false,
+   *  "message": "The Full Name field is required.",
+   *  "code": 200
+   * }
+   * @response 200 {
+   *  "status": false,
+   *  "message": "The email has already been taken.",
+   *  "code": 200
+   * }
+   * @response 200 {
+   *  "status": false,
+   *  "message": "The password must be at least 6 characters.",
+   *  "code": 200
+   * }
+   * @response 200 {
+   *  "status": false,
+   *  "message": "The Image failed to upload.",
+   *  "code": 200
+   * }
+   * @response 200 {
+   *  "status": false,
+   *  "message": "Login error",
+   *  "code": 200
+   * }
+   */
+  public function changeProfile(Request $request)
+  {
+     try {
+
+        $user = auth('api')->user();
+
+        $validator = Validator::make( $request->all(), [
+              'image' => 'required|mimes:jpeg,png,jpg,gif|max:2058',
+           ]
+        );
+
+        if($validator->fails()) throw new \Exception($validator->messages()->first(), Response::HTTP_OK);
+
+        if($request->file('image')) {
+           Helper::deleteImage($user->image_file, 'user');
+           if(!$file = Helper::uploadImage($request->file('image'), 'user')) throw new \Exception("Cannot Save Image", Response::HTTP_OK);
+           $user->image_file = $file;
+        }
+
+        $user->save();
+                   
+        $response = [
+           'name' => $user->name,
+           'email' => $user->email,
+           'address' => $user->address,
+           'image' => $user->image,
+           'created_at' => $user->created_at,
+        ];
+
+        return $this->successResponse($response, 'Update successful', Response::HTTP_OK);
+    } catch (\Exception $e) {
+        return $this->errorResponse($e->getMessage(), $e->getCode());
+    }
+  }
 }
