@@ -32,7 +32,7 @@ class PollController extends BaseApiController
    /**
    * Polls List
    * All Polls list
-   * @queryParam ?page= next page - pagination 
+   * @queryParam ?page= next page - pagination
    * @response {
    *  "status": true,
    *  "data": {
@@ -92,7 +92,7 @@ class PollController extends BaseApiController
                'polls.*',
                DB::raw('
                      (
-                        CASE 
+                        CASE
                         WHEN polls.type = ' .Post::TYPE_IMAGE .' THEN "' .Post::$postTypes[Post::TYPE_IMAGE] .'"'
                         .' WHEN polls.type = ' .Post::TYPE_VIDEO .' THEN "' .Post::$postTypes[Post::TYPE_VIDEO] .'"'
                         .' ELSE null
@@ -137,7 +137,7 @@ class PollController extends BaseApiController
       } catch (\Exception $e) {
          return $this->errorResponse($e->getMessage(), $e->getCode());
       }
-        
+
    }
 
    /**
@@ -234,13 +234,13 @@ class PollController extends BaseApiController
          $response = [];
 
          foreach ($data as $val) {
-            $total += $val->total; 
+            $total += $val->total;
          }
 
          foreach ($data as $key => $value) {
             $response[$key]['id'] = $value->id;
             $response[$key]['value'] = $value->value;
-            $response[$key]['total'] = round($value->total / $total * 100, 1) . '%'; ($value->total);
+            $response[$key]['total'] = $total > 0 ? round($value->total / $total * 100, 1) . '%'; ($value->total) : 0 .'%';
          }
 
          return $this->successResponse($response, 'Done successfully', Response::HTTP_CREATED);
