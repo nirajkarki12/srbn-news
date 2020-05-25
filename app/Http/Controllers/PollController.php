@@ -240,7 +240,7 @@ class PollController extends BaseApiController
          foreach ($data as $key => $value) {
             $response[$key]['id'] = $value->id;
             $response[$key]['value'] = $value->value;
-            $response[$key]['total'] = $total > 0 ? round($value->total / $total * 100, 1) . '%'; ($value->total) : 0 .'%';
+            $response[$key]['total'] = $total > 0 ? round($value->total / $total * 100, 1) . '%' : '0%';
          }
 
          return $this->successResponse($response, 'Done successfully', Response::HTTP_CREATED);
