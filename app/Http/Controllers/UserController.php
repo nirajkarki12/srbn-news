@@ -438,7 +438,7 @@ class UserController extends BaseApiController
    * }
    * @response 200 {
    *  "status": false,
-   *  "message": "The social id field is required.",
+   *  "message": "The phone field is required.",
    *  "code": 200
    * }
    */
