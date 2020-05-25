@@ -220,6 +220,12 @@ class PollController extends BaseApiController
                ->update([
                    'total' => DB::raw('total + 1'),
                ]);
+
+            $poll = Poll::with('options')
+                ->select('polls.*')
+                ->join('poll_options AS po', 'po.poll_id', 'polls.id')
+                ->where('po.id', $optionId)
+                ->first();
          }
 
          $data = $poll->options->each(function ($category) {
