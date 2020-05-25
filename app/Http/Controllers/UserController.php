@@ -53,13 +53,13 @@ class UserController extends BaseApiController
    public function login(Request $request)
    {
       try {
-            
+
          $credentials = $request->only('email', 'password');
 
          if (!$token = $this->guard->attempt($credentials)) throw new \Exception('Username/Password Mismatched', Response::HTTP_OK);
-            
+
          if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_OK);
-            
+
          $response = [
             'name' => $user->name,
             'email' => $user->email,
@@ -158,9 +158,9 @@ class UserController extends BaseApiController
          }
 
          $user->save();
-            
+
          if (!$token = $this->guard->attempt(['email' => $user->email, 'password' => $request->password])) throw new \Exception('Login error', Response::HTTP_OK);
-         
+
          $response = [
             'name' => $user->name,
             'email' => $user->email,
@@ -314,7 +314,7 @@ class UserController extends BaseApiController
                         'pivot'
                      ]);
                   });
-         
+
          $response = [
             'name' => $user->name,
             'email' => $user->email,
@@ -352,8 +352,8 @@ class UserController extends BaseApiController
    * @bodyParam image string optional image link of user.
    * @bodyParam social_id string required social id of user.
    * @bodyParam provider string required social provider eg.facebook.
-   * 
-   * @response 201 {
+   *
+   * @response 200 {
    *  "status": true,
    *  "data": {
    *   "name": "Name Example",
@@ -377,11 +377,12 @@ class UserController extends BaseApiController
       try {
          $validator = Validator::make($request->all(), [
             'social_id' => 'required',
-            'provider' => 'required'
+            'provider' => 'required',
+             'email' => 'email|unique:users',
          ]);
 
          if($validator->fails()) throw new \Exception($validator->errors()->first(),  Response::HTTP_OK);
-         
+
          $user = User::where('social_id', $request->social_id)->where('provider', $request->provider)->first();
 
          if(!$user) {
@@ -393,10 +394,10 @@ class UserController extends BaseApiController
             $user->image = $request->image;
             $user->save();
          }
-    
+
          $user->updated_at = new \DateTime();
          $user->save();
-         
+
          $response = [
             'name' => $user->name,
             'email' => $user->email,
@@ -407,7 +408,7 @@ class UserController extends BaseApiController
             'token' => auth()->login($user)
          ];
 
-         return $this->successResponse($response, 'Logged in successfully', Response::HTTP_CREATED);
+         return $this->successResponse($response, 'Logged in successfully', Response::HTTP_OK);
 
      } catch (\Exception $e) {
          return $this->errorResponse($e->getMessage(), $e->getCode());
@@ -420,7 +421,7 @@ class UserController extends BaseApiController
    * APIs for Phone User Login
    * @bodyParam phone integer required phone of user.
    * @bodyParam password string required password of user.
-   * 
+   *
    * @response 201 {
    *  "status": true,
    *  "data": {
@@ -450,14 +451,14 @@ class UserController extends BaseApiController
         ]);
 
         if($validator->fails()) throw new \Exception($validator->errors()->first(),  Response::HTTP_OK);
-        
+
         $user = User::where('phone', $request->phone)->first();
 
         if(!$user || !Hash::check($request->password, $user->password)) throw new \Exception('Phone/Password missmatch',  Response::HTTP_OK);
-        
+
         $user->updated_at = new \DateTime();
         $user->save();
-        
+
         $response = [
            'name' => $user->name,
            'email' => $user->email,
@@ -537,7 +538,7 @@ class UserController extends BaseApiController
         }
 
         $user->save();
-                   
+
         $response = [
            'name' => $user->name,
            'email' => $user->email,
