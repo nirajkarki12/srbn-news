@@ -9,7 +9,7 @@ use anlutro\LaravelSettings\Facade as Setting;
 use Metatags;
 use App\Models\Category;
 use App\Models\Post;
-use App\Controllers\NotificationController;
+use App\Http\Controllers\NotificationController;
 use App\Models\User;
 
 class PostController extends BaseController
