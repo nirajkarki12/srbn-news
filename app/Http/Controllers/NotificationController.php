@@ -8,7 +8,7 @@ use App\Models\Post;
 
 class NotificationController
 {
-    private static $firebase_key, $url;
+    private static $firebase_key, $url, $site_name;
 
     /* set the firebase details in env(FIREBASE_KEY, FIREBASE_URL) file and reflects from config */
     /* call this method before sending notification */
@@ -37,7 +37,7 @@ class NotificationController
         return self::curlInit($fields, self::$firebase_key);
     }
 
-   
+
 
 
     protected static function curlInit($fields, $firebase_key){
