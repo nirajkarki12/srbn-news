@@ -14,6 +14,8 @@ Route::group(['middleware'=>['jwt.verify']],function(){
    Route::get('/posts/user','PostController@userPosts')->name('api-posts-user');
 
    Route::post('/polls','PollController@postPoll')->name('api-polls-post');
+   Route::get('/quotes','QuoteController@index')->name('api-quotes');
+   Route::post('/quotes','QuoteController@setLike')->name('api-quotes-post');
 
    /* profile change API */
    Route::post('/user/profile/update','userController@changeProfile')->name('update-profile');
