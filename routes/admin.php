@@ -58,6 +58,15 @@ Route::group(['prefix' => 'admin'], function(){
    Route::post('rss/update/{slug}/{page?}', 'RssController@update')->name('admin.rss.update');
    /* */
 
+    /* QUOTE CRUD  */
+    Route::get('quote', 'QuoteController@index')->name('admin.quote');
+    Route::get('quote/edit/{id}', 'QuoteController@edit')->name('admin.quote.edit');
+    Route::get('quote/remove/{id}/{page?}', 'QuoteController@destroy')->name('admin.quote.destroy');
+
+    Route::post('quote/store', 'QuoteController@store')->name('admin.quote.store');
+    Route::post('quote/update/{id}/{page?}', 'QuoteController@update')->name('admin.quote.update');
+    /* */
+
 });
 
 

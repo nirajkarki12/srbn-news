@@ -22,7 +22,7 @@
                 <i class="fa fa-cogs"></i> <span>Settings</span>
               </a>
             </li>
-            
+
             <li id="dashboard">
               <a href="{{route('admin.dashboard')}}">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
@@ -33,6 +33,12 @@
               <a href="{{route('admin.rss')}}">
                 <i class="fa fa-rss"></i> <span>RSS Feed</span>
               </a>
+            </li>
+
+            <li id="quotes">
+                <a href="{{route('admin.quote')}}">
+                    <i class="fa fa-quote-right"></i> <span>Quotes</span>
+                </a>
             </li>
 
             <li class="treeview" id="attribute">
