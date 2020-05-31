@@ -89,6 +89,7 @@ class QuoteController extends BaseApiController
                 ->leftJoin('quote_likes as ql', 'ql.quote_id', 'quotes.id')
                 ->orderBy('created_at', 'desc')
                 ->groupBy('quotes.id')
+                ->where('quotes.status', true)
                 ;
 
             $quotes = $quotes->paginate(Setting::get('data_per_page', 25));
@@ -142,7 +143,7 @@ class QuoteController extends BaseApiController
             );
             if($validator->fails()) throw new \Exception($validator->messages()->first(), Response::HTTP_OK);
 
-            if(!$quote = Quote::where('id', $request->quote)->first()) throw new \Exception("Quote not found", Response::HTTP_OK);
+            if(!$quote = Quote::where(['id' => $request->quote, 'status' => true])->first()) throw new \Exception("Quote not found", Response::HTTP_OK);
 
             $quote->likes()->attach($user->id);
 
