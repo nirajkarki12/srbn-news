@@ -14,18 +14,22 @@
 @include('notification.notify')
 <style>
     td blockquote {
-        background: #f9f9f9;
         border-left: 5px solid #ccc;
-        padding: 0.5em 10px;
+        padding: 0.5em 7px;
         margin: 0;
         quotes: "\201C""\201D""\2018""\2019";
+
     }
     td blockquote:before {
-        color: #ccc;
+        color: #6b6b6b;
         content: open-quote;
         font-size: 3em;
         line-height: 0.1em;
         vertical-align: -0.4em;
+    }
+    blockquote:after {
+        visibility: hidden;
+        content: close-quote;
     }
 </style>
   <div class="row">
