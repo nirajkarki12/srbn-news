@@ -46,6 +46,11 @@ class Post extends Model
    {
       return $this->belongsToMany(Category::class, 'post_categories');
    }
+   
+
+   public function translation() {
+      return $this->hasOne(PostTranslation::class)->select('post_id','title','description','source','note');
+   }
 
 	public function sluggable()
    {

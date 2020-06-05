@@ -39,6 +39,10 @@ class QuoteController extends BaseApiController
      *     "quote": "quote goes here",
      *     "author": "quote author",
      *     "totalLikes": 5,
+     *     "translation": {
+     *          "quote": "quote in nepali",
+     *          "author": "author in nepali"
+     *      },
      *     "isLiked": true,
      *     "created_at": "2020-04-14 15:00"
      *    }
@@ -76,18 +80,19 @@ class QuoteController extends BaseApiController
     public function index()
     {
         try {
-            if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_OK);
-
+            // if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_OK);
+            $user = $this->guard->user();
             $quotes = Quote::selectRaw(
                 'quotes.id,
                 quotes.quote,
                 quotes.author,
                 count(distinct ql.id) as totalLikes,
-                (CASE WHEN "' .$user->id .'" IN (ql.user_id) THEN true ELSE false END ) AS isLiked,
+                (CASE WHEN "' .($user?$user->id:'') .'" IN (ql.user_id) THEN true ELSE false END ) AS isLiked,
                 quotes.created_at'
                 )
                 ->leftJoin('quote_likes as ql', 'ql.quote_id', 'quotes.id')
                 ->orderBy('created_at', 'desc')
+                ->with('translation')
                 ->groupBy('quotes.id')
                 ->where('quotes.status', true)
                 ;
@@ -98,7 +103,7 @@ class QuoteController extends BaseApiController
 
             return $this->successResponse($quotes, 'Quotes data fetched successfully');
         } catch (\Exception $e) {
-            return $this->errorResponse($e->getMessage(), $e->getCode());
+            return $this->errorResponse($e->getMessage(), 500);
         }
 
     }

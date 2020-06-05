@@ -56,9 +56,17 @@ class QuoteController extends BaseController
                     'status' => 'required',
                 )
             );
+
             if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
 
-            if(!Quote::create($data)) throw new \Exception("Something Went Wrong, Try Again!", 1);
+            if(!$quote = Quote::create($data)) throw new \Exception("Something Went Wrong, Try Again!", 1);
+
+            if($request->quote_nepali) {
+                $quote->translation()->create([
+                    'quote' => $request->quote_nepali?:'',
+                    'author'    => $request->author_nepali?:''
+                ]);
+            }
 
             return back()->with('flash_success', 'Quote added Successfully');
 
@@ -120,6 +128,23 @@ class QuoteController extends BaseController
             if(!$quote = Quote::where('id', $id)->first()) throw new \Exception("Error Processing Request", 1);
 
             if(!$quote->update($data)) throw new \Exception("Error Processing Request", 1);
+
+            if($request->quote_nepali) {
+
+                if($quote->translation) {
+                    $quote->translation->update([
+                        'quote' => $request->quote_nepali?:$quote->translation->quote,
+                        'author'    => $request->author_nepali?:$quote->translation->author
+                    ]);
+                } else {
+                    $quote->translation()->create([
+                        'quote' => $request->quote_nepali,
+                        'author'    => $request->author_nepali
+                    ]);
+                }
+                
+            }
+
 
             return redirect()->route('admin.quote', ['page' => $page])->with('flash_success', 'Quote updated Successfully');
 

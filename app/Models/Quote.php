@@ -16,7 +16,7 @@ class Quote extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-	    'quote', 'author', 'status',
+	    'quote', 'author', 'status','nepali'
 	];
 
    /**
@@ -35,6 +35,10 @@ class Quote extends Model
    public function likes()
    {
       return $this->belongsToMany(User::class, 'quote_likes');
+   }
+
+   public function translation() {
+       return $this->hasOne(QuoteTranslation::class)->select('quote_id','quote','author');
    }
 
 }

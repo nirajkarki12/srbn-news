@@ -28,7 +28,7 @@
          		</a>
             </div>
         </div>
-        <div class="box-body">
+        <div class="box-body table-responsive">
 
         	@if(count($posts) > 0)
 

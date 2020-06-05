@@ -30,14 +30,14 @@ Header: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/category/user" \
+    -G "http://localhost:8000/api/category/user" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/category/user"
+    "http://localhost:8000/api/category/user"
 );
 
 let headers = {
@@ -115,14 +115,14 @@ Active Categories
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/category" \
+    -G "http://localhost:8000/api/category" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/category"
+    "http://localhost:8000/api/category"
 );
 
 let headers = {
@@ -192,16 +192,16 @@ Header: X-Authorization: Bearer {token}
 
 ```bash
 curl -X POST \
-    "http://localhost/srbn-news/public/api/polls" \
+    "http://localhost:8000/api/polls" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"optionId":16}'
+    -d '{"optionId":9}'
 
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/polls"
+    "http://localhost:8000/api/polls"
 );
 
 let headers = {
@@ -211,7 +211,7 @@ let headers = {
 };
 
 let body = {
-    "optionId": 16
+    "optionId": 9
 }
 
 fetch(url, {
@@ -291,18 +291,18 @@ All Polls list
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/polls?%3Fpage%3D=7" \
+    -G "http://localhost:8000/api/polls?%3Fpage%3D=18" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/polls"
+    "http://localhost:8000/api/polls"
 );
 
 let params = {
-    "?page=": "7",
+    "?page=": "18",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -407,18 +407,18 @@ Header for User&#039;s Category Posts: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=6" \
+    -G "http://localhost:8000/api/posts/user?%3Fpage%3D=11" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/posts/user"
+    "http://localhost:8000/api/posts/user"
 );
 
 let params = {
-    "?page=": "6",
+    "?page=": "11",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -457,6 +457,12 @@ fetch(url, {
                 "source_url": "Source URL",
                 "audio_url": "URL|null",
                 "created_at": "2020-04-14 15:00",
+                "translation": {
+                    "title": "translation title",
+                    "description": "translation description",
+                    "note": "translation note",
+                    "source": "translation source"
+                },
                 "categories": [
                     {
                         "id": 2,
@@ -530,14 +536,14 @@ All posts list
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=6" \
+    -G "http://localhost:8000/api/posts/?%3Fpage%3D=6" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/posts/"
+    "http://localhost:8000/api/posts/"
 );
 
 let params = {
@@ -580,6 +586,12 @@ fetch(url, {
                 "source_url": "Source URL",
                 "audio_url": "URL|null",
                 "created_at": "2020-04-14 15:00",
+                "translation": {
+                    "title": "translation title",
+                    "description": "translation description",
+                    "note": "translation note",
+                    "source": "translation source"
+                },
                 "categories": [
                     {
                         "id": 2,
@@ -641,6 +653,211 @@ Parameter | Status | Description
 
 <!-- END_fd1746447c684f78c26acc72a048bdab -->
 
+#Quotes
+
+
+<!-- START_26a1da690bab0a9919b2b75870728658 -->
+## Like Quote
+Header: X-Authorization: Bearer {token}
+
+> Example request:
+
+```bash
+curl -X POST \
+    "http://localhost:8000/api/quotes" \
+    -H "Content-Type: application/json" \
+    -H "X-Authorization: Bearer {token}" \
+    -d '{"quote":13}'
+
+```
+
+```javascript
+const url = new URL(
+    "http://localhost:8000/api/quotes"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "X-Authorization": "Bearer {token}",
+    "Accept": "application/json",
+};
+
+let body = {
+    "quote": 13
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (201):
+
+```json
+{
+    "status": true,
+    "data": [],
+    "message": "Quote Liked successfully",
+    "code": 201
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "User not found",
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "The quote field is required.",
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "Invalid Request",
+    "code": 200
+}
+```
+
+### HTTP Request
+`POST api/quotes`
+
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `quote` | integer |  required  | quote ID.
+    
+<!-- END_26a1da690bab0a9919b2b75870728658 -->
+
+<!-- START_56ba292f581ed455975d8ec6af1d8f08 -->
+## Quote Lists
+Active Quotes
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://localhost:8000/api/quotes?%3Fpage%3D=2" \
+    -H "Content-Type: application/json" \
+    -H "X-Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://localhost:8000/api/quotes"
+);
+
+let params = {
+    "?page=": "2",
+};
+Object.keys(params)
+    .forEach(key => url.searchParams.append(key, params[key]));
+
+let headers = {
+    "Content-Type": "application/json",
+    "X-Authorization": "Bearer {token}",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "status": true,
+    "data": {
+        "current_page": 2,
+        "data": [
+            {
+                "id": 1,
+                "quote": "quote goes here",
+                "author": "quote author",
+                "totalLikes": 5,
+                "translation": {
+                    "quote": "quote in nepali",
+                    "author": "author in nepali"
+                },
+                "isLiked": true,
+                "created_at": "2020-04-14 15:00"
+            }
+        ],
+        "first_page_url": "URL\/api\/quotes?page=1",
+        "from": 16,
+        "last_page": 4,
+        "last_page_url": "URL\/api\/quotes?page=4",
+        "next_page_url": "URL\/api\/quotes?page=3",
+        "path": "URL\/api\/quotes",
+        "per_page": 15,
+        "prev_page_url": "URL\/api\/quotes?page=1",
+        "to": 30,
+        "total": 55
+    },
+    "message": "Quotes data fetched successfully",
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "Quotes not found",
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "User not found",
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "Invalid Request",
+    "code": 200
+}
+```
+
+### HTTP Request
+`GET api/quotes`
+
+#### Query Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -----------
+    `?page=` |  optional  | next page - pagination
+
+<!-- END_56ba292f581ed455975d8ec6af1d8f08 -->
+
 #RSS Feed
 
 
@@ -652,14 +869,14 @@ Active RSS Feeds
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/rss-feed" \
+    -G "http://localhost:8000/api/rss-feed" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/rss-feed"
+    "http://localhost:8000/api/rss-feed"
 );
 
 let headers = {
@@ -717,14 +934,14 @@ fetch(url, {
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/rss-feed/1" \
+    -G "http://localhost:8000/api/rss-feed/1" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/rss-feed/1"
+    "http://localhost:8000/api/rss-feed/1"
 );
 
 let headers = {
@@ -804,16 +1021,16 @@ APIs for User Login
 
 ```bash
 curl -X POST \
-    "http://localhost/srbn-news/public/api/login" \
+    "http://localhost:8000/api/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"email":"assumenda","password":"nam"}'
+    -d '{"email":"expedita","password":"in"}'
 
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/login"
+    "http://localhost:8000/api/login"
 );
 
 let headers = {
@@ -823,8 +1040,8 @@ let headers = {
 };
 
 let body = {
-    "email": "assumenda",
-    "password": "nam"
+    "email": "expedita",
+    "password": "in"
 }
 
 fetch(url, {
@@ -884,16 +1101,16 @@ APIs for Social User Login
 
 ```bash
 curl -X POST \
-    "http://localhost/srbn-news/public/api/social/login" \
+    "http://localhost:8000/api/social/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"ducimus","email":"aut","image":"sunt","social_id":"aliquam","provider":"placeat"}'
+    -d '{"name":"voluptatem","email":"reiciendis","image":"ratione","social_id":"porro","provider":"optio"}'
 
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/social/login"
+    "http://localhost:8000/api/social/login"
 );
 
 let headers = {
@@ -903,11 +1120,11 @@ let headers = {
 };
 
 let body = {
-    "name": "ducimus",
-    "email": "aut",
-    "image": "sunt",
-    "social_id": "aliquam",
-    "provider": "placeat"
+    "name": "voluptatem",
+    "email": "reiciendis",
+    "image": "ratione",
+    "social_id": "porro",
+    "provider": "optio"
 }
 
 fetch(url, {
@@ -920,7 +1137,7 @@ fetch(url, {
 ```
 
 
-> Example response (201):
+> Example response (200):
 
 ```json
 {
@@ -961,24 +1178,25 @@ Parameter | Type | Status | Description
     
 <!-- END_444008ca6541ddc5d3dae8434120a6d1 -->
 
-<!-- START_d7b7952e7fdddc07c978c9bdaf757acf -->
-## Registration APIs
-User Registration
+<!-- START_87f75baa498d3fb7f48056d02874ea0c -->
+## Phone Login APIs
+Phone User Login
+APIs for Phone User Login
 
 > Example request:
 
 ```bash
 curl -X POST \
-    "http://localhost/srbn-news/public/api/register" \
+    "http://localhost:8000/api/phone/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"commodi","email":"similique","address":"omnis","password":"ea","image":"nostrum"}'
+    -d '{"phone":9,"password":"voluptas"}'
 
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/register"
+    "http://localhost:8000/api/phone/login"
 );
 
 let headers = {
@@ -988,11 +1206,92 @@ let headers = {
 };
 
 let body = {
-    "name": "commodi",
-    "email": "similique",
-    "address": "omnis",
-    "password": "ea",
-    "image": "nostrum"
+    "phone": 9,
+    "password": "voluptas"
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (201):
+
+```json
+{
+    "status": true,
+    "data": {
+        "name": "Name Example",
+        "email": "example@gmail.com",
+        "address": "Somewhere",
+        "image": null,
+        "phone": 98788499012,
+        "created_at": "2020-04-14 15:00",
+        "token": "JWT Token"
+    },
+    "message": "Logged in successfully",
+    "code": 201
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "The phone field is required.",
+    "code": 200
+}
+```
+
+### HTTP Request
+`POST api/phone/login`
+
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `phone` | integer |  required  | phone of user.
+        `password` | string |  required  | password of user.
+    
+<!-- END_87f75baa498d3fb7f48056d02874ea0c -->
+
+<!-- START_d7b7952e7fdddc07c978c9bdaf757acf -->
+## Registration APIs
+User Registration
+
+> Example request:
+
+```bash
+curl -X POST \
+    "http://localhost:8000/api/register" \
+    -H "Content-Type: application/json" \
+    -H "X-Authorization: Bearer {token}" \
+    -d '{"name":"quae","email":"unde","address":"expedita","password":"voluptatem","phone":13,"image":"aliquam"}'
+
+```
+
+```javascript
+const url = new URL(
+    "http://localhost:8000/api/register"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "X-Authorization": "Bearer {token}",
+    "Accept": "application/json",
+};
+
+let body = {
+    "name": "quae",
+    "email": "unde",
+    "address": "expedita",
+    "password": "voluptatem",
+    "phone": 13,
+    "image": "aliquam"
 }
 
 fetch(url, {
@@ -1078,6 +1377,7 @@ Parameter | Type | Status | Description
         `email` | string |  required  | valid email address.
         `address` | string |  optional  | max 100 in length.
         `password` | string |  required  | min 6 in length.
+        `phone` | integer |  optional  | min 10 in length.
         `image` | file |  optional  | accepts: jpeg,png,gif, filesize upto 2MB.
     
 <!-- END_d7b7952e7fdddc07c978c9bdaf757acf -->
@@ -1090,14 +1390,14 @@ Header: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/auth-user" \
+    -G "http://localhost:8000/api/auth-user" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/auth-user"
+    "http://localhost:8000/api/auth-user"
 );
 
 let headers = {
@@ -1173,7 +1473,7 @@ Header: X-Authorization: Bearer {token}
 
 ```bash
 curl -X POST \
-    "http://localhost/srbn-news/public/api/user/set-category" \
+    "http://localhost:8000/api/user/set-category" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
     -d '{"categories":[]}'
@@ -1182,7 +1482,7 @@ curl -X POST \
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/user/set-category"
+    "http://localhost:8000/api/user/set-category"
 );
 
 let headers = {
@@ -1267,5 +1567,106 @@ Parameter | Type | Status | Description
     `categories` | array |  required  | [categories ID].
     
 <!-- END_a5dd4caeeb907ed5b6629da5f3330bb9 -->
+
+<!-- START_68d3124411929696f2a51941c0d41a57 -->
+## Profile APIs
+User Profile Image
+
+> Example request:
+
+```bash
+curl -X POST \
+    "http://localhost:8000/api/user/profile/update" \
+    -H "Content-Type: application/json" \
+    -H "X-Authorization: Bearer {token}" \
+    -d '{"image":"soluta"}'
+
+```
+
+```javascript
+const url = new URL(
+    "http://localhost:8000/api/user/profile/update"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "X-Authorization": "Bearer {token}",
+    "Accept": "application/json",
+};
+
+let body = {
+    "image": "soluta"
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (201):
+
+```json
+null
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "The Full Name field is required.",
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "The email has already been taken.",
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "The password must be at least 6 characters.",
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "The Image failed to upload.",
+    "code": 200
+}
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "Login error",
+    "code": 200
+}
+```
+
+### HTTP Request
+`POST api/user/profile/update`
+
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `image` | file |  optional  | accepts: jpeg,png,gif, filesize upto 2MB.
+    
+<!-- END_68d3124411929696f2a51941c0d41a57 -->
 
 

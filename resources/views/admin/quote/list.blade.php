@@ -104,9 +104,19 @@
                     <textarea id="quote" name="quote" class="form-control" placeholder="Write your Quote">{{ old('quote') }}</textarea>
                 </div>
 
+                <div class="form-group">
+                  <label for="nepali">Quote Nepali</label>
+                    <textarea id="nepali" name="quote_nepali" class="form-control" placeholder="Write your Quote in nepali">{{ old('quote_nepali') }}</textarea>
+                </div>
+
               <div class="form-group">
                   <label for="author">Author</label>
                   <input type="text" class="form-control" id="author" name="author" value="{{ old('author') }}" placeholder="Quote Author">
+              </div>
+
+              <div class="form-group">
+                  <label for="author">Author Nepali</label>
+                  <input type="text" class="form-control" id="author_nepali" name="author_nepali" value="{{ old('author_nepali') }}" placeholder="Quote Author">
               </div>
 
               <div class="clearfix"></div>
@@ -159,9 +169,23 @@
                     <textarea id="quote" name="quote" class="form-control" placeholder="Write your Quote">{{ old('quote') ?: $quoteEdit->quote }}</textarea>
                 </div>
 
+                <div class="form-group">
+                  <label for="quote">Quote Nepali</label>
+                    <textarea id="quote_nepali" name="quote_nepali" class="form-control" placeholder="Write your Quote">{{ old('quote_nepali') ?: ($quoteEdit->translation?$quoteEdit->translation->quote:'') }}</textarea>
+                </div>
+
+
+
               <div class="form-group">
                   <label for="author">Author</label>
                   <input type="text" class="form-control" id="author" name="author" value="{{ old('author') ?: $quoteEdit->author }}" placeholder="Quote Author">
+              </div>
+              <div class="clearfix"></div>
+              <hr />
+
+              <div class="form-group">
+                  <label for="author">Author Nepali</label>
+                  <input type="text" class="form-control" id="author_nepali" name="author_nepali" value="{{ old('author_nepali') ?: ($quoteEdit->translation?$quote->translation->author:'') }}" placeholder="Quote Author">
               </div>
               <div class="clearfix"></div>
               <hr />

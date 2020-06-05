@@ -37,6 +37,8 @@
               </div>
             </div>
 
+            
+
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="source" class=" control-label">Source</label>
@@ -46,12 +48,31 @@
               </div>
             </div>
 
+
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="source_nepali" class=" control-label">Source in Nepali</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  <input type="text" class="form-control" id="source_nepali" name="source_nepali" value="{{ old('source_nepali') ?: ($postEdit->translation?$postEdit->translation->source:'') }}"  placeholder="Post Source">
+              </div>
+            </div>
+
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="title" class=" control-label">Title</label>
               </div>
               <div class="col-sm-9 pull-left">
                   <input type="text" class="form-control" id="title" name="title" value="{{ old('title') ?: $postEdit->title }}"  placeholder="Post Title" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="title_nepali" class=" control-label">Title in Nepali</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  <input type="text" class="form-control" id="title_nepali" name="title_nepali" value="{{ old('title_nepali') ?: ($postEdit->translation?$post->translation->title:'') }}"  placeholder="Post Title in Nepali" required>
               </div>
             </div>
 
@@ -81,12 +102,31 @@
               </div>
             </div>
 
+
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="description_nepali" class=" control-label">Description in Nepali</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                <textarea class="form-control" id="description_nepali" name="description_nepali" rows="3" cols="80" required>{{ old('description_nepali') ?: ($postEdit->translation?$postEdit->translation->description:'') }}</textarea>
+              </div>
+            </div>
+
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="note" class=" control-label">Note</label>
               </div>
               <div class="col-sm-9 pull-left">
                   <textarea class="form-control" id="note" name="note" rows="2" cols="80">{{ old('note') ?: $postEdit->note }}</textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="note_nepali" class=" control-label">Note</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  <textarea class="form-control" id="note_nepali" name="note_nepali" rows="2" cols="80">{{ old('note_nepali') ?: ($postEdit->translation?$postEdit->translation->note:'') }}</textarea>
               </div>
             </div>
 
@@ -166,6 +206,18 @@
 <script type="text/javascript">
    ClassicEditor
    .create( document.querySelector('#description'), {
+      toolbar: {
+         items: [
+            'bold', 'italic', 'underline', 'strikethrough', '|', 
+            'fontColor', 'fontBackgroundColor', 'link', '|', 
+            'insertTable', 'bulletedList', 'numberedList','|',
+            'blockQuote', 'subscript', 'superscript', 'horizontalLine', 
+         ]
+      },
+   });
+
+   ClassicEditor
+   .create( document.querySelector('#description_nepali'), {
       toolbar: {
          items: [
             'bold', 'italic', 'underline', 'strikethrough', '|', 

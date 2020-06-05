@@ -47,6 +47,12 @@ class PostController extends BaseApiController
    *     "source_url": "Source URL",
    *     "audio_url": "URL|null",
    *     "created_at": "2020-04-14 15:00",
+   *     "translation":{
+   *       "title":"translation title",
+   *       "description":"translation description",
+   *       "note":"translation note",
+   *       "source":"translation source"
+   *     },
    *     "categories": [
    *      {
    *        "id": 2,
@@ -100,6 +106,7 @@ class PostController extends BaseApiController
                   '),
                ])
                ->with('categories')
+               ->with('translation')
                ->orderBy('created_at', 'desc')
                ->where('status', 1);
 
@@ -161,6 +168,12 @@ class PostController extends BaseApiController
    *     "source_url": "Source URL",
    *     "audio_url": "URL|null",
    *     "created_at": "2020-04-14 15:00",
+   *     "translation":{
+   *       "title":"translation title",
+   *       "description":"translation description",
+   *       "note":"translation note",
+   *       "source":"translation source"
+   *     },
    *     "categories": [
    *      {
    *        "id": 2,
@@ -221,6 +234,7 @@ class PostController extends BaseApiController
                   '),
                ])
                ->with('categories')
+               ->with('translation')
                ->orderBy('created_at', 'desc')
                ->where('status', 1);
 

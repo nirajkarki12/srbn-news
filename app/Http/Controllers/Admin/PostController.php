@@ -65,9 +65,10 @@ class PostController extends BaseController
 
             $data = $request->except('_token');
 
+            // dd($data);
             $validator = Validator::make( $data, [
                    'title' => 'required|max:255',
-                   'category' => 'required',
+                //    'category' => 'required',
                    'description' => 'required|min:50',
                    'type' => 'required',
                    'content' => 'required|url',
@@ -108,6 +109,15 @@ class PostController extends BaseController
                 } catch (\Throwable $th) {
                     
                 }
+            }
+
+            if($request->description_nepali) {
+                $post->translation()->create([
+                    'title' => $request->title_nepali?:'',
+                    'description' => $request->description_nepali?:'',
+                    'note' => $request->note_nepali?:'',
+                    'source' => $request->source_nepali?:'',
+                ]);
             }
 
             return back()->with('flash_success', 'Post added Successfully');
@@ -185,6 +195,25 @@ class PostController extends BaseController
             {
                 $post->categories()->detach();
                 $post->categories()->attach($data['category']);
+            }
+
+            if($request->description_nepali) {
+
+                if($post->translation) {
+                    $post->translation->update([
+                        'title' => $request->title_nepali?:($post->translation->title?:''),
+                        'description' => $request->description_nepali?:($post->translation->description?:''),
+                        'note' => $request->note_nepali?:($post->translation->note?:''),
+                        'source' => $request->source_nepali?:($post->translation->source?:''),
+                    ]);
+                } else {
+                    $post->translation()->create([
+                        'title' => $request->title_nepali?:'',
+                        'description' => $request->description_nepali?:'',
+                        'note' => $request->note_nepali?:'',
+                        'source' => $request->source_nepali?:'',
+                    ]);
+                }
             }
 
             return redirect()->route('admin.post', ['page' => $page])->with('flash_success', 'Post updated Successfully');
