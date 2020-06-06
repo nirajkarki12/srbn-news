@@ -18,7 +18,7 @@
       <div class="box box-primary">
 
         <div class="box-header with-border">
-           <h3 class="box-title">{{$meme?'Edit':'Add'}} a Life Hack</h3>
+           <h3 class="box-title">{{$meme?'Edit':'Add'}} a Meme</h3>
            <div class="box-tools pull-right">
               <a href="{{route('admin.meme')}}" class="btn btn-default pull-right">Memes</a>
            </div>
