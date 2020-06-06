@@ -19,10 +19,15 @@ Route::group(['middleware'=>['jwt.verify']],function(){
    Route::get('/memes/like/{meme}', 'LifeHackController@handleMemeLike')->name('memes.handlelike');
    Route::get('/life-hacks/like/{lifehack}', 'LifeHackController@handleLifeHackLike')->name('lifehack.handlelike');
 
+   Route::get('predict/horoscope','HoroscopeController@getPredictions');
+   Route::get('horoscope/{id}','HoroscopeController@choose');
+   
    
    /* profile change API */
    Route::post('/user/profile/update','userController@changeProfile')->name('update-profile');
 });
+
+Route::get('list/horoscope','HoroscopeController@listHoroscopes');
 Route::get('/quotes','QuoteController@index')->name('api-quotes');
 
 Route::get('/life-hacks', 'LifeHackController@lifeHackListing')->name('life-hacks');

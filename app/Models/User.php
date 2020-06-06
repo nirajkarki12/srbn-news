@@ -55,7 +55,7 @@ class User extends Authenticatable implements JWTSubject
    }
 
    public function horoscope() {
-      return $this->hasOne(Horoscope::class);
+      return $this->belongsToMany(Horoscope::class);
    }
 
    /**
