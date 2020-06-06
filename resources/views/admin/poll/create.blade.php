@@ -37,6 +37,15 @@
               </div>
             </div>
 
+              <div class="form-group">
+                  <div class="col-sm-2 pull-left">
+                      <label for="title_nepali" class=" control-label">Title in Nepali</label>
+                  </div>
+                  <div class="col-sm-9 pull-left">
+                      <input type="text" class="form-control" id="title_nepali" name="title_nepali" value="{{ old('title_nepali') }}" placeholder="Poll Title in Nepali" required>
+                  </div>
+              </div>
+
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="description" class=" control-label">Description</label>
@@ -46,6 +55,15 @@
               </div>
             </div>
 
+              <div class="form-group">
+                  <div class="col-sm-2 pull-left">
+                      <label for="description_nepali" class=" control-label">Description in Nepali</label>
+                  </div>
+                  <div class="col-sm-9 pull-left">
+                      <textarea class="form-control" id="description_nepali" name="description_nepali" rows="3" cols="80">{{ old('description_nepali') }}</textarea>
+                  </div>
+              </div>
+
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="question" class=" control-label">Question</label>
@@ -54,6 +72,15 @@
                   <textarea class="form-control" id="question" name="question" rows="2" cols="80" required>{{ old('question') }}</textarea>
               </div>
             </div>
+
+              <div class="form-group">
+                  <div class="col-sm-2 pull-left">
+                      <label for="question_nepali" class=" control-label">Question in Nepali</label>
+                  </div>
+                  <div class="col-sm-9 pull-left">
+                      <textarea class="form-control" id="question_nepali" name="question_nepali" rows="2" cols="80" required>{{ old('question_nepali') }}</textarea>
+                  </div>
+              </div>
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -66,11 +93,22 @@
                   <div class="col-sm-4" style="padding:0 10px 0 0">
                      <input type="text" class="form-control" id="option2" name="options[]" value="No" required placeholder="Option 2">
                   </div>
-                  <div class="col-sm-4" style="padding:0 0 0 0">
-                     <input type="text" class="form-control" id="optional" name="optional" value="{{ old('optional') ?: 'Something else' }}"  placeholder="Option 3">
-                  </div>
               </div>
             </div>
+
+              <div class="form-group">
+                  <div class="col-sm-2 pull-left">
+                      <label for="option3" class=" control-label">Options in Nepali</label>
+                  </div>
+                  <div class="col-sm-9 pull-left">
+                      <div class="col-sm-4" style="padding:0 10px 0 0;">
+                          <input type="text" class="form-control" id="option3" name="options2[]" value="Yes" required placeholder="Option 1">
+                      </div>
+                      <div class="col-sm-4" style="padding:0 10px 0 0">
+                          <input type="text" class="form-control" id="option4" name="options2[]" value="No" required placeholder="Option 2">
+                      </div>
+                  </div>
+              </div>
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -145,13 +183,24 @@
    .create( document.querySelector('#description'), {
       toolbar: {
          items: [
-            'bold', 'italic', 'underline', 'strikethrough', '|', 
-            'fontColor', 'fontBackgroundColor', 'link', '|', 
+            'bold', 'italic', 'underline', 'strikethrough', '|',
+            'fontColor', 'fontBackgroundColor', 'link', '|',
             'insertTable', 'bulletedList', 'numberedList','|',
-            'blockQuote', 'subscript', 'superscript', 'horizontalLine', 
+            'blockQuote', 'subscript', 'superscript', 'horizontalLine',
          ]
       },
    });
+   ClassicEditor
+       .create( document.querySelector('#description_nepali'), {
+           toolbar: {
+               items: [
+                   'bold', 'italic', 'underline', 'strikethrough', '|',
+                   'fontColor', 'fontBackgroundColor', 'link', '|',
+                   'insertTable', 'bulletedList', 'numberedList','|',
+                   'blockQuote', 'subscript', 'superscript', 'horizontalLine',
+               ]
+           },
+       });
   $(function () {
     var type = $('#type option:selected').val();
     if(type) toggleType(type);

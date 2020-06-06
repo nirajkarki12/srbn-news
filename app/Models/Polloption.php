@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Poll;
 use App\Models\User;
+use App\Models\PolloptionTranslation;
 
 class Polloption extends Model
 {
@@ -19,7 +20,7 @@ class Polloption extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-       'value', 'total', 'poll_id', 
+       'value', 'total', 'poll_id',
 	];
 
    /**
@@ -39,6 +40,10 @@ class Polloption extends Model
    {
       return $this->belongsTo(Poll::class, 'poll_id');
    }
+
+    public function translation() {
+        return $this->hasOne(PolloptionTranslation::class)->select('polloption_id', 'id','value');
+    }
 
    /**
    * The users that belong to the polls.
