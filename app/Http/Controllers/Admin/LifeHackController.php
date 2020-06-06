@@ -18,7 +18,7 @@ class LifeHackController extends BaseController
 
 
     public function index() {
-        $lifehacks = LifeHack::orderBy('created_at', 'desc')->with('translation')->paginate(Setting::get('data_per_page', 25));
+        $lifehacks = LifeHack::orderBy('created_at', 'desc')->paginate(Setting::get('data_per_page', 25));
         return view('admin.lifehack.index', compact('lifehacks'));
     }
 
@@ -28,6 +28,8 @@ class LifeHackController extends BaseController
 
     public function store(Request $request, LifeHack $lifehack= null) {
         try {
+
+            $edit = (bool) $lifehack;
 
             $data = $request->all();
 
@@ -75,7 +77,7 @@ class LifeHackController extends BaseController
                 }
             }
 
-            if($lifehack) return redirect()->route('admin.lifehack')->with('flash_success', 'Life Hack Edit done');
+            if($edit) return redirect()->route('admin.lifehack')->with('flash_success', 'Life Hack edited successfully');
             return back()->with('flash_success', 'Life Hack added Successfully');
 
         } catch (\Exception $e) {

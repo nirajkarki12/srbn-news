@@ -15,11 +15,18 @@ Route::group(['middleware'=>['jwt.verify']],function(){
 
    Route::post('/polls','PollController@postPoll')->name('api-polls-post');
    Route::post('/quotes','QuoteController@setLike')->name('api-quotes-post');
+
+   Route::get('/memes/like/{meme}', 'LifeHackController@handleMemeLike')->name('memes.handlelike');
+   Route::get('/life-hacks/like/{lifehack}', 'LifeHackController@handleLifeHackLike')->name('lifehack.handlelike');
+
    
    /* profile change API */
    Route::post('/user/profile/update','userController@changeProfile')->name('update-profile');
 });
 Route::get('/quotes','QuoteController@index')->name('api-quotes');
+
+Route::get('/life-hacks', 'LifeHackController@lifeHackListing')->name('life-hacks');
+Route::get('/memes', 'LifeHackController@memesListing')->name('memes');
 
 /* Category/Post/Polls API  */
 Route::get('/category','CategoryController@index')->name('api-category');

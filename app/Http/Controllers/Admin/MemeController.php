@@ -27,6 +27,8 @@ class MemeController extends BaseController
 
     public function store(Request $request, Meme $meme= null) {
         try {
+
+            $edit = (bool) $meme;
             
             $data = $request->all();
     
@@ -57,7 +59,7 @@ class MemeController extends BaseController
     
             }
     
-            if($meme) return redirect()->route('admin.meme')->with('flash_success', 'Meme edited successfully');
+            if($edit) return redirect()->route('admin.meme')->with('flash_success', 'Meme edited successfully');
             return back()->with('flash_success', 'Meme added Successfully');
 
         } catch (\Exception $e) {

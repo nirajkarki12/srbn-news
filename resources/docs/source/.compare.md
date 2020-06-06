@@ -181,6 +181,277 @@ fetch(url, {
 
 <!-- END_db20564ba266cd451caac114b3eac8ab -->
 
+#Life Hack & Meme
+
+
+<!-- START_6c9a429a2ededa75193277eaf9290987 -->
+## Like Unlike Memes
+Header: X-Authorization: Bearer {token}
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://localhost:8000/api/memes/like/eos" \
+    -H "Content-Type: application/json" \
+    -H "X-Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://localhost:8000/api/memes/like/eos"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "X-Authorization": "Bearer {token}",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+null
+```
+> Example response (200):
+
+```json
+null
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "Invalid Request",
+    "code": 200
+}
+```
+
+### HTTP Request
+`GET api/memes/like/{meme}`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `meme` |  required  | meme id
+
+<!-- END_6c9a429a2ededa75193277eaf9290987 -->
+
+<!-- START_58ef53c1134d3fd57e2d1b0531fb1ab1 -->
+## Like Unlike Life Hack
+Header: X-Authorization: Bearer {token}
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://localhost:8000/api/life-hacks/like/et" \
+    -H "Content-Type: application/json" \
+    -H "X-Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://localhost:8000/api/life-hacks/like/et"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "X-Authorization": "Bearer {token}",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+null
+```
+> Example response (200):
+
+```json
+null
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "Invalid Request",
+    "code": 200
+}
+```
+
+### HTTP Request
+`GET api/life-hacks/like/{lifehack}`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `lifehack` |  required  | life hack id
+
+<!-- END_58ef53c1134d3fd57e2d1b0531fb1ab1 -->
+
+<!-- START_587189636942669637216c31b27fd1f6 -->
+## Life Hacks List
+Active Life Hacks
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://localhost:8000/api/life-hacks?%3Fpage%3D=12" \
+    -H "Content-Type: application/json" \
+    -H "X-Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://localhost:8000/api/life-hacks"
+);
+
+let params = {
+    "?page=": "12",
+};
+Object.keys(params)
+    .forEach(key => url.searchParams.append(key, params[key]));
+
+let headers = {
+    "Content-Type": "application/json",
+    "X-Authorization": "Bearer {token}",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+null
+```
+> Example response (200):
+
+```json
+null
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "Invalid Request",
+    "code": 200
+}
+```
+
+### HTTP Request
+`GET api/life-hacks`
+
+#### Query Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -----------
+    `?page=` |  optional  | next page - pagination
+
+<!-- END_587189636942669637216c31b27fd1f6 -->
+
+<!-- START_9414204451cd021c827fee1a810d6ee7 -->
+## Memes List
+Active Memes
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://localhost:8000/api/memes?%3Fpage%3D=20" \
+    -H "Content-Type: application/json" \
+    -H "X-Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://localhost:8000/api/memes"
+);
+
+let params = {
+    "?page=": "20",
+};
+Object.keys(params)
+    .forEach(key => url.searchParams.append(key, params[key]));
+
+let headers = {
+    "Content-Type": "application/json",
+    "X-Authorization": "Bearer {token}",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+null
+```
+> Example response (200):
+
+```json
+null
+```
+> Example response (200):
+
+```json
+{
+    "status": false,
+    "message": "Invalid Request",
+    "code": 200
+}
+```
+
+### HTTP Request
+`GET api/memes`
+
+#### Query Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -----------
+    `?page=` |  optional  | next page - pagination
+
+<!-- END_9414204451cd021c827fee1a810d6ee7 -->
+
 #Poll
 
 
@@ -195,7 +466,7 @@ curl -X POST \
     "http://localhost:8000/api/polls" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"optionId":9}'
+    -d '{"optionId":8}'
 
 ```
 
@@ -211,7 +482,7 @@ let headers = {
 };
 
 let body = {
-    "optionId": 9
+    "optionId": 8
 }
 
 fetch(url, {
@@ -291,7 +562,7 @@ All Polls list
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/polls?%3Fpage%3D=18" \
+    -G "http://localhost:8000/api/polls?%3Fpage%3D=13" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -302,7 +573,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "18",
+    "?page=": "13",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -407,7 +678,7 @@ Header for User&#039;s Category Posts: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/posts/user?%3Fpage%3D=11" \
+    -G "http://localhost:8000/api/posts/user?%3Fpage%3D=19" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -418,7 +689,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "11",
+    "?page=": "19",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -536,7 +807,7 @@ All posts list
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/posts/?%3Fpage%3D=6" \
+    -G "http://localhost:8000/api/posts/?%3Fpage%3D=10" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -547,7 +818,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "6",
+    "?page=": "10",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -667,7 +938,7 @@ curl -X POST \
     "http://localhost:8000/api/quotes" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"quote":13}'
+    -d '{"quote":16}'
 
 ```
 
@@ -683,7 +954,7 @@ let headers = {
 };
 
 let body = {
-    "quote": 13
+    "quote": 16
 }
 
 fetch(url, {
@@ -752,7 +1023,7 @@ Active Quotes
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/quotes?%3Fpage%3D=2" \
+    -G "http://localhost:8000/api/quotes?%3Fpage%3D=19" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -763,7 +1034,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "2",
+    "?page=": "19",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -1024,7 +1295,7 @@ curl -X POST \
     "http://localhost:8000/api/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"email":"expedita","password":"in"}'
+    -d '{"email":"quos","password":"consectetur"}'
 
 ```
 
@@ -1040,8 +1311,8 @@ let headers = {
 };
 
 let body = {
-    "email": "expedita",
-    "password": "in"
+    "email": "quos",
+    "password": "consectetur"
 }
 
 fetch(url, {
@@ -1104,7 +1375,7 @@ curl -X POST \
     "http://localhost:8000/api/social/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"voluptatem","email":"reiciendis","image":"ratione","social_id":"porro","provider":"optio"}'
+    -d '{"name":"architecto","email":"aut","image":"iusto","social_id":"voluptates","provider":"dolorum"}'
 
 ```
 
@@ -1120,11 +1391,11 @@ let headers = {
 };
 
 let body = {
-    "name": "voluptatem",
-    "email": "reiciendis",
-    "image": "ratione",
-    "social_id": "porro",
-    "provider": "optio"
+    "name": "architecto",
+    "email": "aut",
+    "image": "iusto",
+    "social_id": "voluptates",
+    "provider": "dolorum"
 }
 
 fetch(url, {
@@ -1190,7 +1461,7 @@ curl -X POST \
     "http://localhost:8000/api/phone/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"phone":9,"password":"voluptas"}'
+    -d '{"phone":16,"password":"deleniti"}'
 
 ```
 
@@ -1206,8 +1477,8 @@ let headers = {
 };
 
 let body = {
-    "phone": 9,
-    "password": "voluptas"
+    "phone": 16,
+    "password": "deleniti"
 }
 
 fetch(url, {
@@ -1270,7 +1541,7 @@ curl -X POST \
     "http://localhost:8000/api/register" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"quae","email":"unde","address":"expedita","password":"voluptatem","phone":13,"image":"aliquam"}'
+    -d '{"name":"earum","email":"qui","address":"possimus","password":"minus","phone":14,"image":"maiores"}'
 
 ```
 
@@ -1286,12 +1557,12 @@ let headers = {
 };
 
 let body = {
-    "name": "quae",
-    "email": "unde",
-    "address": "expedita",
-    "password": "voluptatem",
-    "phone": 13,
-    "image": "aliquam"
+    "name": "earum",
+    "email": "qui",
+    "address": "possimus",
+    "password": "minus",
+    "phone": 14,
+    "image": "maiores"
 }
 
 fetch(url, {
@@ -1579,7 +1850,7 @@ curl -X POST \
     "http://localhost:8000/api/user/profile/update" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"image":"soluta"}'
+    -d '{"image":"atque"}'
 
 ```
 
@@ -1595,7 +1866,7 @@ let headers = {
 };
 
 let body = {
-    "image": "soluta"
+    "image": "atque"
 }
 
 fetch(url, {

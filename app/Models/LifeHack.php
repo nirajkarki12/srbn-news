@@ -2,14 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 class LifeHack extends MainModel
 {
     protected $fillable = ['content','image'];
 
+    protected $appends = ['is_liked'];
+
+
+    public function getIsLikedAttribute() {
+
+        if(!$this->user()) return false;
+        
+        return (bool) $this->likes()->where('user_id', $this->user()->id)->first();
+    }
+
     public function translation() {
-        return $this->hasOne(LifeHackTranslation::class);
+        return $this->hasOne(LifeHackTranslation::class)->select('life_hack_id','content');
     }
 
     public function likes() {
