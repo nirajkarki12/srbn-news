@@ -23,7 +23,6 @@ Route::group(['prefix' => 'admin'], function(){
       Route::get('', 'LifeHackController@index')->name('admin.lifehack');
       Route::get('create/{lifehack?}', 'LifeHackController@create')->name('admin.lifehack.create');
       Route::post('store/{lifehack?}', 'LifeHackController@store')->name('admin.lifehack.store');
-      Route::post('store/{lifehack?}', 'LifeHackController@store')->name('admin.lifehack.store');
       Route::get('delete/{lifehack}', 'LifeHackController@destroy')->name('admin.lifehack.delete');
    });
 
@@ -31,8 +30,21 @@ Route::group(['prefix' => 'admin'], function(){
       Route::get('', 'MemeController@index')->name('admin.meme');
       Route::get('create/{meme?}', 'MemeController@create')->name('admin.meme.create');
       Route::post('store/{meme?}', 'MemeController@store')->name('admin.meme.store');
-      Route::post('store/{meme?}', 'MemeController@store')->name('admin.meme.store');
       Route::get('delete/{meme}', 'MemeController@destroy')->name('admin.meme.delete');
+   });
+
+   Route::group(['prefix' => 'horoscope'], function(){
+      Route::get('/', 'HoroscopeController@index')->name('admin.horoscope');
+      Route::get('create/{horoscope?}', 'HoroscopeController@create')->name('admin.horoscope.create');
+      Route::get('delete/{horoscope}', 'HoroscopeController@destroy')->name('admin.horoscope.delete');
+      Route::post('store/{horoscope?}', 'HoroscopeController@store')->name('admin.horoscope.store');
+   });
+
+   Route::group(['prefix' => 'prediction'], function(){
+      Route::get('/', 'PredictionController@index')->name('admin.prediction');
+      Route::get('create/{prediction?}', 'PredictionController@create')->name('admin.prediction.create');
+      Route::get('delete/{prediction}', 'PredictionController@destroy')->name('admin.prediction.delete');
+      Route::post('store/{prediction?}', 'PredictionController@store')->name('admin.prediction.store');
    });
 
 	/* Category CRUD	*/
