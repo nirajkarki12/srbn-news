@@ -33,9 +33,18 @@
                 <label for="title" class=" control-label">Title</label>
               </div>
               <div class="col-sm-9 pull-left">
-                  <input type="text" class="form-control" id="title" name="title" value="{{ old('title') ?: $pollEdit->title }}"  placeholder="Post Title" required>
+                  <input type="text" class="form-control" id="title" name="title" value="{{ old('title') ?: $pollEdit->title }}"  placeholder="Poll Title" required>
               </div>
             </div>
+
+          <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                  <label for="title_nepali" class=" control-label">Title in Nepali</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                  <input type="text" class="form-control" id="title_nepali" name="title_nepali" value="{{ old('title_nepali') ?: ($pollEdit->translation ? $pollEdit->translation->title : '') }}"  placeholder="Poll Title in Nepali" required>
+              </div>
+          </div>
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -46,6 +55,15 @@
               </div>
             </div>
 
+              <div class="form-group">
+                  <div class="col-sm-2 pull-left">
+                      <label for="description_nepali" class=" control-label">Description in Nepali</label>
+                  </div>
+                  <div class="col-sm-9 pull-left">
+                      <textarea class="form-control" id="description_nepali" name="description_nepali" rows="3" cols="80" required>{{ old('description_nepali') ?: ($pollEdit->translation ? $pollEdit->translation->description : '') }}</textarea>
+                  </div>
+              </div>
+
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="question" class=" control-label">Question</label>
@@ -55,6 +73,15 @@
               </div>
             </div>
 
+              <div class="form-group">
+                  <div class="col-sm-2 pull-left">
+                      <label for="question_nepali" class=" control-label">Question in Nepali</label>
+                  </div>
+                  <div class="col-sm-9 pull-left">
+                      <textarea class="form-control" id="question_nepali" name="question_nepali" rows="2" cols="80" required>{{ old('question_nepali') ?: ($pollEdit->translation ? $pollEdit->translation->question : '') }}</textarea>
+                  </div>
+              </div>
+
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="options0" class=" control-label">Options</label>
@@ -62,16 +89,25 @@
               <div class="col-sm-9 pull-left">
                   @foreach($pollEdit->options as $key => $option)
                      <div class="col-sm-4" style="padding:0 10px 0 0;">
-                        <input type="text" class="form-control" id="options{{ $key }}" name="options[{{ $option->id }}]" @if($key < 2) required @endif value="{{ $option->value }}" placeholder="Option {{ $key + 1 }}">
+                        <input type="text" class="form-control" id="options{{ $key }}" name="options[{{ $option->id }}]" required value="{{ $option->value }}" placeholder="Option {{ $key + 1 }}">
                      </div>
                   @endforeach
-                  @if(count($pollEdit->options) <= 2)
-                     <div class="col-sm-4" style="padding:0 0 0 0">
-                        <input type="text" class="form-control" id="option2" name="optional" value="{{ old('optional') }}" placeholder="Option 3">
-                     </div>
-                  @endif
               </div>
             </div>
+
+              <div class="form-group">
+                  <div class="col-sm-2 pull-left">
+                      <label for="options0" class=" control-label">Options in Nepali</label>
+                  </div>
+                  <div class="col-sm-9 pull-left">
+                      @foreach($pollEdit->options as $key => $data)
+                          <div class="col-sm-4" style="padding:0 10px 0 0;">
+                              <input type="text" class="form-control" id="options2{{ $key }}" name="options2[{{ $data->translation->id }}]" required value="{{ $data->translation->value }}" placeholder="Option {{ $key + 1 }}">
+                          </div>
+                      @endforeach
+                  </div>
+              </div>
+
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -149,13 +185,24 @@
    .create( document.querySelector('#description'), {
       toolbar: {
          items: [
-            'bold', 'italic', 'underline', 'strikethrough', '|', 
-            'fontColor', 'fontBackgroundColor', 'link', '|', 
+            'bold', 'italic', 'underline', 'strikethrough', '|',
+            'fontColor', 'fontBackgroundColor', 'link', '|',
             'insertTable', 'bulletedList', 'numberedList','|',
-            'blockQuote', 'subscript', 'superscript', 'horizontalLine', 
+            'blockQuote', 'subscript', 'superscript', 'horizontalLine',
          ]
       },
    });
+   ClassicEditor
+       .create( document.querySelector('#description_nepali'), {
+           toolbar: {
+               items: [
+                   'bold', 'italic', 'underline', 'strikethrough', '|',
+                   'fontColor', 'fontBackgroundColor', 'link', '|',
+                   'insertTable', 'bulletedList', 'numberedList','|',
+                   'blockQuote', 'subscript', 'superscript', 'horizontalLine',
+               ]
+           },
+       });
   $(function () {
     var type = $('#type option:selected').val();
     if(type) toggleType(type);
@@ -181,10 +228,10 @@
 
       if(type == '{{ \App\Models\Post::TYPE_IMAGE}}') {
          $("#overlay").fadeIn(200);
-         
+
          $('#image').css('display', 'block');
          $('#image').attr('src', value);
-         
+
          $("#overlay").fadeOut(200);
       }
     });

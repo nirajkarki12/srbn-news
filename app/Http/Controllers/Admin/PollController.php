@@ -8,6 +8,7 @@ use Validator;
 use anlutro\LaravelSettings\Facade as Setting;
 use App\Models\Poll;
 use App\Models\Polloption;
+use App\Models\PolloptionTranslation;
 
 class PollController extends BaseController
 {
@@ -85,23 +86,24 @@ class PollController extends BaseController
 
             if(isset($data['options']) && is_array($data['options']))
             {
-               foreach ($data['options'] as $val) {
+               foreach ($data['options'] as $key => $val) {
+                 $polloption = new Polloption;
+                 $polloption->value = $val;
+                 $polloption->poll_id = $poll->id;
+                 $polloption->save();
 
-                  if(isset($val))
-                  {
-                     Polloption::create([
-                        'value' => $val,
-                        'poll_id' => $poll->id
-                     ]);
-                  }
+                 $polloption->translation()->create([
+                     'value' => $data['options2'][$key]
+                 ]);
                }
             }
 
-            if(isset($data['optional'])) {
-               Polloption::create([
-                  'value' => $data['optional'],
-                  'poll_id' => $poll->id
-               ]);
+            if($request->description_nepali) {
+                $poll->translation()->create([
+                    'title' => $request->title_nepali?:'',
+                    'description' => $request->description_nepali?:'',
+                    'question' => $request->question_nepali?:'',
+                ]);
             }
 
             return back()->with('flash_success', 'Poll added Successfully');
@@ -165,24 +167,35 @@ class PollController extends BaseController
             if(isset($data['options']) && is_array($data['options']))
             {
                foreach ($data['options'] as $id => $val) {
-
-                  if(isset($val))
-                  {
-                     Polloption::where(['id' => $id])
-                        ->update([
-                           'value' => $val
-                        ]);
-                  } else{
-                     Polloption::find($id)->delete();
-                  }
+                 Polloption::where(['id' => $id])
+                    ->update([
+                       'value' => $val
+                    ]);
                }
             }
 
-            if(isset($data['optional'])) {
-               Polloption::create([
-                  'value' => $data['optional'],
-                  'poll_id' => $poll->id
-               ]);
+            if($poll->translation) {
+                $poll->translation->update([
+                    'title' => $request->title_nepali?:($poll->translation->title?:''),
+                    'description' => $request->description_nepali?:($poll->translation->description?:''),
+                    'question' => $request->question_nepali?:($poll->translation->question_nepali?:''),
+                ]);
+            } else {
+                $poll->translation()->create([
+                    'title' => $request->title_nepali?:'',
+                    'description' => $request->description_nepali?:'',
+                    'question' => $request->question_nepali?:'',
+                ]);
+            }
+
+            if(isset($data['options2']) && is_array($data['options2']))
+            {
+                foreach ($data['options2'] as $id => $val) {
+                    PolloptionTranslation::where(['id' => $id])
+                        ->update([
+                            'value' => $val
+                        ]);
+                }
             }
 
             return redirect()->route('admin.poll', ['page' => $page])->with('flash_success', 'Poll updated Successfully');
@@ -202,11 +215,11 @@ class PollController extends BaseController
     {
         try {
             if(!$slug) throw new \Exception("Error Processing Request", 1);
-            
+
             if(!Poll::where('slug', $slug)->delete()) throw new \Exception("Error Processing Request", 1);
 
             return redirect()->route('admin.poll', ['page' => $page])->with('flash_success', 'Poll removed Successfully');
-               
+
         } catch (\Exception $e) {
             return back()->with('flash_error', $e->getMessage());
         }

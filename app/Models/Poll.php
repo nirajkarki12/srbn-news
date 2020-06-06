@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use App\Models\Polloption;
+use App\Models\PollTranslation;
 
 class Poll extends Model
 {
@@ -18,7 +19,7 @@ class Poll extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-       'title', 'description', 'question', 'type', 'content', 'audio_url', 'status', 
+       'title', 'description', 'question', 'type', 'content', 'audio_url', 'status',
 	];
 
    /**
@@ -38,6 +39,10 @@ class Poll extends Model
    {
       return $this->hasMany(Polloption::class);
    }
+
+    public function translation() {
+        return $this->hasOne(PollTranslation::class)->select('poll_id','title','description','question');
+    }
 
    public function sluggable()
    {

@@ -16,6 +16,7 @@ class CreatePollOptionsTable extends Migration
         Schema::create('poll_options', function (Blueprint $table) {
             $table->id();
             $table->string('value');
+            $table->string('value2');
             $table->integer('total')->default(0);
             $table->unsignedBigInteger('poll_id')->nullable();
             $table->foreign('poll_id')->references('id')->on('polls')->onUpdate('cascade')->onDelete('cascade');
