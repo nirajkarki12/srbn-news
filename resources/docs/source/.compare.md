@@ -186,20 +186,20 @@ fetch(url, {
 
 <!-- START_6c9a429a2ededa75193277eaf9290987 -->
 ## Like Unlike Memes
-Header: X-Authorization: Bearer {token}
+Header: X-Authorization: Bearer {token},
 
 > Example request:
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/memes/like/eos" \
+    -G "http://localhost:8000/api/memes/like/et" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost:8000/api/memes/like/eos"
+    "http://localhost:8000/api/memes/like/et"
 );
 
 let headers = {
@@ -220,12 +220,28 @@ fetch(url, {
 > Example response (200):
 
 ```json
-null
+{
+    "status": true,
+    "data": {
+        "id": 4,
+        "image": "http:\/\/127.0.0.1:8000\/storage\/memes\/cd67f39562fc5dd7a693d5390a7785d9fc52dc4f.png",
+        "created_at": "2020-06-06T10:31:16.000000Z",
+        "updated_at": "2020-06-06T10:31:16.000000Z",
+        "likes_count": 0,
+        "is_liked": false
+    },
+    "message": "request successful",
+    "code": 200
+}
 ```
 > Example response (200):
 
 ```json
-null
+{
+    "status": false,
+    "message": "Meme not found",
+    "code": 200
+}
 ```
 > Example response (200):
 
@@ -256,14 +272,14 @@ Header: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/life-hacks/like/et" \
+    -G "http://localhost:8000/api/life-hacks/like/voluptatem" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost:8000/api/life-hacks/like/et"
+    "http://localhost:8000/api/life-hacks/like/voluptatem"
 );
 
 let headers = {
@@ -284,12 +300,32 @@ fetch(url, {
 > Example response (200):
 
 ```json
-null
+{
+    "status": true,
+    "data": {
+        "id": 4,
+        "content": "content in english",
+        "image": "http:\/\/127.0.0.1:8000\/storage\/memes\/cd67f39562fc5dd7a693d5390a7785d9fc52dc4f.png",
+        "created_at": "2020-06-06T10:31:16.000000Z",
+        "updated_at": "2020-06-06T10:31:16.000000Z",
+        "likes_count": 0,
+        "is_liked": false,
+        "translation": {
+            "content": "content in nepali"
+        }
+    },
+    "message": "request successful",
+    "code": 200
+}
 ```
 > Example response (200):
 
 ```json
-null
+{
+    "status": false,
+    "message": "Life hack not found",
+    "code": 200
+}
 ```
 > Example response (200):
 
@@ -314,13 +350,13 @@ Parameter | Status | Description
 
 <!-- START_587189636942669637216c31b27fd1f6 -->
 ## Life Hacks List
-Active Life Hacks
+Active Life Hacs
 
 > Example request:
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/life-hacks?%3Fpage%3D=12" \
+    -G "http://localhost:8000/api/life-hacks?%3Fpage%3D=6" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -331,7 +367,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "12",
+    "?page=": "6",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -354,12 +390,47 @@ fetch(url, {
 > Example response (200):
 
 ```json
-null
+{
+    "status": true,
+    "data": {
+        "current_page": 2,
+        "data": [
+            {
+                "id": 1,
+                "image": "image url",
+                "content": "Content in english",
+                "translation": {
+                    "content": "Content in nepali"
+                },
+                "likes_count": 10,
+                "is_liked": true,
+                "created_at": "2020-04-14 15:00",
+                "updated_at": "2020-04-14 15:00"
+            }
+        ],
+        "first_page_url": "URL\/\/api\/life-hacks?page=2",
+        "from": 16,
+        "last_page": 4,
+        "last_page_url": "URL\/\/api\/life-hacks?page=4",
+        "next_page_url": "URL\/\/api\/life-hacks?page=3",
+        "path": "URL\/api\/life-hacks",
+        "per_page": 15,
+        "prev_page_url": "URL\/\/api\/life-hacks?page=1",
+        "to": 30,
+        "total": 55
+    },
+    "message": "Life Hacks data fetched successfully",
+    "code": 200
+}
 ```
 > Example response (200):
 
 ```json
-null
+{
+    "status": false,
+    "message": "Life Hacks not found",
+    "code": 200
+}
 ```
 > Example response (200):
 
@@ -390,7 +461,7 @@ Active Memes
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/memes?%3Fpage%3D=20" \
+    -G "http://localhost:8000/api/memes?%3Fpage%3D=1" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -401,7 +472,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "20",
+    "?page=": "1",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -424,12 +495,43 @@ fetch(url, {
 > Example response (200):
 
 ```json
-null
+{
+    "status": true,
+    "data": {
+        "current_page": 2,
+        "data": [
+            {
+                "id": 1,
+                "image": "image url",
+                "likes_count": 10,
+                "is_liked": true,
+                "created_at": "2020-04-14 15:00",
+                "updated_at": "2020-04-14 15:00"
+            }
+        ],
+        "first_page_url": "URL\/\/api\/memes?page=2",
+        "from": 16,
+        "last_page": 4,
+        "last_page_url": "URL\/\/api\/memes?page=4",
+        "next_page_url": "URL\/\/api\/memes?page=3",
+        "path": "URL\/api\/memes",
+        "per_page": 15,
+        "prev_page_url": "URL\/\/api\/memes?page=1",
+        "to": 30,
+        "total": 55
+    },
+    "message": "Memes data fetched successfully",
+    "code": 200
+}
 ```
 > Example response (200):
 
 ```json
-null
+{
+    "status": false,
+    "message": "Memes not found",
+    "code": 200
+}
 ```
 > Example response (200):
 
@@ -466,7 +568,7 @@ curl -X POST \
     "http://localhost:8000/api/polls" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"optionId":8}'
+    -d '{"optionId":17}'
 
 ```
 
@@ -482,7 +584,7 @@ let headers = {
 };
 
 let body = {
-    "optionId": 8
+    "optionId": 17
 }
 
 fetch(url, {
@@ -562,7 +664,7 @@ All Polls list
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/polls?%3Fpage%3D=13" \
+    -G "http://localhost:8000/api/polls?%3Fpage%3D=1" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -573,7 +675,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "13",
+    "?page=": "1",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -678,7 +780,7 @@ Header for User&#039;s Category Posts: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/posts/user?%3Fpage%3D=19" \
+    -G "http://localhost:8000/api/posts/user?%3Fpage%3D=6" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -689,7 +791,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "19",
+    "?page=": "6",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -807,7 +909,7 @@ All posts list
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/posts/?%3Fpage%3D=10" \
+    -G "http://localhost:8000/api/posts/?%3Fpage%3D=14" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -818,7 +920,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "10",
+    "?page=": "14",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -938,7 +1040,7 @@ curl -X POST \
     "http://localhost:8000/api/quotes" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"quote":16}'
+    -d '{"quote":18}'
 
 ```
 
@@ -954,7 +1056,7 @@ let headers = {
 };
 
 let body = {
-    "quote": 16
+    "quote": 18
 }
 
 fetch(url, {
@@ -1023,7 +1125,7 @@ Active Quotes
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/quotes?%3Fpage%3D=19" \
+    -G "http://localhost:8000/api/quotes?%3Fpage%3D=12" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -1034,7 +1136,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "19",
+    "?page=": "12",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -1295,7 +1397,7 @@ curl -X POST \
     "http://localhost:8000/api/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"email":"quos","password":"consectetur"}'
+    -d '{"email":"rerum","password":"cumque"}'
 
 ```
 
@@ -1311,8 +1413,8 @@ let headers = {
 };
 
 let body = {
-    "email": "quos",
-    "password": "consectetur"
+    "email": "rerum",
+    "password": "cumque"
 }
 
 fetch(url, {
@@ -1375,7 +1477,7 @@ curl -X POST \
     "http://localhost:8000/api/social/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"architecto","email":"aut","image":"iusto","social_id":"voluptates","provider":"dolorum"}'
+    -d '{"name":"aliquid","email":"ut","image":"omnis","social_id":"facere","provider":"ab"}'
 
 ```
 
@@ -1391,11 +1493,11 @@ let headers = {
 };
 
 let body = {
-    "name": "architecto",
-    "email": "aut",
-    "image": "iusto",
-    "social_id": "voluptates",
-    "provider": "dolorum"
+    "name": "aliquid",
+    "email": "ut",
+    "image": "omnis",
+    "social_id": "facere",
+    "provider": "ab"
 }
 
 fetch(url, {
@@ -1461,7 +1563,7 @@ curl -X POST \
     "http://localhost:8000/api/phone/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"phone":16,"password":"deleniti"}'
+    -d '{"phone":9,"password":"quae"}'
 
 ```
 
@@ -1477,8 +1579,8 @@ let headers = {
 };
 
 let body = {
-    "phone": 16,
-    "password": "deleniti"
+    "phone": 9,
+    "password": "quae"
 }
 
 fetch(url, {
@@ -1541,7 +1643,7 @@ curl -X POST \
     "http://localhost:8000/api/register" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"earum","email":"qui","address":"possimus","password":"minus","phone":14,"image":"maiores"}'
+    -d '{"name":"minima","email":"est","address":"accusantium","password":"ducimus","phone":17,"image":"ut"}'
 
 ```
 
@@ -1557,12 +1659,12 @@ let headers = {
 };
 
 let body = {
-    "name": "earum",
-    "email": "qui",
-    "address": "possimus",
-    "password": "minus",
-    "phone": 14,
-    "image": "maiores"
+    "name": "minima",
+    "email": "est",
+    "address": "accusantium",
+    "password": "ducimus",
+    "phone": 17,
+    "image": "ut"
 }
 
 fetch(url, {
@@ -1850,7 +1952,7 @@ curl -X POST \
     "http://localhost:8000/api/user/profile/update" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"image":"atque"}'
+    -d '{"image":"placeat"}'
 
 ```
 
@@ -1866,7 +1968,7 @@ let headers = {
 };
 
 let body = {
-    "image": "atque"
+    "image": "placeat"
 }
 
 fetch(url, {
