@@ -42,6 +42,26 @@
             </li>
 
             <li class="treeview" id="attribute">
+                <a href="{{route('admin.lifehack')}}">
+                    <i class="fa fa-life-ring"></i> <span>Life Hacks</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li id="add-attribute"><a href="{{route('admin.lifehack.create')}}"><i class="fa fa-plus"></i>Add Life Hack</a></li>
+                    <li id="view-attribute"><a href="{{route('admin.lifehack')}}"><i class="fa fa-th-list"></i>List Life Hack</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview" id="attribute">
+                <a href="{{route('admin.meme')}}">
+                    <i class="fa fa-frown-o"></i> <span>Memes</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li id="add-attribute"><a href="{{route('admin.meme.create')}}"><i class="fa fa-plus"></i>Add Meme</a></li>
+                    <li id="view-attribute"><a href="{{route('admin.meme')}}"><i class="fa fa-th-list"></i>List Meme</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview" id="attribute">
                 <a href="{{route('admin.category')}}">
                     <i class="fa fa-folder-o"></i> <span>Category</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>

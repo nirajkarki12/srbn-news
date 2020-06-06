@@ -18,6 +18,23 @@ Route::group(['prefix' => 'admin'], function(){
    Route::get('config', 'SettingController@index')->name('admin.config');
    Route::post('config', 'SettingController@update')->name('admin.config.save');
 
+
+   Route::group(['prefix' => 'lifehack'], function(){
+      Route::get('', 'LifeHackController@index')->name('admin.lifehack');
+      Route::get('create/{lifehack?}', 'LifeHackController@create')->name('admin.lifehack.create');
+      Route::post('store/{lifehack?}', 'LifeHackController@store')->name('admin.lifehack.store');
+      Route::post('store/{lifehack?}', 'LifeHackController@store')->name('admin.lifehack.store');
+      Route::get('delete/{lifehack}', 'LifeHackController@destroy')->name('admin.lifehack.delete');
+   });
+
+   Route::group(['prefix' => 'meme'], function(){
+      Route::get('', 'MemeController@index')->name('admin.meme');
+      Route::get('create/{meme?}', 'MemeController@create')->name('admin.meme.create');
+      Route::post('store/{meme?}', 'MemeController@store')->name('admin.meme.store');
+      Route::post('store/{meme?}', 'MemeController@store')->name('admin.meme.store');
+      Route::get('delete/{meme}', 'MemeController@destroy')->name('admin.meme.delete');
+   });
+
 	/* Category CRUD	*/
 	Route::get('category/list', 'CategoryController@index')->name('admin.category');
 	Route::get('category/create', 'CategoryController@create')->name('admin.category.create');

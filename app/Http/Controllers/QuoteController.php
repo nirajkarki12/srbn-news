@@ -103,7 +103,7 @@ class QuoteController extends BaseApiController
 
             return $this->successResponse($quotes, 'Quotes data fetched successfully');
         } catch (\Exception $e) {
-            return $this->errorResponse($e->getMessage(), 500);
+            return $this->errorResponse($e->getMessage(), $e->getCode());
         }
 
     }

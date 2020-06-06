@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use App\Models\User;
 
-class Quote extends Model
+class Quote extends MainModel
 {
 	use Notifiable;
 
@@ -16,7 +15,7 @@ class Quote extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-	    'quote', 'author', 'status','nepali'
+	    'quote', 'author', 'status'
 	];
 
    /**
@@ -29,6 +28,7 @@ class Quote extends Model
         'updated_at' => 'datetime:Y-m-d H:i',
     ];
 
+
    /**
    * The likes that belong to the quote.
    */
@@ -36,6 +36,7 @@ class Quote extends Model
    {
       return $this->belongsToMany(User::class, 'quote_likes');
    }
+
 
    public function translation() {
        return $this->hasOne(QuoteTranslation::class)->select('quote_id','quote','author');
