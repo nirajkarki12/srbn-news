@@ -43,17 +43,26 @@ class HoroscopeController extends BaseApiController
             
             $user = $this->guard->user();
 
-            if($horoscope->users->contains($user->id)) {
+            $is_any = $user->horoscope()->first();
 
-                $user->horoscope()->detach($horoscope->id);
-            
+
+            if(!$is_any) {
+
+                // if none present it build
+                $user->horoscope()->attach($horoscope);
+                
             } else {
 
-                $user->horoscope()->attach($horoscope->id);
-            
+                if($is_any != $horoscope) {
+                    $user->horoscope()->detach($is_any->id);
+                    $user->horoscope()->attach($horoscope->id);
+                }
+
+                
             }
 
-            return $this->successResponse($horoscope->withCount('users')->first()->makeHidden('users'), 'Request successfull');
+            return $this->successResponse($user->horoscope()->withCount('users')->first()->makeHidden('users'), 'Request successfull');
+        
         } catch (\Throwable $th) {
             //throw $th;
         }

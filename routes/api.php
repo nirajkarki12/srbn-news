@@ -20,7 +20,7 @@ Route::group(['middleware'=>['jwt.verify']],function(){
    Route::get('/life-hacks/like/{lifehack}', 'LifeHackController@handleLifeHackLike')->name('lifehack.handlelike');
 
    Route::get('predict/horoscope','HoroscopeController@getPredictions');
-   Route::get('horoscope/{id}','HoroscopeController@choose');
+   Route::get('horoscope/{horoscope}','HoroscopeController@choose');
    
    
    /* profile change API */
