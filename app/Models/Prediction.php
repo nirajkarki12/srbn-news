@@ -2,14 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Prediction extends Model
+class Prediction extends MainModel
 {
     protected $fillable = ['horoscope_id','nepali','english','type','rating','prediction_date'];
+
+
+    protected $appends = ['text'];
+
+    protected $hidden = ['nepali','english','prediction_date','created_at','updated_at'];
 
     public function horoscope() {
         return $this->belongsTo(Horoscope::class);
     }
+
+    public function getTextAttribute() {
+        if($this->lang() == 'ne') return $this->nepali;
+        return $this->english;
+    }
+
+
 
 }

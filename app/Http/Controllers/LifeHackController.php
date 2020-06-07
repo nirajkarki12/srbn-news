@@ -25,6 +25,7 @@ class LifeHackController extends BaseApiController
     /**
      * Life Hacks List
      * Active Life Hacs
+     * @queryParam lang=en preferred language en for english, ne for nepali
      * @queryParam ?page= next page - pagination
      * @response {
      *  "status": true,

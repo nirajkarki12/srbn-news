@@ -7,6 +7,8 @@ Route::post('/social/login','UserController@socialLogin')->name('api-social-logi
 Route::post('/phone/login','UserController@phoneLogin')->name('api-phone-login');
 Route::post('/register','UserController@register')->name('api-register');
 
+Route::get('list/horoscope','HoroscopeController@listHoroscopes');
+
 Route::group(['middleware'=>['jwt.verify']],function(){
    Route::get('auth-user','UserController@getUser')->name('auth-user');
    Route::post('user/set-category','UserController@setUserCategories')->name('user.set-category');
@@ -19,15 +21,14 @@ Route::group(['middleware'=>['jwt.verify']],function(){
    Route::get('/memes/like/{meme}', 'LifeHackController@handleMemeLike')->name('memes.handlelike');
    Route::get('/life-hacks/like/{lifehack}', 'LifeHackController@handleLifeHackLike')->name('lifehack.handlelike');
 
-   Route::get('predict/horoscope','HoroscopeController@getPredictions');
    Route::get('horoscope/{horoscope}','HoroscopeController@choose');
+   Route::get('predict/horoscope','HoroscopeController@getPredictions');
    
    
    /* profile change API */
    Route::post('/user/profile/update','userController@changeProfile')->name('update-profile');
 });
 
-Route::get('list/horoscope','HoroscopeController@listHoroscopes');
 Route::get('/quotes','QuoteController@index')->name('api-quotes');
 
 Route::get('/life-hacks', 'LifeHackController@lifeHackListing')->name('life-hacks');
