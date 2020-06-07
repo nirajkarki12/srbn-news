@@ -54,6 +54,10 @@ class User extends Authenticatable implements JWTSubject
       return $this->belongsToMany(Category::class, 'user_categories');
    }
 
+   public function horoscope() {
+      return $this->belongsToMany(Horoscope::class, 'horoscope_user');
+   }
+
    /**
    * The polls that belong to the user.
    */

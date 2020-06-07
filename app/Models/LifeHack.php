@@ -16,6 +16,11 @@ class LifeHack extends MainModel
         return (bool) $this->likes()->where('user_id', $this->user()->id)->first();
     }
 
+    public function getContentAttribute($content) {
+        if($this->lang() == 'ne') return $this->translation->content;
+        return $content;
+    }
+
     public function translation() {
         return $this->hasOne(LifeHackTranslation::class)->select('life_hack_id','content');
     }
