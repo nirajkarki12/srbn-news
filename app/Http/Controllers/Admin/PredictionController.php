@@ -16,7 +16,7 @@ class PredictionController extends BaseController
         $predictions = Prediction::orderBy('created_at', 'desc')->paginate(Setting::get('data_per_page', 25));
         return view('admin.prediction.index', compact('predictions'));
     }
-    
+
     public function create(Prediction $prediction = null) {
         $horoscopes = Horoscope::orderBy('order', 'asc')->get();
         return view('admin.prediction.create', compact('prediction','horoscopes'));
@@ -25,38 +25,41 @@ class PredictionController extends BaseController
     public function store(Request $request, Prediction $prediction = null) {
 
         try {
-            
+
             $edit = (bool) $prediction;
-    
+
             $data = $request->except('_token');
             if(!$prediction) {
-                
+
                 $validator = Validator::make( $data, array(
-                        'horoscope_id'   => 'required',    
-                        'nepali'   => 'required',    
+                        'horoscope_id'   => 'required',
+                        'nepali'   => 'required',
                         'english'  => 'required',
                         'type'  => 'required',
                         'rating' => 'required',
                     )
                 );
-        
+
                 if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
             }
 
             if(!$prediction) {
-                if(Prediction::where('prediction_date', $request->prediction_date)->first()) throw new \Exception('Date already inserted');
+                if(Prediction::where('prediction_date', $request->prediction_date)
+                    ->where('horoscope_id', $request->horoscope_id)
+                    ->where('type', $request->type)
+                    ->first()) throw new \Exception('Date already inserted');
             }
 
             if($prediction) {
-    
+
                 if(!$prediction->update($data)) throw new \Exception("Something Went Wrong, Try Again!", 1);
-    
+
             } else {
-    
-                $prediction = Prediction::create($data);            
-    
+
+                $prediction = Prediction::create($data);
+
             }
-    
+
             if($edit) return redirect()->route('admin.prediction')->with('flash_success', 'Prediction edited successfully');
             return back()->with('flash_success', 'Prediction added Successfully');
 
