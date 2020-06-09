@@ -56,7 +56,7 @@ class LifeHackController extends BaseController
 
             } else {
 
-                $lifehack = LifeHack::create($data);            
+                $lifehack = LifeHack::create($data);
 
             }
 
@@ -65,7 +65,7 @@ class LifeHackController extends BaseController
 
                 if($lifehack && $lifehack->translation) {
 
-                    $lifehack->translation->update([
+                    $lifehack->translation()->update([
                         'content' => $request->content_nepali?:''
                     ]);
 
@@ -83,18 +83,18 @@ class LifeHackController extends BaseController
         } catch (\Exception $e) {
             return back()->with('flash_error', $e->getMessage())->withInput($data);
         }
-       
+
     }
 
     public function destroy(LifeHack $lifehack) {
         try {
-            
+
             if(!$lifehack) throw new \Exception("Error Processing Request", 1);
-    
+
             if(!$lifehack->delete()) throw new \Exception("Error Processing Request", 1);
-    
+
             Helper::deleteImage(basename($lifehack->image), 'lifehacks');
-    
+
             return redirect()->route('admin.lifehack', ['page' => request('page')?:null])->with('flash_success', 'Life Hack removed Successfully');
 
         } catch (\Exception $e) {

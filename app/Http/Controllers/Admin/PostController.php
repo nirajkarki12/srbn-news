@@ -201,7 +201,7 @@ class PostController extends BaseController
             if($request->description_nepali) {
 
                 if($post->translation) {
-                    $post->translation->update([
+                    $post->translation()->update([
                         'title' => $request->title_nepali?:($post->translation->title?:''),
                         'description' => $request->description_nepali?:($post->translation->description?:''),
                         'note' => $request->note_nepali?:($post->translation->note?:''),
