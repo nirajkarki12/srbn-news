@@ -19,6 +19,7 @@ class CreatePollTranslationsTable extends Migration
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->string('question')->nullable();
+            $table->string('audio_url')->nullable();
 
             $table->foreign('poll_id')->references('id')->on('polls')->onDelete('cascade');
             $table->timestamps();

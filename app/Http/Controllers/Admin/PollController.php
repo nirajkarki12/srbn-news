@@ -103,6 +103,7 @@ class PollController extends BaseController
                     'title' => $request->title_nepali?:'',
                     'description' => $request->description_nepali?:'',
                     'question' => $request->question_nepali?:'',
+                    'audio_url' => $request->audio_url_nepali?:'',
                 ]);
             }
 
@@ -179,12 +180,14 @@ class PollController extends BaseController
                     'title' => $request->title_nepali?:($poll->translation->title?:''),
                     'description' => $request->description_nepali?:($poll->translation->description?:''),
                     'question' => $request->question_nepali?:($poll->translation->question_nepali?:''),
+                    'audio_url' => $request->audio_url_nepali?:($poll->translation->audio_url?:''),
                 ]);
             } else {
                 $poll->translation()->create([
                     'title' => $request->title_nepali?:'',
                     'description' => $request->description_nepali?:'',
                     'question' => $request->question_nepali?:'',
+                    'audio_url' => $request->audio_url_nepali?:'',
                 ]);
             }
 
