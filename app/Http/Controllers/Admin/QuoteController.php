@@ -142,7 +142,7 @@ class QuoteController extends BaseController
                         'author'    => $request->author_nepali
                     ]);
                 }
-                
+
             }
 
 

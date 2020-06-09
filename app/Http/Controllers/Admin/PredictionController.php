@@ -68,9 +68,9 @@ class PredictionController extends BaseController
         }
     }
 
-    public function destroy(Prediction $predictin) {
+    public function destroy(Prediction $prediction) {
         try {
-            if(!$predictin->delete()) throw new \Exception('Something went wrong try again');
+            if(!$prediction->delete()) throw new \Exception('Something went wrong try again');
             return back()->with('flash_success', 'Prediction Removed');
         } catch (\Throwable $th) {
             return back()->with('flash_error', $th->getMessage());
