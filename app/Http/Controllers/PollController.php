@@ -50,15 +50,31 @@ class PollController extends BaseApiController
    *     "options": [
    *      {
    *        "id": 2,
-   *        "value": "Yes"
+   *        "value": "Yes",
+    *       "translation": {
+    *           "polloption_id": 2,
+    *           "id": 1,
+    *           "value": "nepali value"
+    *       }
    *      },
    *      {
    *        "id": 3,
-   *        "value": "No"
+   *        "value": "No",
+    *       "translation": {
+    *           "polloption_id": 3,
+    *           "id": 2,
+    *           "value": "nepali value"
+    *       }
    *      }
    *     ]
    *    }
    *   ],
+    *  "translation":{
+    *      "poll_id": 5,
+    *      "title":"translation title",
+    *      "description":"translation description",
+    *      "question":"translation question"
+    *   },
    *   "first_page_url": "URL/api/polls?page=1",
    *   "from": 16,
    *   "last_page": 4,
@@ -100,9 +116,12 @@ class PollController extends BaseApiController
                      ) AS type
                   '),
                ])
-               ->with('options')
-               ->orderBy('created_at', 'desc')
-               ->where('status', 1);
+                ->with('options')
+                ->with('options.translation')
+                ->with('translation')
+
+                ->orderBy('created_at', 'desc')
+                ->where('status', 1);
 
          // if($categoryId) {
          //    $paginator = $paginator->whereHas('categories', function($q) use($categoryId) {
@@ -150,11 +169,13 @@ class PollController extends BaseApiController
    *   {
    *   "id": 1,
    *   "value": "yes",
+   *   "value_nepali": "nepali option value",
    *   "total": "33.3%"
    *   },
    *   {
    *   "id": 2,
    *   "value": "no",
+   *   "value_nepali": "nepali option value",
    *   "total": "66.7%"
    *  }
    *  ],
@@ -194,10 +215,11 @@ class PollController extends BaseApiController
          $optionId = $data['optionId'];
 
          $poll = Poll::with('options')
-                  ->select('polls.*')
-                  ->join('poll_options AS po', 'po.poll_id', 'polls.id')
-                  ->where('po.id', $optionId)
-                  ->first();
+                    ->select('polls.*')
+                    ->with('options.translation')
+                    ->join('poll_options AS po', 'po.poll_id', 'polls.id')
+                    ->where('po.id', $optionId)
+                    ->first();
 
          $Ids = [];
          if($poll) {
@@ -223,6 +245,7 @@ class PollController extends BaseApiController
 
             $poll = Poll::with('options')
                 ->select('polls.*')
+                ->with('options.translation')
                 ->join('poll_options AS po', 'po.poll_id', 'polls.id')
                 ->where('po.id', $optionId)
                 ->first();
@@ -246,6 +269,7 @@ class PollController extends BaseApiController
          foreach ($data as $key => $value) {
             $response[$key]['id'] = $value->id;
             $response[$key]['value'] = $value->value;
+            $response[$key]['value_nepali'] = $value->translation->value;
             $response[$key]['total'] = $total > 0 ? round($value->total / $total * 100, 1) . '%' : '0%';
          }
 
