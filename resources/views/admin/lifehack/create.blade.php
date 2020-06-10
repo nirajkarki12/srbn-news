@@ -59,6 +59,18 @@
               </div>
             </div>
 
+            @if(!$lifehack)
+            <div class="form-group">
+                <div class="col-sm-2 pull-left">
+                    <label for="lifehack_excel">Excel Import</label>
+                </div>
+                <div class="col-sm-9 pull-left">
+                    <input type="file" name="lifehack_excel" class="form-control" style="height:43px">
+                    <small class="label label-warning">Note: try to import upto 500 rows at a time</small>
+                </div>
+            </div>
+            @endif
+
           </div>
 
           <div class="box-footer">
@@ -79,10 +91,10 @@
 //    .create( document.querySelector('#description'), {
 //       toolbar: {
 //          items: [
-//             'bold', 'italic', 'underline', 'strikethrough', '|', 
-//             'fontColor', 'fontBackgroundColor', 'link', '|', 
+//             'bold', 'italic', 'underline', 'strikethrough', '|',
+//             'fontColor', 'fontBackgroundColor', 'link', '|',
 //             'insertTable', 'bulletedList', 'numberedList','|',
-//             'blockQuote', 'subscript', 'superscript', 'horizontalLine', 
+//             'blockQuote', 'subscript', 'superscript', 'horizontalLine',
 //          ]
 //       },
 //    });

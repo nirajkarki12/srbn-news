@@ -7,6 +7,8 @@ use App\Http\Controllers\Common\BaseController;
 use Validator;
 use anlutro\LaravelSettings\Facade as Setting;
 use App\Models\Quote;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\QuotesImport;
 
 class QuoteController extends BaseController
 {
@@ -49,6 +51,8 @@ class QuoteController extends BaseController
     {
         try {
 
+
+
             $data = $request->except('_token');
 
             $validator = Validator::make( $data, array(
@@ -56,6 +60,13 @@ class QuoteController extends BaseController
                     'status' => 'required',
                 )
             );
+
+            // return $request;
+
+            if($request->file('quote_excel')) {
+                if(!Excel::import(new QuotesImport, $request->file('quote_excel'))) throw new \Exception('Problem in excel import, Try again!');
+                return back()->with('flash_success','Excel import successful');
+            }
 
             if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
 

@@ -95,7 +95,7 @@
           </div>
           <!-- /.box-header -->
           <!-- form start -->
-          <form class="form-group" action="{{route('admin.quote.store')}}" method="POST" role="form">
+          <form class="form-group" action="{{route('admin.quote.store')}}" method="POST" role="form" enctype="multipart/form-data">
               {{ csrf_field() }}
 
               <div class="box-body">
@@ -143,6 +143,12 @@
 
               <div class="clearfix"></div>
 
+              <div class="form-group" style="border: solid 1px #ccc;padding: 7px 7px;">
+                <label for="quote_excel">Excel Import</label>
+                <input type="file" name="quote_excel" class="form-control" style="height:43px">
+                <small class="label label-warning">Note: try to import upto 500 rows at a time</small>
+              </div>
+
               </div>
 
               <!-- /.box-body -->
@@ -185,7 +191,7 @@
 
               <div class="form-group">
                   <label for="author">Author Nepali</label>
-                  <input type="text" class="form-control" id="author_nepali" name="author_nepali" value="{{ old('author_nepali') ?: ($quoteEdit->translation?$quote->translation->author:'') }}" placeholder="Quote Author">
+                  <input type="text" class="form-control" id="author_nepali" name="author_nepali" value="{{ old('author_nepali') ?: ($quoteEdit->translation?$quoteEdit->translation->author:'') }}" placeholder="Quote Author">
               </div>
               <div class="clearfix"></div>
               <hr />

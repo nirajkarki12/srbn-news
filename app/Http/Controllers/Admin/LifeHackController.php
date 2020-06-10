@@ -8,6 +8,8 @@ use Validator;
 use anlutro\LaravelSettings\Facade as Setting;
 use App\Http\Helpers\Helper;
 use App\Models\LifeHack;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\LifeHackImport;
 
 class LifeHackController extends BaseController
 {
@@ -38,6 +40,12 @@ class LifeHackController extends BaseController
                 )
             );
 
+
+            if($request->file('lifehack_excel')) {
+                if(!Excel::import(new LifeHackImport, $request->file('lifehack_excel'))) throw new Exception('Import problem. Try again!', 1);
+                return back()->with('flash_success', 'Import Successful');
+            }
+
             if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
 
             if($request->file('image')) {
@@ -56,7 +64,7 @@ class LifeHackController extends BaseController
 
             } else {
 
-                $lifehack = LifeHack::create($data);            
+                $lifehack = LifeHack::create($data);
 
             }
 
@@ -83,18 +91,18 @@ class LifeHackController extends BaseController
         } catch (\Exception $e) {
             return back()->with('flash_error', $e->getMessage())->withInput($data);
         }
-       
+
     }
 
     public function destroy(LifeHack $lifehack) {
         try {
-            
+
             if(!$lifehack) throw new \Exception("Error Processing Request", 1);
-    
+
             if(!$lifehack->delete()) throw new \Exception("Error Processing Request", 1);
-    
+
             Helper::deleteImage(basename($lifehack->image), 'lifehacks');
-    
+
             return redirect()->route('admin.lifehack', ['page' => request('page')?:null])->with('flash_success', 'Life Hack removed Successfully');
 
         } catch (\Exception $e) {
