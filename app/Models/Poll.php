@@ -41,7 +41,7 @@ class Poll extends Model
    }
 
     public function translation() {
-        return $this->hasOne(PollTranslation::class)->select('poll_id','title','description','question');
+        return $this->hasOne(PollTranslation::class)->select('poll_id','title','description','question', 'audio_url');
     }
 
    public function sluggable()

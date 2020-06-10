@@ -143,7 +143,7 @@ class QuoteController extends BaseController
             if($request->quote_nepali) {
 
                 if($quote->translation) {
-                    $quote->translation->update([
+                    $quote->translation()->update([
                         'quote' => $request->quote_nepali?:$quote->translation->quote,
                         'author'    => $request->author_nepali?:$quote->translation->author
                     ]);

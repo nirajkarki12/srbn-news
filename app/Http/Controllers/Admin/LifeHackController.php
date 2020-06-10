@@ -73,7 +73,7 @@ class LifeHackController extends BaseController
 
                 if($lifehack && $lifehack->translation) {
 
-                    $lifehack->translation->update([
+                    $lifehack->translation()->update([
                         'content' => $request->content_nepali?:''
                     ]);
 

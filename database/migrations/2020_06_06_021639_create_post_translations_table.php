@@ -20,6 +20,7 @@ class CreatePostTranslationsTable extends Migration
             $table->text('description')->nullable();
             $table->string('note')->nullable();
             $table->string('source')->nullable();
+            $table->string('audio_url')->nullable();
 
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->timestamps();

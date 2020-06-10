@@ -107,7 +107,7 @@ class PostController extends BaseController
                         NotificationController::newPost($user, $post);
                     }
                 } catch (\Throwable $th) {
-                    
+
                 }
             }
 
@@ -117,6 +117,7 @@ class PostController extends BaseController
                     'description' => $request->description_nepali?:'',
                     'note' => $request->note_nepali?:'',
                     'source' => $request->source_nepali?:'',
+                    'audio_url' => $request->audio_url_nepali?:'',
                 ]);
             }
 
@@ -200,11 +201,12 @@ class PostController extends BaseController
             if($request->description_nepali) {
 
                 if($post->translation) {
-                    $post->translation->update([
+                    $post->translation()->update([
                         'title' => $request->title_nepali?:($post->translation->title?:''),
                         'description' => $request->description_nepali?:($post->translation->description?:''),
                         'note' => $request->note_nepali?:($post->translation->note?:''),
                         'source' => $request->source_nepali?:($post->translation->source?:''),
+                        'audio_url' => $request->audio_url_nepali?:($post->translation->audio_url?:''),
                     ]);
                 } else {
                     $post->translation()->create([
@@ -212,6 +214,7 @@ class PostController extends BaseController
                         'description' => $request->description_nepali?:'',
                         'note' => $request->note_nepali?:'',
                         'source' => $request->source_nepali?:'',
+                        'audio_url' => $request->audio_url_nepali?:'',
                     ]);
                 }
             }
@@ -233,11 +236,11 @@ class PostController extends BaseController
     {
         try {
             if(!$slug) throw new \Exception("Error Processing Request", 1);
-            
+
             if(!Post::where('slug', $slug)->delete()) throw new \Exception("Error Processing Request", 1);
 
             return redirect()->route('admin.post', ['page' => $page])->with('flash_success', 'Post removed Successfully');
-               
+
         } catch (\Exception $e) {
             return back()->with('flash_error', $e->getMessage());
         }
@@ -286,7 +289,7 @@ class PostController extends BaseController
          $data['source'] = preg_replace("/^www\./", "", parse_url($url, PHP_URL_HOST));
 
          return $this->ajaxResponse($data);
-         
+
       } catch (\Exception $e) {
          return $this->ajaxResponse(null, $e->getMessage(), false);
       }

@@ -11,6 +11,7 @@
 @endsection
 
 @section('content')
+@include('ckfinder::setup')
 
 @include('notification.notify')
   <div class="row">
@@ -51,7 +52,7 @@
                 <label for="description" class=" control-label">Description</label>
               </div>
               <div class="col-sm-9 pull-left">
-                <textarea class="form-control" id="description" name="description" rows="3" cols="80" required>{{ old('description') ?: $pollEdit->description }}</textarea>
+                <textarea class="form-control" id="description" name="description" rows="3" cols="80">{{ old('description') ?: $pollEdit->description }}</textarea>
               </div>
             </div>
 
@@ -60,7 +61,7 @@
                       <label for="description_nepali" class=" control-label">Description in Nepali</label>
                   </div>
                   <div class="col-sm-9 pull-left">
-                      <textarea class="form-control" id="description_nepali" name="description_nepali" rows="3" cols="80" required>{{ old('description_nepali') ?: ($pollEdit->translation ? $pollEdit->translation->description : '') }}</textarea>
+                      <textarea class="form-control" id="description_nepali" name="description_nepali" rows="3" cols="80">{{ old('description_nepali') ?: ($pollEdit->translation ? $pollEdit->translation->description : '') }}</textarea>
                   </div>
               </div>
 
@@ -139,10 +140,26 @@
               <div class="col-sm-2 pull-left">
                 <label for="audio_url" class=" control-label">Audio URL</label>
               </div>
-              <div class="col-sm-9 pull-left">
-                  <input type="url" class="form-control" id="audio_url" name="audio_url" value="{{ old('audio_url') ?: $pollEdit->audio_url }}"  placeholder="Audio URL">
+              <div class="col-sm-6 pull-left">
+                  <input type="url" class="form-control audio_url" id="audio_url" name="audio_url" value="{{ old('audio_url') ?: $pollEdit->audio_url }}" readonly placeholder="Audio URL">
               </div>
+                <div class="col-sm-2 pull-left">
+                    <button type="button" class="btn btn-default ckfinder_popup">Upload File</button>
+                </div>
+
             </div>
+
+              <div class="form-group">
+                  <div class="col-sm-2 pull-left">
+                      <label for="audio_url_nepali" class=" control-label">Audio in Nepali</label>
+                  </div>
+                  <div class="col-sm-6 pull-left">
+                      <input type="url" class="form-control audio_url" id="audio_url_nepali" name="audio_url_nepali" value="{{ old('audio_url_nepali')?: ($pollEdit->translation ? $pollEdit->translation->audio_url : '') }}" readonly placeholder="Audio in Nepali URL">
+                  </div>
+                  <div class="col-sm-2 pull-left">
+                      <button type="button" class="btn btn-default ckfinder_popup">Upload File</button>
+                  </div>
+              </div>
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -203,7 +220,28 @@
                ]
            },
        });
-  $(function () {
+   function selectFileWithCKFinder( elementId, selector ) {
+       CKFinder.modal( {
+           chooseFiles: true,
+           width: 800,
+           height: 600,
+           onInit: function( finder ) {
+               finder.on( 'files:choose', function(evt) {
+                   let files = evt.data.files.models;
+                   $(selector).parents('div.form-group').find('input[type="url"]').attr('value', files[0].getUrl());
+               });
+
+               finder.on( 'file:choose:resizedImage', function( evt ) {
+                   var output = document.getElementById( elementId );
+                   output.value = evt.data.resizedUrl;
+               } );
+           }
+       } );
+   }
+   $(function () {
+       $('.ckfinder_popup').click(function () {
+           selectFileWithCKFinder( 'ckfinder-input-1', this );
+       });
     var type = $('#type option:selected').val();
     if(type) toggleType(type);
 

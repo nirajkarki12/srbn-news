@@ -26,7 +26,7 @@ class Post extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-	    'title', 'description', 'type', 'content', 'note', 'source', 'source_url', 'audio_url', 'status', 
+	    'title', 'description', 'type', 'content', 'note', 'source', 'source_url', 'audio_url', 'status',
 	];
 
    /**
@@ -46,10 +46,10 @@ class Post extends Model
    {
       return $this->belongsToMany(Category::class, 'post_categories');
    }
-   
+
 
    public function translation() {
-      return $this->hasOne(PostTranslation::class)->select('post_id','title','description','source','note');
+      return $this->hasOne(PostTranslation::class)->select('post_id','title','description','source','note', 'audio_url');
    }
 
 	public function sluggable()
