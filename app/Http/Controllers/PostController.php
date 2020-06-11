@@ -29,7 +29,8 @@ class PostController extends BaseApiController
    /**
    * Posts List
    * All posts list
-   * @queryParam ?page= next page - pagination 
+   * @queryParam ?page= next page - pagination
+   * @queryParam ?lang=en user preffered language en for english and ne for nepali
    * @urlParam /categoryId specific category Posts
    * @response {
    *  "status": true,
@@ -46,13 +47,8 @@ class PostController extends BaseApiController
    *     "source": "News Source",
    *     "source_url": "Source URL",
    *     "audio_url": "URL|null",
+   *     "lang":"en",
    *     "created_at": "2020-04-14 15:00",
-   *     "translation":{
-   *       "title":"translation title",
-   *       "description":"translation description",
-   *       "note":"translation note",
-   *       "source":"translation source"
-   *     },
    *     "categories": [
    *      {
    *        "id": 2,
@@ -93,11 +89,13 @@ class PostController extends BaseApiController
    {
       try {
 
+         $lang = request('lang')?:'en';
+
          $paginator = Post::select([
                'posts.*',
                DB::raw('
                      (
-                        CASE 
+                        CASE
                         WHEN posts.type = ' .Post::TYPE_IMAGE .' THEN "' .Post::$postTypes[Post::TYPE_IMAGE] .'"'
                         .' WHEN posts.type = ' .Post::TYPE_VIDEO .' THEN "' .Post::$postTypes[Post::TYPE_VIDEO] .'"'
                         .' ELSE null
@@ -106,7 +104,7 @@ class PostController extends BaseApiController
                   '),
                ])
                ->with('categories')
-               ->with('translation')
+               ->where('lang', $lang)
                ->orderBy('created_at', 'desc')
                ->where('status', 1);
 
@@ -143,15 +141,15 @@ class PostController extends BaseApiController
          return $this->successResponse($paginator, 'Post data fetched successfully');
 
       } catch (\Exception $e) {
-         return $this->errorResponse($e->getMessage(), $e->getCode());
+         return $this->errorResponse($e->getMessage(), 500);
       }
-        
+
    }
 
    /**
    * User's Posts List
    * Header for User's Category Posts: X-Authorization: Bearer {token}
-   * @queryParam ?page= next page - pagination 
+   * @queryParam ?page= next page - pagination
    * @response {
    *  "status": true,
    *  "data": {
@@ -225,7 +223,7 @@ class PostController extends BaseApiController
                'posts.*',
                DB::raw('
                      (
-                        CASE 
+                        CASE
                         WHEN posts.type = ' .Post::TYPE_IMAGE .' THEN "' .Post::$postTypes[Post::TYPE_IMAGE] .'"'
                         .' WHEN posts.type = ' .Post::TYPE_VIDEO .' THEN "' .Post::$postTypes[Post::TYPE_VIDEO] .'"'
                         .' ELSE null
@@ -280,7 +278,7 @@ class PostController extends BaseApiController
       } catch (\Exception $e) {
          return $this->errorResponse($e->getMessage(), $e->getCode());
       }
-        
+
    }
 
 }
