@@ -11,7 +11,6 @@
 @endsection
 
 @section('content')
-@include('ckfinder::setup')
 @include('notification.notify')
   <div class="row">
     <div class="col-md-9">
@@ -27,6 +26,28 @@
         <form class="form-horizontal" action="{{route('admin.post.store')}}" method="POST" enctype="multipart/form-data" role="form">
           {{ csrf_field() }}
           <div class="box-body">
+
+          <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="yes_option" class=" control-label">Language</label>
+              </div>
+
+              <div class="col-sm-9 pull-left">
+
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="lang" id="yes_option" value="en" @if(old('lang') == 'en' || !old('lang')) checked @endif>
+                      English
+                  </label>
+                  &nbsp;&nbsp;
+                  <label>
+                    <input type="radio" name="lang" id="no_option" value="ne" @if(old('lang') == 'ne' && old('lang')) checked @endif>
+                      Nepali
+                  </label>
+                </div>
+              </div>
+            </div>
+
 
              <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -46,14 +67,14 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="source_nepali" class=" control-label">Source in Nepali</label>
               </div>
               <div class="col-sm-9 pull-left">
                   <input type="text" class="form-control" id="source_nepali" name="source_nepali" value="{{ old('source_nepali') }}"  placeholder="Post Source in Nepali">
               </div>
-            </div>
+            </div> -->
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -64,14 +85,14 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="title_nepali" class=" control-label">Title in Nepali</label>
               </div>
               <div class="col-sm-9 pull-left">
                   <input type="text" class="form-control" id="title_nepali" name="title_nepali" value="{{ old('title_nepali') }}"  placeholder="Post Title in Nepali" required>
               </div>
-            </div>
+            </div> -->
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -99,14 +120,14 @@
             </div>
 
 
-            <div class="form-group">
+            <!-- <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="description_nepali" class=" control-label">Description in Nepali</label>
               </div>
               <div class="col-sm-9 pull-left">
                 <textarea class="form-control" id="description_nepali" name="description_nepali" rows="3" cols="80">{{ old('description_nepali') }}</textarea>
               </div>
-            </div>
+            </div> -->
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -117,14 +138,14 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="note_nepali" class=" control-label">Note in Nepali</label>
               </div>
               <div class="col-sm-9 pull-left">
                   <textarea class="form-control" id="note_nepali" name="note_nepali" rows="2" cols="80">{{ old('note_nepali') }}</textarea>
               </div>
-            </div>
+            </div> -->
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -161,7 +182,7 @@
                 </div>
             </div>
 
-              <div class="form-group">
+              <!-- <div class="form-group">
                   <div class="col-sm-2 pull-left">
                       <label for="audio_url_nepali" class=" control-label">Audio in Nepali</label>
                   </div>
@@ -171,7 +192,7 @@
                   <div class="col-sm-2 pull-left">
                       <button type="button" class="btn btn-default ckfinder_popup">Upload File</button>
                   </div>
-              </div>
+              </div> -->
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -222,17 +243,17 @@
       },
    });
 
-   ClassicEditor
-   .create( document.querySelector('#description_nepali'), {
-      toolbar: {
-         items: [
-            'bold', 'italic', 'underline', 'strikethrough', '|',
-            'fontColor', 'fontBackgroundColor', 'link', '|',
-            'insertTable', 'bulletedList', 'numberedList','|',
-            'blockQuote', 'subscript', 'superscript', 'horizontalLine',
-         ]
-      },
-   });
+//    ClassicEditor
+//    .create( document.querySelector('#description_nepali'), {
+//       toolbar: {
+//          items: [
+//             'bold', 'italic', 'underline', 'strikethrough', '|',
+//             'fontColor', 'fontBackgroundColor', 'link', '|',
+//             'insertTable', 'bulletedList', 'numberedList','|',
+//             'blockQuote', 'subscript', 'superscript', 'horizontalLine',
+//          ]
+//       },
+//    });
 
    function selectFileWithCKFinder( elementId, selector ) {
        CKFinder.modal( {
