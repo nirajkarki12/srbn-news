@@ -10,6 +10,7 @@
     <li class="active"><i class="fa fa-plus"></i> Edit a Post</li>
 @endsection
 
+@include('ckfinder::setup')
 @section('content')
 
 @include('notification.notify')

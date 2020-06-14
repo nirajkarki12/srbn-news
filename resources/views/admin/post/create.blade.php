@@ -10,6 +10,7 @@
     <li class="active"><i class="fa fa-plus"></i> Add a Post</li>
 @endsection
 
+@include('ckfinder::setup')
 @section('content')
 @include('notification.notify')
   <div class="row">
@@ -182,18 +183,6 @@
                 </div>
             </div>
 
-              <!-- <div class="form-group">
-                  <div class="col-sm-2 pull-left">
-                      <label for="audio_url_nepali" class=" control-label">Audio in Nepali</label>
-                  </div>
-                  <div class="col-sm-6 pull-left">
-                      <input type="url" class="form-control audio_url" id="audio_url_nepali" name="audio_url_nepali" value="{{ old('audio_url_nepali') }}" readonly placeholder="Audio in Nepali URL">
-                  </div>
-                  <div class="col-sm-2 pull-left">
-                      <button type="button" class="btn btn-default ckfinder_popup">Upload File</button>
-                  </div>
-              </div> -->
-
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="yes_option" class=" control-label">Status</label>
@@ -242,19 +231,6 @@
          ]
       },
    });
-
-//    ClassicEditor
-//    .create( document.querySelector('#description_nepali'), {
-//       toolbar: {
-//          items: [
-//             'bold', 'italic', 'underline', 'strikethrough', '|',
-//             'fontColor', 'fontBackgroundColor', 'link', '|',
-//             'insertTable', 'bulletedList', 'numberedList','|',
-//             'blockQuote', 'subscript', 'superscript', 'horizontalLine',
-//          ]
-//       },
-//    });
-
    function selectFileWithCKFinder( elementId, selector ) {
        CKFinder.modal( {
            chooseFiles: true,
