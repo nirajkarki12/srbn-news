@@ -47,7 +47,7 @@ class PostController extends BaseApiController
    *     "source": "News Source",
    *     "source_url": "Source URL",
    *     "audio_url": "URL|null",
-   *     "is_poll": true/false,
+   *     "is_poll": "true/false",
    *     "lang":"en",
    *     "created_at": "2020-04-14 15:00",
    *     "categories": [
@@ -192,7 +192,7 @@ class PostController extends BaseApiController
    *     "source": "News Source",
    *     "source_url": "Source URL",
    *     "audio_url": "URL|null",
-   *     "is_poll": true/false,
+   *     "is_poll": "true/false",
    *     "created_at": "2020-04-14 15:00",
    *     "categories": [
    *      {
