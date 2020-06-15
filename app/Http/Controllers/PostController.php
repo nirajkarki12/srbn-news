@@ -47,6 +47,7 @@ class PostController extends BaseApiController
    *     "source": "News Source",
    *     "source_url": "Source URL",
    *     "audio_url": "URL|null",
+   *     "is_poll": true/false,
    *     "lang":"en",
    *     "created_at": "2020-04-14 15:00",
    *     "categories": [
@@ -57,7 +58,24 @@ class PostController extends BaseApiController
    *        "image": null,
    *        "created_at": "2020-04-14 15:00"
    *      }
-   *     ]
+   *     ],
+   *     "poll": {
+   *            "id": 2,
+   *            "question": "What do you think?",
+   *            "post_id": 1,
+   *            "options": [
+   *             {
+   *                "id": 3,
+   *                "value": "Good",
+   *                "total": 0
+   *            },
+   *            {
+   *                "id": 4,
+   *                "value": "Bad",
+   *                "total": 0
+   *            }
+   *            ]
+   *      }
    *    }
    *   ],
    *   "first_page_url": "URL/api/posts?page=1",
@@ -104,6 +122,8 @@ class PostController extends BaseApiController
                   '),
                ])
                ->with('categories')
+               ->with('poll')
+               ->with('poll.options')
                ->where('lang', $lang)
                ->orderBy('created_at', 'desc')
                ->where('status', 1);
@@ -131,6 +151,13 @@ class PostController extends BaseApiController
                            'pivot',
                            'slug'
                         ]);
+                     });
+                     $post->poll->options->each(function($pollOption) {
+                         $pollOption->makeHidden([
+                             'poll_id',
+                             'created_at',
+                             'updated_at',
+                         ]);
                      });
                   });
 
@@ -165,13 +192,8 @@ class PostController extends BaseApiController
    *     "source": "News Source",
    *     "source_url": "Source URL",
    *     "audio_url": "URL|null",
+   *     "is_poll": true/false,
    *     "created_at": "2020-04-14 15:00",
-   *     "translation":{
-   *       "title":"translation title",
-   *       "description":"translation description",
-   *       "note":"translation note",
-   *       "source":"translation source"
-   *     },
    *     "categories": [
    *      {
    *        "id": 2,
@@ -180,7 +202,24 @@ class PostController extends BaseApiController
    *        "image": null,
    *        "created_at": "2020-04-14 15:00"
    *      }
-   *     ]
+   *     ],
+    *     "poll": {
+    *            "id": 2,
+    *            "question": "What do you think?",
+    *            "post_id": 1,
+    *            "options": [
+    *             {
+    *                "id": 3,
+    *                "value": "Good",
+    *                "total": 0
+    *            },
+    *            {
+    *                "id": 4,
+    *                "value": "Bad",
+    *                "total": 0
+    *            }
+    *            ]
+    *      }
    *    }
    *   ],
    *   "first_page_url": "URL/api/posts/user?page=1",
@@ -231,10 +270,11 @@ class PostController extends BaseApiController
                      ) AS type
                   '),
                ])
-               ->with('categories')
-               ->with('translation')
-               ->orderBy('created_at', 'desc')
-               ->where('status', 1);
+                ->with('categories')
+                ->with('poll')
+                ->with('poll.options')
+                ->orderBy('created_at', 'desc')
+                ->where('status', 1);
 
          $ids = [];
          $categories = $user->userCategories;
@@ -266,6 +306,13 @@ class PostController extends BaseApiController
                            'pivot',
                            'slug'
                         ]);
+                     });
+                     $post->poll->options->each(function($pollOption) {
+                         $pollOption->makeHidden([
+                             'poll_id',
+                             'created_at',
+                             'updated_at',
+                         ]);
                      });
                   });
 

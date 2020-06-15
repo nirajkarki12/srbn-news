@@ -93,16 +93,6 @@
                 </ul>
             </li>
 
-            <li class="treeview" id="poll">
-                <a href="{{route('admin.poll')}}">
-                    <i class="fa fa-bar-chart"></i> <span>Polls</span> <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li id="add-poll"><a href="{{route('admin.poll.create')}}"><i class="fa fa-plus"></i>Add Poll</a></li>
-                    <li id="view-poll"><a href="{{route('admin.poll')}}"><i class="fa fa-th-list"></i>List Polls</a></li>
-                </ul>
-            </li>
-
         </ul>
 
     </section>

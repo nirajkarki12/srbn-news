@@ -4,14 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use Cviebrock\EloquentSluggable\Sluggable;
-use App\Models\Polloption;
-use App\Models\PollTranslation;
 
 class Poll extends Model
 {
    use Notifiable;
-   use Sluggable;
 
 	/**
 	 * The polls that are mass assignable.
@@ -19,7 +15,7 @@ class Poll extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-       'title', 'description', 'question', 'type', 'content', 'audio_url', 'status',
+       'question', 'post_id',
 	];
 
    /**
@@ -32,28 +28,22 @@ class Poll extends Model
      'updated_at' => 'datetime:Y-m-d H:i',
    ];
 
-   /**
-   * The options that belong to the polls.
-   */
-   public function options()
-   {
-      return $this->hasMany(Polloption::class);
-   }
-
-    public function translation() {
-        return $this->hasOne(PollTranslation::class)->select('poll_id','title','description','question', 'audio_url');
+    /**
+     * The options that belong to the polls.
+     */
+    public function options()
+    {
+        return $this->hasMany(Polloption::class);
     }
 
-   public function sluggable()
-   {
-      return [
-          'slug' => [
-              'method' => function($string, $sep) {
-                  return (date('Y-m-d-') .time());
-              }
-          ]
-      ];
-   }
+    /**
+     * The option that belong to the polls.
+     */
+    public function post()
+    {
+        return $this->belongsTo(Post::class, 'post_id');
+    }
+
 
 }
 

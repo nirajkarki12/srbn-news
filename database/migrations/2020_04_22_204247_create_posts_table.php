@@ -23,9 +23,11 @@ class CreatePostsTable extends Migration
             $table->string('source')->nullable();
             $table->string('source_url')->nullable();
             $table->string('audio_url')->nullable();
+            $table->boolean('is_poll')->default(0);
             $table->boolean('status')->default(1);
             $table->unsignedBigInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('set null');
+            $table->enum('lang', ['en','ne'])->default('en');
             $table->string('slug')->unique();
             $table->timestamps();
         });
