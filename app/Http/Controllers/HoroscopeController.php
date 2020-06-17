@@ -135,7 +135,8 @@ class HoroscopeController extends BaseApiController
 
             if(request('id')) {
 
-                if(!$horoscope = Horoscope::where('id', request('id')?:1)->first()) throw new \Exception('No horoscope found', 200);
+                if(!$horoscope = Horoscope::where('id', request('id'))->first()) throw new \Exception('No horoscope found', 200);
+
             } else {
 
                 if(!$horoscope = $user->horoscope()->first()) throw new \Exception('User has not selected horoscope', 200);
@@ -143,7 +144,7 @@ class HoroscopeController extends BaseApiController
 
 
 
-            $prediction = $horoscope->prediction();
+            $prediction = $horoscope->prediction;
 
             if($timeline == 'daily') {
 
@@ -162,7 +163,9 @@ class HoroscopeController extends BaseApiController
                 $prediction->whereBetween('prediction_date',[Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->where('type', 'monthly');
 
             } elseif($timeline == 'yearly') {
-                $prediction->whereBetween('prediction_date',[Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->where('type', 'yearly');
+
+                $prediction->whereBetween('prediction_date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->where('type', 'yearly');
+
             }
 
             if(!$prediction->first()) throw new \Exception('Nothing to show', Response::HTTP_OK);
