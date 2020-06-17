@@ -186,7 +186,7 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost:8000/api/list/horoscope?%3Flang%3D=ipsam" \
+    -G "http://localhost:8000/api/list/horoscope?%3Flang%3D=sed" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
@@ -194,7 +194,7 @@ fetch(url, {
 );
 
 let params = {
-    "?lang=": "ipsam",
+    "?lang=": "sed",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -252,22 +252,22 @@ fetch(url, {
 </tbody>
 </table>
 <!-- END_0ba251bf4f25186bc122282db6cf38a4 -->
-<!-- START_bc5616bba57a4fc554861fdaab20bfc6 -->
+<!-- START_22ec8148905988e4fc99e059fb05214f -->
 <h2>Select Unselect Horoscope</h2>
 <p>Header: X-Authorization: Bearer {token}</p>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost:8000/api/horoscope/est/?%3Flang%3D=reiciendis" \
+    -G "http://localhost:8000/api/horoscope/dolores?%3Flang%3D=a" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/horoscope/est/"
+    "http://localhost:8000/api/horoscope/dolores"
 );
 
 let params = {
-    "?lang=": "reiciendis",
+    "?lang=": "a",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -303,7 +303,7 @@ fetch(url, {
     "code": 200
 }</code></pre>
 <h3>HTTP Request</h3>
-<p><code>GET api/horoscope/{horoscope}/{id?}</code></p>
+<p><code>GET api/horoscope/{horoscope}</code></p>
 <h4>URL Parameters</h4>
 <table>
 <thead>
@@ -338,25 +338,25 @@ fetch(url, {
 </tr>
 </tbody>
 </table>
-<!-- END_bc5616bba57a4fc554861fdaab20bfc6 -->
-<!-- START_384b2c2967f97c1e51e10b0feedf1a1c -->
+<!-- END_22ec8148905988e4fc99e059fb05214f -->
+<!-- START_b2d127b0f6748250200649965db067b2 -->
 <h2>Fetch Prediction</h2>
 <p>Header: X-Authorization: Bearer {token}</p>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost:8000/api/predict/horoscope?timeline=adipisci&amp;id=qui&amp;lang%3Den=quasi" \
+    -G "http://localhost:8000/api/predict/horoscope/?timeline=sed&amp;id=at&amp;lang%3Den=debitis" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/predict/horoscope"
+    "http://localhost:8000/api/predict/horoscope/"
 );
 
 let params = {
-    "timeline": "adipisci",
-    "id": "qui",
-    "lang=en": "quasi",
+    "timeline": "sed",
+    "id": "at",
+    "lang=en": "debitis",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -397,7 +397,7 @@ fetch(url, {
     "code": 200
 }</code></pre>
 <h3>HTTP Request</h3>
-<p><code>GET api/predict/horoscope</code></p>
+<p><code>GET api/predict/horoscope/{id?}</code></p>
 <h4>Query Parameters</h4>
 <table>
 <thead>
@@ -425,7 +425,7 @@ fetch(url, {
 </tr>
 </tbody>
 </table>
-<!-- END_384b2c2967f97c1e51e10b0feedf1a1c -->
+<!-- END_b2d127b0f6748250200649965db067b2 -->
 <h1>Life Hack &amp; Meme</h1>
 <!-- START_6c9a429a2ededa75193277eaf9290987 -->
 <h2>Like Unlike Memes</h2>
@@ -434,11 +434,11 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost:8000/api/memes/like/eum" \
+    -G "http://localhost:8000/api/memes/like/omnis" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/memes/like/eum"
+    "http://localhost:8000/api/memes/like/omnis"
 );
 
 let headers = {
@@ -512,11 +512,11 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost:8000/api/life-hacks/like/qui" \
+    -G "http://localhost:8000/api/life-hacks/like/sed" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/life-hacks/like/qui"
+    "http://localhost:8000/api/life-hacks/like/sed"
 );
 
 let headers = {
@@ -594,7 +594,7 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost:8000/api/life-hacks?lang%3Den=provident&amp;%3Fpage%3D=11" \
+    -G "http://localhost:8000/api/life-hacks?lang%3Den=quam&amp;%3Fpage%3D=6" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
@@ -602,8 +602,8 @@ fetch(url, {
 );
 
 let params = {
-    "lang=en": "provident",
-    "?page=": "11",
+    "lang=en": "quam",
+    "?page=": "6",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -703,7 +703,7 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost:8000/api/memes?%3Fpage%3D=12" \
+    -G "http://localhost:8000/api/memes?%3Fpage%3D=5" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
@@ -711,7 +711,7 @@ fetch(url, {
 );
 
 let params = {
-    "?page=": "12",
+    "?page=": "5",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -806,7 +806,7 @@ fetch(url, {
     "http://localhost:8000/api/polls" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"optionId":18}'
+    -d '{"optionId":19}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8000/api/polls"
@@ -819,7 +819,7 @@ let headers = {
 };
 
 let body = {
-    "optionId": 18
+    "optionId": 19
 }
 
 fetch(url, {
@@ -902,7 +902,7 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost:8000/api/polls?%3Fpage%3D=6&amp;%3Flang%3Den=occaecati" \
+    -G "http://localhost:8000/api/polls?%3Fpage%3D=1&amp;%3Flang%3Den=sint" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
@@ -910,8 +910,8 @@ fetch(url, {
 );
 
 let params = {
-    "?page=": "6",
-    "?lang=en": "occaecati",
+    "?page=": "1",
+    "?lang=en": "sint",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -1056,7 +1056,7 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost:8000/api/posts/user?%3Fpage%3D=8" \
+    -G "http://localhost:8000/api/posts/user?%3Fpage%3D=1" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
@@ -1064,7 +1064,7 @@ fetch(url, {
 );
 
 let params = {
-    "?page=": "8",
+    "?page=": "1",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -1177,7 +1177,7 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost:8000/api/posts/?%3Fpage%3D=13&amp;%3Flang%3Den=molestiae" \
+    -G "http://localhost:8000/api/posts/?%3Fpage%3D=14&amp;%3Flang%3Den=nisi" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
@@ -1185,8 +1185,8 @@ fetch(url, {
 );
 
 let params = {
-    "?page=": "13",
-    "?lang=en": "molestiae",
+    "?page=": "14",
+    "?lang=en": "nisi",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -1317,7 +1317,7 @@ fetch(url, {
     "http://localhost:8000/api/quotes" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"quote":11}'
+    -d '{"quote":15}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8000/api/quotes"
@@ -1330,7 +1330,7 @@ let headers = {
 };
 
 let body = {
-    "quote": 11
+    "quote": 15
 }
 
 fetch(url, {
@@ -1402,7 +1402,7 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost:8000/api/quotes?%3Fpage%3D=6" \
+    -G "http://localhost:8000/api/quotes?%3Fpage%3D=8" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
@@ -1410,7 +1410,7 @@ fetch(url, {
 );
 
 let params = {
-    "?page=": "6",
+    "?page=": "8",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -1653,7 +1653,7 @@ APIs for User Login</p>
     "http://localhost:8000/api/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"email":"non","password":"ipsam"}'
+    -d '{"email":"sint","password":"aliquid"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8000/api/login"
@@ -1666,8 +1666,8 @@ let headers = {
 };
 
 let body = {
-    "email": "non",
-    "password": "ipsam"
+    "email": "sint",
+    "password": "aliquid"
 }
 
 fetch(url, {
@@ -1740,7 +1740,7 @@ APIs for Social User Login</p>
     "http://localhost:8000/api/social/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"consequatur","email":"quasi","image":"reprehenderit","social_id":"voluptatum","provider":"dolores"}'
+    -d '{"name":"quis","email":"unde","image":"voluptas","social_id":"soluta","provider":"deleniti"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8000/api/social/login"
@@ -1753,11 +1753,11 @@ let headers = {
 };
 
 let body = {
-    "name": "consequatur",
-    "email": "quasi",
-    "image": "reprehenderit",
-    "social_id": "voluptatum",
-    "provider": "dolores"
+    "name": "quis",
+    "email": "unde",
+    "image": "voluptas",
+    "social_id": "soluta",
+    "provider": "deleniti"
 }
 
 fetch(url, {
@@ -1848,7 +1848,7 @@ APIs for Phone User Login</p>
     "http://localhost:8000/api/phone/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"phone":13,"password":"mollitia"}'
+    -d '{"phone":20,"password":"maxime"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8000/api/phone/login"
@@ -1861,8 +1861,8 @@ let headers = {
 };
 
 let body = {
-    "phone": 13,
-    "password": "mollitia"
+    "phone": 20,
+    "password": "maxime"
 }
 
 fetch(url, {
@@ -1935,7 +1935,7 @@ fetch(url, {
     "http://localhost:8000/api/register" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"quaerat","email":"nulla","address":"enim","password":"cum","phone":1,"image":"magni"}'
+    -d '{"name":"aut","email":"ea","address":"ipsam","password":"dolorem","phone":3,"image":"unde"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8000/api/register"
@@ -1948,12 +1948,12 @@ let headers = {
 };
 
 let body = {
-    "name": "quaerat",
-    "email": "nulla",
-    "address": "enim",
-    "password": "cum",
-    "phone": 1,
-    "image": "magni"
+    "name": "aut",
+    "email": "ea",
+    "address": "ipsam",
+    "password": "dolorem",
+    "phone": 3,
+    "image": "unde"
 }
 
 fetch(url, {
@@ -2253,7 +2253,7 @@ fetch(url, {
     "http://localhost:8000/api/user/profile/update" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"image":"maxime"}'
+    -d '{"image":"cum"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8000/api/user/profile/update"
@@ -2266,7 +2266,7 @@ let headers = {
 };
 
 let body = {
-    "image": "maxime"
+    "image": "cum"
 }
 
 fetch(url, {

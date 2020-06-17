@@ -191,7 +191,7 @@ fetch(url, {
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/list/horoscope?%3Flang%3D=ipsam" \
+    -G "http://localhost:8000/api/list/horoscope?%3Flang%3D=sed" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -202,7 +202,7 @@ const url = new URL(
 );
 
 let params = {
-    "?lang=": "ipsam",
+    "?lang=": "sed",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -256,7 +256,7 @@ Parameter | Status | Description
 
 <!-- END_0ba251bf4f25186bc122282db6cf38a4 -->
 
-<!-- START_bc5616bba57a4fc554861fdaab20bfc6 -->
+<!-- START_22ec8148905988e4fc99e059fb05214f -->
 ## Select Unselect Horoscope
 Header: X-Authorization: Bearer {token}
 
@@ -264,18 +264,18 @@ Header: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/horoscope/est/?%3Flang%3D=reiciendis" \
+    -G "http://localhost:8000/api/horoscope/dolores?%3Flang%3D=a" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost:8000/api/horoscope/est/"
+    "http://localhost:8000/api/horoscope/dolores"
 );
 
 let params = {
-    "?lang=": "reiciendis",
+    "?lang=": "a",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -316,7 +316,7 @@ fetch(url, {
 ```
 
 ### HTTP Request
-`GET api/horoscope/{horoscope}/{id?}`
+`GET api/horoscope/{horoscope}`
 
 #### URL Parameters
 
@@ -329,9 +329,9 @@ Parameter | Status | Description
 --------- | ------- | ------- | -----------
     `?lang=` |  optional  | preferred language en for english, ne for nepali
 
-<!-- END_bc5616bba57a4fc554861fdaab20bfc6 -->
+<!-- END_22ec8148905988e4fc99e059fb05214f -->
 
-<!-- START_384b2c2967f97c1e51e10b0feedf1a1c -->
+<!-- START_b2d127b0f6748250200649965db067b2 -->
 ## Fetch Prediction
 Header: X-Authorization: Bearer {token}
 
@@ -339,20 +339,20 @@ Header: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/predict/horoscope?timeline=adipisci&id=qui&lang%3Den=quasi" \
+    -G "http://localhost:8000/api/predict/horoscope/?timeline=sed&id=at&lang%3Den=debitis" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost:8000/api/predict/horoscope"
+    "http://localhost:8000/api/predict/horoscope/"
 );
 
 let params = {
-    "timeline": "adipisci",
-    "id": "qui",
-    "lang=en": "quasi",
+    "timeline": "sed",
+    "id": "at",
+    "lang=en": "debitis",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -399,7 +399,7 @@ fetch(url, {
 ```
 
 ### HTTP Request
-`GET api/predict/horoscope`
+`GET api/predict/horoscope/{id?}`
 
 #### Query Parameters
 
@@ -409,7 +409,7 @@ Parameter | Status | Description
     `id` |  required  | timeline horoscope id
     `lang=en` |  optional  | language of the user en for english, ne for nepali
 
-<!-- END_384b2c2967f97c1e51e10b0feedf1a1c -->
+<!-- END_b2d127b0f6748250200649965db067b2 -->
 
 #Life Hack & Meme
 
@@ -422,14 +422,14 @@ Header: X-Authorization: Bearer {token},
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/memes/like/eum" \
+    -G "http://localhost:8000/api/memes/like/omnis" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost:8000/api/memes/like/eum"
+    "http://localhost:8000/api/memes/like/omnis"
 );
 
 let headers = {
@@ -502,14 +502,14 @@ Header: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/life-hacks/like/qui" \
+    -G "http://localhost:8000/api/life-hacks/like/sed" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost:8000/api/life-hacks/like/qui"
+    "http://localhost:8000/api/life-hacks/like/sed"
 );
 
 let headers = {
@@ -586,7 +586,7 @@ Active Life Hacs
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/life-hacks?lang%3Den=provident&%3Fpage%3D=11" \
+    -G "http://localhost:8000/api/life-hacks?lang%3Den=quam&%3Fpage%3D=6" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -597,8 +597,8 @@ const url = new URL(
 );
 
 let params = {
-    "lang=en": "provident",
-    "?page=": "11",
+    "lang=en": "quam",
+    "?page=": "6",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -693,7 +693,7 @@ Active Memes
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/memes?%3Fpage%3D=12" \
+    -G "http://localhost:8000/api/memes?%3Fpage%3D=5" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -704,7 +704,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "12",
+    "?page=": "5",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -800,7 +800,7 @@ curl -X POST \
     "http://localhost:8000/api/polls" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"optionId":18}'
+    -d '{"optionId":19}'
 
 ```
 
@@ -816,7 +816,7 @@ let headers = {
 };
 
 let body = {
-    "optionId": 18
+    "optionId": 19
 }
 
 fetch(url, {
@@ -896,7 +896,7 @@ All polls list
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/polls?%3Fpage%3D=6&%3Flang%3Den=occaecati" \
+    -G "http://localhost:8000/api/polls?%3Fpage%3D=1&%3Flang%3Den=sint" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -907,8 +907,8 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "6",
-    "?lang=en": "occaecati",
+    "?page=": "1",
+    "?lang=en": "sint",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -1038,7 +1038,7 @@ Header for User&#039;s Category Posts: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/posts/user?%3Fpage%3D=8" \
+    -G "http://localhost:8000/api/posts/user?%3Fpage%3D=1" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -1049,7 +1049,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "8",
+    "?page=": "1",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -1162,7 +1162,7 @@ All posts list
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/posts/?%3Fpage%3D=13&%3Flang%3Den=molestiae" \
+    -G "http://localhost:8000/api/posts/?%3Fpage%3D=14&%3Flang%3Den=nisi" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -1173,8 +1173,8 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "13",
-    "?lang=en": "molestiae",
+    "?page=": "14",
+    "?lang=en": "nisi",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -1290,7 +1290,7 @@ curl -X POST \
     "http://localhost:8000/api/quotes" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"quote":11}'
+    -d '{"quote":15}'
 
 ```
 
@@ -1306,7 +1306,7 @@ let headers = {
 };
 
 let body = {
-    "quote": 11
+    "quote": 15
 }
 
 fetch(url, {
@@ -1375,7 +1375,7 @@ Active Quotes
 
 ```bash
 curl -X GET \
-    -G "http://localhost:8000/api/quotes?%3Fpage%3D=6" \
+    -G "http://localhost:8000/api/quotes?%3Fpage%3D=8" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -1386,7 +1386,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "6",
+    "?page=": "8",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -1647,7 +1647,7 @@ curl -X POST \
     "http://localhost:8000/api/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"email":"non","password":"ipsam"}'
+    -d '{"email":"sint","password":"aliquid"}'
 
 ```
 
@@ -1663,8 +1663,8 @@ let headers = {
 };
 
 let body = {
-    "email": "non",
-    "password": "ipsam"
+    "email": "sint",
+    "password": "aliquid"
 }
 
 fetch(url, {
@@ -1727,7 +1727,7 @@ curl -X POST \
     "http://localhost:8000/api/social/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"consequatur","email":"quasi","image":"reprehenderit","social_id":"voluptatum","provider":"dolores"}'
+    -d '{"name":"quis","email":"unde","image":"voluptas","social_id":"soluta","provider":"deleniti"}'
 
 ```
 
@@ -1743,11 +1743,11 @@ let headers = {
 };
 
 let body = {
-    "name": "consequatur",
-    "email": "quasi",
-    "image": "reprehenderit",
-    "social_id": "voluptatum",
-    "provider": "dolores"
+    "name": "quis",
+    "email": "unde",
+    "image": "voluptas",
+    "social_id": "soluta",
+    "provider": "deleniti"
 }
 
 fetch(url, {
@@ -1813,7 +1813,7 @@ curl -X POST \
     "http://localhost:8000/api/phone/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"phone":13,"password":"mollitia"}'
+    -d '{"phone":20,"password":"maxime"}'
 
 ```
 
@@ -1829,8 +1829,8 @@ let headers = {
 };
 
 let body = {
-    "phone": 13,
-    "password": "mollitia"
+    "phone": 20,
+    "password": "maxime"
 }
 
 fetch(url, {
@@ -1893,7 +1893,7 @@ curl -X POST \
     "http://localhost:8000/api/register" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"quaerat","email":"nulla","address":"enim","password":"cum","phone":1,"image":"magni"}'
+    -d '{"name":"aut","email":"ea","address":"ipsam","password":"dolorem","phone":3,"image":"unde"}'
 
 ```
 
@@ -1909,12 +1909,12 @@ let headers = {
 };
 
 let body = {
-    "name": "quaerat",
-    "email": "nulla",
-    "address": "enim",
-    "password": "cum",
-    "phone": 1,
-    "image": "magni"
+    "name": "aut",
+    "email": "ea",
+    "address": "ipsam",
+    "password": "dolorem",
+    "phone": 3,
+    "image": "unde"
 }
 
 fetch(url, {
@@ -2202,7 +2202,7 @@ curl -X POST \
     "http://localhost:8000/api/user/profile/update" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"image":"maxime"}'
+    -d '{"image":"cum"}'
 
 ```
 
@@ -2218,7 +2218,7 @@ let headers = {
 };
 
 let body = {
-    "image": "maxime"
+    "image": "cum"
 }
 
 fetch(url, {
