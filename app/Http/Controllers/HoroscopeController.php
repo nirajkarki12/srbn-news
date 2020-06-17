@@ -10,13 +10,13 @@ use Validator;
 use App\Models\Horoscope;
 use Carbon\Carbon;
 
-/** 
+/**
 *@group Horoscope Api
 **/
 class HoroscopeController extends BaseApiController
 {
 
-    /** 
+    /**
     *List Horoscope
     *@queryParam ?lang= language parameter en for english ne for nepali
     *@response {
@@ -52,7 +52,7 @@ class HoroscopeController extends BaseApiController
     *Select Unselect Horoscope
     *Header: X-Authorization: Bearer {token}
     *@urlParam horoscope required horoscope id
-    *@queryParam ?lang= preferred language en for english, ne for nepali 
+    *@queryParam ?lang= preferred language en for english, ne for nepali
     *@response {
     *    "status": true,
     *    "data": {
@@ -67,12 +67,12 @@ class HoroscopeController extends BaseApiController
     *    },
     *    "message": "Request successfull",
     *    "code": 200
-    *} 
+    *}
     *
     **/
     public function choose(Horoscope $horoscope) {
         try {
-            
+
             $user = $this->guard->user();
 
             $is_any = $user->horoscope()->first();
@@ -82,7 +82,7 @@ class HoroscopeController extends BaseApiController
 
                 // if none present it build
                 $user->horoscope()->attach($horoscope);
-                
+
             } else {
 
                 if($is_any != $horoscope) {
@@ -90,11 +90,11 @@ class HoroscopeController extends BaseApiController
                     $user->horoscope()->attach($horoscope->id);
                 }
 
-                
+
             }
 
             return $this->successResponse($user->horoscope()->withCount('users')->first()->makeHidden('users'), 'Request successfull');
-        
+
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -104,7 +104,7 @@ class HoroscopeController extends BaseApiController
     *Fetch Prediction
     *Header: X-Authorization: Bearer {token}
     *@queryParam timeline required timeline period to show daily, tomorrow, weekly, monthly, yearly
-    *@queryParam lang=en  language of the user en for english, ne for nepali 
+    *@queryParam lang=en  language of the user en for english, ne for nepali
     * @response {
     *    "status": true,
     *    "data": {
@@ -121,13 +121,13 @@ class HoroscopeController extends BaseApiController
     *   "status": false,
     *   "message": "Nothing to show",
     *   "code": 200
-    *} 
+    *}
     **/
     public function getPredictions() {
         try {
 
             $user = auth('api')->user();
-            
+
             $timeline = request('timeline');
 
             if(!$timeline) throw new \Exception('No timeline present', Response::HTTP_OK);
@@ -159,10 +159,10 @@ class HoroscopeController extends BaseApiController
             if(!$prediction->first()) throw new \Exception('Nothing to show', Response::HTTP_OK);
 
             return $this->successResponse($prediction->first(), 'data fetched successfully');
-        
+
         } catch (\Throwable $th) {
 
-            return $this->errorResponse($th->getMessage(), $th->getCode());
+            return $this->errorResponse($th->getMessage(), 200);
 
         }
     }
