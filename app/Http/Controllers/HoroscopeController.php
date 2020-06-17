@@ -8,6 +8,7 @@ use App\Http\Controllers\Common\BaseApiController;
 use anlutro\LaravelSettings\Facade as Setting;
 use Validator;
 use App\Models\Horoscope;
+use App\Models\Prediction;
 use Carbon\Carbon;
 
 /**
@@ -135,7 +136,8 @@ class HoroscopeController extends BaseApiController
 
             if(request('id')) {
 
-                if(!$horoscope = Horoscope::where('id', request('id')?:1)->first()) throw new \Exception('No horoscope found', 200);
+                if(!$horoscope = Horoscope::where('id', request('id') )->first()) throw new \Exception('No horoscope found', 200);
+
             } else {
 
                 if(!$horoscope = $user->horoscope()->first()) throw new \Exception('User has not selected horoscope', 200);
@@ -143,31 +145,36 @@ class HoroscopeController extends BaseApiController
 
 
 
+            // $prediction = Prediction::query();
             $prediction = $horoscope->prediction();
+
+            // $prediction = $prediction->where('horoscope_id', $horoscope->id);
 
             if($timeline == 'daily') {
 
-                $prediction->where('prediction_date', Carbon::today())->where('type', 'daily');
+                $prediction = $prediction->where('prediction_date', Carbon::today())->where('type', 'daily')->first();
 
-            } elseif($timeline == 'tomorrow') {
+            } else if($timeline == 'tomorrow') {
 
-                $prediction->where('prediction_date', Carbon::tomorrow())->where('type','daily');
+                $prediction = $prediction->where('prediction_date', Carbon::tomorrow())->where('type','daily')->first();
 
-            } elseif($timeline == 'weekly') {
+            } else if($timeline == 'weekly') {
 
-                $prediction->whereBetween('prediction_date',[Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->where('type', 'weekly');
+                $prediction = $prediction->whereBetween('prediction_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->where('type', 'weekly')->first();
 
-            } elseif($timeline == 'monthly') {
+            } else if($timeline == 'monthly') {
 
-                $prediction->whereBetween('prediction_date',[Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->where('type', 'monthly');
+                $prediction = $prediction->whereBetween('prediction_date',[Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->where('type', 'monthly')->first();
 
-            } elseif($timeline == 'yearly') {
-                $prediction->whereBetween('prediction_date',[Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->where('type', 'yearly');
+            } else if($timeline == 'yearly') {
+
+                $prediction = $prediction->whereBetween('prediction_date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->where('type', 'yearly')->first();
+
             }
 
-            if(!$prediction->first()) throw new \Exception('Nothing to show', Response::HTTP_OK);
+            if(!$prediction) throw new \Exception('Nothing to show', Response::HTTP_OK);
 
-            return $this->successResponse($prediction->first(), 'data fetched successfully');
+            return $this->successResponse($prediction, 'data fetched successfully');
 
         } catch (\Throwable $th) {
 
