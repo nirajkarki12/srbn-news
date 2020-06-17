@@ -11,6 +11,8 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Http\Controllers\NotificationController;
 use App\Models\User;
+use App\Models\Poll;
+use App\Models\Polloption;
 
 class PostController extends BaseController
 {
@@ -79,6 +81,7 @@ class PostController extends BaseController
                ]
             );
             if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
+            if($request->question && (!$request->option1 || !$request->option2)) throw new \Exception('Question given but both options not found');
 
             $post = new Post;
             $post->title = $data['title'];
@@ -112,15 +115,24 @@ class PostController extends BaseController
                 }
             }
 
-            // if($request->description_nepali) {
-            //     $post->translation()->create([
-            //         'title' => $request->title_nepali?:'',
-            //         'description' => $request->description_nepali?:'',
-            //         'note' => $request->note_nepali?:'',
-            //         'source' => $request->source_nepali?:'',
-            //         'audio_url' => $request->audio_url_nepali?:'',
-            //     ]);
-            // }
+             if($request->question) {
+                 $post->poll()->create([
+                     'question' => $request->question?: null,
+                 ]);
+
+                 $polloption = new Polloption;
+                 $polloption->value = $request->option1;
+                 $polloption->poll_id = $post->poll->id;
+                 $polloption->save();
+
+                 $polloption2 = new Polloption;
+                 $polloption2->value = $request->option2;
+                 $polloption2->poll_id = $post->poll->id;
+                 $polloption2->save();
+
+                 $post->is_poll = true;
+                 $post->update();
+             }
 
             return back()->with('flash_success', 'Post added Successfully');
 
@@ -138,7 +150,10 @@ class PostController extends BaseController
      */
     public function edit(string $slug)
     {
-        $postEdit = Post::with('categories')->where('slug', $slug)->first();
+        $postEdit = Post::with('poll')
+            ->with('categories')
+            ->where('slug', $slug)
+            ->first();
 
         $selectedCategories = [];
 
@@ -179,6 +194,7 @@ class PostController extends BaseController
             );
 
             if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
+            if($request->question && (!$request->options && !count($request->options) === 2)) throw new \Exception('Question given but both options not found');
 
             if(!$post = Post::where('slug', $slug)->first()) throw new \Exception("Error Processing Request", 1);
 
@@ -200,26 +216,43 @@ class PostController extends BaseController
                 $post->categories()->attach($data['category']);
             }
 
-            // if($request->description_nepali) {
+             if($request->question) {
+                 $post->is_poll = true;
 
-            //     if($post->translation) {
-            //         $post->translation()->update([
-            //             'title' => $request->title_nepali?:($post->translation->title?:''),
-            //             'description' => $request->description_nepali?:($post->translation->description?:''),
-            //             'note' => $request->note_nepali?:($post->translation->note?:''),
-            //             'source' => $request->source_nepali?:($post->translation->source?:''),
-            //             'audio_url' => $request->audio_url_nepali?:($post->translation->audio_url?:''),
-            //         ]);
-            //     } else {
-            //         $post->translation()->create([
-            //             'title' => $request->title_nepali?:'',
-            //             'description' => $request->description_nepali?:'',
-            //             'note' => $request->note_nepali?:'',
-            //             'source' => $request->source_nepali?:'',
-            //             'audio_url' => $request->audio_url_nepali?:'',
-            //         ]);
-            //     }
-            // }
+                 if($post->poll) {
+                     $post->poll()->update([
+                         'question' => $request->question?: null,
+                     ]);
+
+                     if(isset($data['options']) && is_array($data['options']))
+                     {
+                         foreach ($data['options'] as $id => $val) {
+                             Polloption::where(['id' => $id])
+                                 ->update([
+                                     'value' => $val
+                                 ]);
+                         }
+                     }
+
+                 } else {
+                     $poll = new Poll;
+                     $poll->question = $request->question?: null;
+                     $poll->post()->associate($post);
+                     $poll->save();
+
+                     foreach ($data['options'] as $key => $val) {
+                         $polloption = new Polloption;
+                         $polloption->value = $val;
+                         $polloption->poll_id = $poll->id;
+                         $polloption->save();
+                     }
+                 }
+                 $post->update();
+
+             } else {
+                 $post->is_poll = false;
+                 if($post->poll) $post->poll()->delete();
+             }
 
             return redirect()->route('admin.post', ['page' => $page])->with('flash_success', 'Post updated Successfully');
 

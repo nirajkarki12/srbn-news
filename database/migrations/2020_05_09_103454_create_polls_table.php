@@ -15,14 +15,9 @@ class CreatePollsTable extends Migration
     {
         Schema::create('polls', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description');
             $table->string('question');
-            $table->integer('type')->default(1);
-            $table->string('content');
-            $table->string('audio_url')->nullable();
-            $table->boolean('status')->default(1);
-            $table->string('slug')->unique();
+            $table->unsignedBigInteger('post_id');
+            $table->foreign('post_id')->references('id')->on('posts')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

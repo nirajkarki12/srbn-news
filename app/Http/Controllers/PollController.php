@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Common\BaseApiController;
-use anlutro\LaravelSettings\Facade as Setting;
 use Validator;
+use anlutro\LaravelSettings\Facade as Setting;
 use App\Models\Post;
 use App\Models\Poll;
 use App\Models\UserPoll;
-use App\Models\Polloption;
 use Auth;
 use DB;
 
@@ -29,135 +28,151 @@ class PollController extends BaseApiController
       parent::__construct();
    }
 
-   /**
-   * Polls List
-   * All Polls list
-   * @queryParam ?page= next page - pagination
-   * @response {
-   *  "status": true,
-   *  "data": {
-   *   "current_page": 2,
-   *   "data": [
-   *    {
-   *     "id": 1,
-   *     "title": "News Title",
-   *     "description": "News Long Description",
-   *     "question": "Poll question",
-   *     "type": "Image|Video",
-   *     "content": "Image URL|Video URL",
-   *     "audio_url": "URL|null",
-   *     "created_at": "2020-04-14 15:00",
-   *     "options": [
-   *      {
-   *        "id": 2,
-   *        "value": "Yes",
-    *       "translation": {
-    *           "polloption_id": 2,
-    *           "id": 1,
-    *           "value": "nepali value"
-    *       }
-   *      },
-   *      {
-   *        "id": 3,
-   *        "value": "No",
-    *       "translation": {
-    *           "polloption_id": 3,
-    *           "id": 2,
-    *           "value": "nepali value"
-    *       }
-   *      }
-   *     ]
-   *    }
-   *   ],
-    *  "translation":{
-    *      "poll_id": 5,
-    *      "title":"translation title",
-    *      "description":"translation description",
-    *      "question":"translation question"
-    *   },
-   *   "first_page_url": "URL/api/polls?page=1",
-   *   "from": 16,
-   *   "last_page": 4,
-   *   "last_page_url": "URL/api/polls?page=4",
-   *   "next_page_url": "URL/api/polls?page=3",
-   *   "path": "URL/api/polls",
-   *   "per_page": 15,
-   *   "prev_page_url": "URL/api/polls?page=1",
-   *   "to": 30,
-   *   "total": 55
-   * },
-   * "message": "Poll data fetched successfully",
-   * "code": 200
-   * }
-   * @response 200 {
-   *  "status": false,
-   *  "message": "No Polls found",
-   *  "code": 200
-   * }
-   * @response 200 {
-   *  "status": false,
-   *  "message": "Invalid Request",
-   *  "code": 200
-   * }
-   */
-   public function index()
-   {
-      try {
+    /**
+     * Polls List
+     * All polls list
+     * @queryParam ?page= next page - pagination
+     * @queryParam ?lang=en user preffered language en for english and ne for nepali
+     * @urlParam /categoryId specific category Posts
+     * @response {
+     *  "status": true,
+     *  "data": {
+     *   "current_page": 2,
+     *   "data": [
+     *    {
+     *     "id": 1,
+     *     "title": "News Title",
+     *     "description": "News Long Description",
+     *     "type": "Image|Video",
+     *     "content": "Image URL|Video URL",
+     *     "note": "News notes",
+     *     "source": "News Source",
+     *     "source_url": "Source URL",
+     *     "audio_url": "URL|null",
+     *     "lang":"en",
+     *     "created_at": "2020-04-14 15:00",
+     *     "categories": [
+     *      {
+     *        "id": 2,
+     *        "name": "News",
+     *        "description": null,
+     *        "image": null,
+     *        "created_at": "2020-04-14 15:00"
+     *      }
+     *     ],
+     *     "poll": {
+     *            "id": 2,
+     *            "question": "What do you think?",
+     *            "post_id": 1,
+     *            "options": [
+     *             {
+     *                "id": 3,
+     *                "value": "Good",
+     *                "total": 0
+     *            },
+     *            {
+     *                "id": 4,
+     *                "value": "Bad",
+     *                "total": 0
+     *            }
+     *            ]
+     *      }
+     *    }
+     *   ],
+     *   "first_page_url": "URL/api/polls?page=1",
+     *   "from": 16,
+     *   "last_page": 4,
+     *   "last_page_url": "URL/api/polls?page=4",
+     *   "next_page_url": "URL/api/polls?page=3",
+     *   "path": "URL/api/polls",
+     *   "per_page": 15,
+     *   "prev_page_url": "URL/api/polls?page=1",
+     *   "to": 30,
+     *   "total": 55
+     * },
+     * "message": "Poll data fetched successfully",
+     * "code": 200
+     * }
+     * @response 200 {
+     *  "status": false,
+     *  "message": "No Polls found",
+     *  "code": 200
+     * }
+     * @response 200 {
+     *  "status": false,
+     *  "message": "Invalid Request",
+     *  "code": 200
+     * }
+     */
+    public function index(int $categoryId = null)
+    {
+        try {
 
-         $paginator = Poll::select([
-               'polls.*',
-               DB::raw('
+            $lang = request('lang')?:'en';
+
+            $paginator = Post::select([
+                'posts.*',
+                DB::raw('
                      (
                         CASE
-                        WHEN polls.type = ' .Post::TYPE_IMAGE .' THEN "' .Post::$postTypes[Post::TYPE_IMAGE] .'"'
-                        .' WHEN polls.type = ' .Post::TYPE_VIDEO .' THEN "' .Post::$postTypes[Post::TYPE_VIDEO] .'"'
-                        .' ELSE null
+                        WHEN posts.type = ' .Post::TYPE_IMAGE .' THEN "' .Post::$postTypes[Post::TYPE_IMAGE] .'"'
+                    .' WHEN posts.type = ' .Post::TYPE_VIDEO .' THEN "' .Post::$postTypes[Post::TYPE_VIDEO] .'"'
+                    .' ELSE null
                         END
                      ) AS type
                   '),
-               ])
-                ->with('options')
-                ->with('options.translation')
-                ->with('translation')
-
+            ])
+                ->with('categories')
+                ->with('poll')
+                ->with('poll.options')
+                ->where('lang', $lang)
                 ->orderBy('created_at', 'desc')
                 ->where('status', 1);
 
-         // if($categoryId) {
-         //    $paginator = $paginator->whereHas('categories', function($q) use($categoryId) {
-         //       $q->where('categories.id', $categoryId);
-         //    });
-         // }
+            if($categoryId) {
+                $paginator = $paginator->whereHas('categories', function($q) use($categoryId) {
+                    $q->where('categories.id', $categoryId);
+                });
+            }
 
-         $paginator = $paginator->paginate(Setting::get('data_per_page', 25));
+            $paginator = $paginator->paginate(Setting::get('data_per_page', 25));
 
-         $polls = $paginator->each(function ($post) {
-                     $post->makeHidden([
+            $posts = $paginator->each(function ($post) {
+                $post->makeHidden([
+                    'status',
+                    'category_id',
+                    'updated_at',
+                    'slug'
+                ]);
+                $post->categories->each(function($category) {
+                    $category->makeHidden([
+                        'image_file',
                         'status',
                         'updated_at',
+                        'pivot',
                         'slug'
-                     ]);
-                     $post->options->each(function($category) {
-                        $category->makeHidden([
-                           'total',
-                           'poll_id',
-                           'created_at',
-                           'updated_at'
-                        ]);
-                     });
-                  });
+                    ]);
+                });
+                $post->poll->options->each(function($pollOption) {
+                    $pollOption->makeHidden([
+                        'poll_id',
+                        'created_at',
+                        'updated_at',
+                    ]);
+                });
+            });
 
-         $paginator->data = $polls;
+            $paginator->data = $posts;
 
-         if (!$paginator->count()) throw new \Exception("No Polls found", Response::HTTP_OK);
+            if (!$paginator->count()) throw new \Exception("No Polls found", Response::HTTP_OK);
 
-         return $this->successResponse($paginator, 'Poll data fetched successfully');
+            return $this->successResponse($paginator, 'Poll data fetched successfully');
 
-      } catch (\Exception $e) {
-         return $this->errorResponse($e->getMessage(), $e->getCode());
-      }
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
 
-   }
+    }
 
    /**
    * Submit Poll
@@ -169,13 +184,11 @@ class PollController extends BaseApiController
    *   {
    *   "id": 1,
    *   "value": "yes",
-   *   "value_nepali": "nepali option value",
    *   "total": "33.3%"
    *   },
    *   {
    *   "id": 2,
    *   "value": "no",
-   *   "value_nepali": "nepali option value",
    *   "total": "66.7%"
    *  }
    *  ],
@@ -216,7 +229,6 @@ class PollController extends BaseApiController
 
          $poll = Poll::with('options')
                     ->select('polls.*')
-                    ->with('options.translation')
                     ->join('poll_options AS po', 'po.poll_id', 'polls.id')
                     ->where('po.id', $optionId)
                     ->first();
@@ -245,7 +257,6 @@ class PollController extends BaseApiController
 
             $poll = Poll::with('options')
                 ->select('polls.*')
-                ->with('options.translation')
                 ->join('poll_options AS po', 'po.poll_id', 'polls.id')
                 ->where('po.id', $optionId)
                 ->first();
@@ -269,7 +280,6 @@ class PollController extends BaseApiController
          foreach ($data as $key => $value) {
             $response[$key]['id'] = $value->id;
             $response[$key]['value'] = $value->value;
-            $response[$key]['value_nepali'] = $value->translation->value;
             $response[$key]['total'] = $total > 0 ? round($value->total / $total * 100, 1) . '%' : '0%';
          }
 

@@ -68,16 +68,6 @@ Route::group(['prefix' => 'admin'], function(){
    Route::post('post/get-web-content', 'PostController@getWebContent')->name('admin.post.get-web-content');
    /* */
 
-   /* Poll CRUD  */
-   Route::get('poll/list', 'PollController@index')->name('admin.poll');
-   Route::get('poll/create', 'PollController@create')->name('admin.poll.create');
-   Route::get('poll/edit/{slug}', 'PollController@edit')->name('admin.poll.edit');
-   Route::get('poll/remove/{slug}/{page?}', 'PollController@destroy')->name('admin.poll.destroy');
-
-   Route::post('poll/store', 'PollController@store')->name('admin.poll.store');
-   Route::post('poll/update/{slug}/{page?}', 'PollController@update')->name('admin.poll.update');
-   /* */
-
    /* RSS CRUD  */
    Route::get('rss', 'RssController@index')->name('admin.rss');
    Route::get('rss/edit/{slug}', 'RssController@edit')->name('admin.rss.edit');

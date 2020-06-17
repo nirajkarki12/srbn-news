@@ -10,6 +10,7 @@
     <li class="active"><i class="fa fa-plus"></i> Edit a Post</li>
 @endsection
 
+@include('ckfinder::setup')
 @section('content')
 
 @include('notification.notify')
@@ -158,6 +159,39 @@
                 </div>
 
             </div>
+
+              <div class="form-group">
+                  <div class="col-sm-2 pull-left">
+                      <label for="question" class=" control-label">Poll</label>
+                  </div>
+                  <div class="col-sm-9 pull-left">
+                      <textarea class="form-control" id="question" name="question" rows="2" cols="80" placeholder="Poll Question">{{ old('question') ?: ($postEdit->poll ? $postEdit->poll->question : '') }}</textarea>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-sm-2 pull-left">
+                      <label for="option1" class=" control-label">Poll Options</label>
+                  </div>
+                  <div class="col-sm-9 pull-left">
+                      @if($postEdit->poll)
+                          @foreach($postEdit->poll->options as $key => $option)
+                              <div class="col-sm-4" style="padding:0 10px 0 0;">
+                                  <input type="text" class="form-control" id="options{{ $key }}" name="options[{{ $option->id }}]" value="{{ $option->value }}" placeholder="Option {{ $key + 1 }}">
+                              </div>
+                          @endforeach
+                      @else
+                          <div class="col-sm-4" style="padding:0 10px 0 0;">
+                              <input type="text" class="form-control" id="option1" name="options[]" value="{{ old('option1') }}" placeholder="Option 1">
+                          </div>
+                          <div class="col-sm-4" style="padding:0 10px 0 0">
+                              <input type="text" class="form-control" id="option2" name="options[]" value="{{ old('option2') }}" placeholder="Option 2">
+                          </div>
+                      @endif
+
+
+                  </div>
+              </div>
 
 
 
