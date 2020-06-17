@@ -172,6 +172,7 @@ class HoroscopeController extends BaseApiController
 
             }
 
+            return $prediction;
             if(!$prediction) throw new \Exception('Nothing to show', Response::HTTP_OK);
 
             return $this->successResponse($prediction, 'data fetched successfully');
