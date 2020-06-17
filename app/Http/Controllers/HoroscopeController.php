@@ -104,6 +104,7 @@ class HoroscopeController extends BaseApiController
     *Fetch Prediction
     *Header: X-Authorization: Bearer {token}
     *@queryParam timeline required timeline period to show daily, tomorrow, weekly, monthly, yearly
+    *@queryParam id required timeline horoscope id
     *@queryParam lang=en  language of the user en for english, ne for nepali
     * @response {
     *    "status": true,
@@ -132,7 +133,15 @@ class HoroscopeController extends BaseApiController
 
             if(!$timeline) throw new \Exception('No timeline present', Response::HTTP_OK);
 
-            $horoscope = $user->horoscope()->first();
+            if(request('id')) {
+
+                if(!$horoscope = Horoscope::where('id', request('id')?:1)->first()) throw new \Exception('No horoscope found', 200);
+            } else {
+
+                if(!$horoscope = $user->horoscope()->first()) throw new \Exception('User has not selected horoscope', 200);
+            }
+
+
 
             $prediction = $horoscope->prediction();
 
