@@ -146,33 +146,32 @@ class HoroscopeController extends BaseApiController
 
 
             // $prediction = Prediction::query();
-            // $prediction = $horoscope->prediction();
+            $prediction = $horoscope->prediction();
 
             // $prediction = $prediction->where('horoscope_id', $horoscope->id);
 
             if($timeline == 'daily') {
 
-                $prediction = Prediction::where('horoscope_id', $horoscope->id)->where('prediction_date', Carbon::today())->where('type', 'daily')->first();
+                $prediction = $prediction->where('prediction_date', Carbon::today())->where('type', 'daily')->first();
 
             } else if($timeline == 'tomorrow') {
 
-                $prediction = Prediction::where('horoscope_id', $horoscope->id)->where('prediction_date', Carbon::tomorrow())->where('type','daily')->first();
+                $prediction = $prediction->where('prediction_date', Carbon::tomorrow())->where('type','daily')->first();
 
             } else if($timeline == 'weekly') {
 
-                $prediction = Prediction::where('horoscope_id', $horoscope->id)->whereBetween('prediction_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->where('type', 'weekly')->first();
+                $prediction = $prediction->whereBetween('prediction_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->where('type', 'weekly')->first();
 
             } else if($timeline == 'monthly') {
 
-                $prediction = Prediction::where('horoscope_id', $horoscope->id)->whereBetween('prediction_date',[Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->where('type', 'monthly')->first();
+                $prediction = $prediction->whereBetween('prediction_date',[Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->where('type', 'monthly')->first();
 
             } else if($timeline == 'yearly') {
 
-                $prediction = Prediction::where('horoscope_id', $horoscope->id)->whereBetween('prediction_date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->where('type', 'yearly')->first();
+                $prediction = $prediction->whereBetween('prediction_date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->where('type', 'yearly')->first();
 
             }
 
-            return $prediction;
             if(!$prediction) throw new \Exception('Nothing to show', Response::HTTP_OK);
 
             return $this->successResponse($prediction, 'data fetched successfully');
