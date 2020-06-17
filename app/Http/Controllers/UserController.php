@@ -378,12 +378,13 @@ class UserController extends BaseApiController
          $validator = Validator::make($request->all(), [
             'social_id' => 'required',
             'provider' => 'required',
-             'email' => 'email|unique:users',
+             'email' => 'email',
          ]);
 
          if($validator->fails()) throw new \Exception($validator->errors()->first(),  Response::HTTP_OK);
 
          $user = User::where('social_id', $request->social_id)->where('provider', $request->provider)->first();
+         if(!$user) $user = User::where('email', $request->email)->first();
 
          if(!$user) {
             $user = new User();
