@@ -145,7 +145,7 @@ class HoroscopeController extends BaseApiController
 
 
 
-            $prediction = $horoscope->prediction();
+            $prediction = Prediction::query();
             // $prediction = $horoscope->prediction();
 
             $prediction = $prediction->where('horoscope_id', $horoscope->id);
