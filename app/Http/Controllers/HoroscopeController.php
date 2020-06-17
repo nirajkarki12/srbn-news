@@ -8,6 +8,7 @@ use App\Http\Controllers\Common\BaseApiController;
 use anlutro\LaravelSettings\Facade as Setting;
 use Validator;
 use App\Models\Horoscope;
+use App\Models\Prediction;
 use Carbon\Carbon;
 
 /**
@@ -144,25 +145,25 @@ class HoroscopeController extends BaseApiController
 
 
 
-            $prediction = $horoscope->prediction;
+            $prediction = Prediction::where('horoscope_id', $horoscope->id);
 
             if($timeline == 'daily') {
 
                 $prediction->where('prediction_date', Carbon::today())->where('type', 'daily');
 
-            } elseif($timeline == 'tomorrow') {
+            } else if($timeline == 'tomorrow') {
 
                 $prediction->where('prediction_date', Carbon::tomorrow())->where('type','daily');
 
-            } elseif($timeline == 'weekly') {
+            } else if($timeline == 'weekly') {
 
-                $prediction->whereBetween('prediction_date',[Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->where('type', 'weekly');
+                $prediction->whereBetween('prediction_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->where('type', 'weekly');
 
-            } elseif($timeline == 'monthly') {
+            } else if($timeline == 'monthly') {
 
                 $prediction->whereBetween('prediction_date',[Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->where('type', 'monthly');
 
-            } elseif($timeline == 'yearly') {
+            } else if($timeline == 'yearly') {
 
                 $prediction->whereBetween('prediction_date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->where('type', 'yearly');
 
