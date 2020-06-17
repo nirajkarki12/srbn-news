@@ -145,9 +145,10 @@ class HoroscopeController extends BaseApiController
 
 
 
+            // $prediction = $horoscope->prediction();
             $prediction = $horoscope->prediction();
 
-            // $prediction->where('horoscope_id', $horoscope->id);
+            $prediction = $prediction->where('horoscope_id', $horoscope->id);
 
             if($timeline == 'daily') {
 
