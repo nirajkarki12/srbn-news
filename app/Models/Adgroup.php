@@ -3,16 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Adgroup extends Model
 {
-    protected $fillable = ['user_id','likeable_id','likeable_type'];
+    use Notifiable;
 
-    public function likeable() {
-        return $this->morphTo();
-    }
+    protected $fillable = ['title','ads'];
 
-    public function user() {
-        return $this->belongsTo(User::class);
-    }
 }

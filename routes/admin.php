@@ -48,8 +48,7 @@ Route::group(['prefix' => 'admin'], function(){
    });
 
 	/* Category CRUD	*/
-	Route::get('category/list', 'CategoryController@index')->name('admin.category');
-	Route::get('category/create', 'CategoryController@create')->name('admin.category.create');
+	Route::get('category', 'CategoryController@index')->name('admin.category');
 	Route::get('category/edit/{slug}', 'CategoryController@edit')->name('admin.category.edit');
 	Route::get('category/remove/{slug}/{page?}', 'CategoryController@destroy')->name('admin.category.destroy');
 

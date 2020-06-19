@@ -51,8 +51,6 @@ class QuoteController extends BaseController
     {
         try {
 
-
-
             $data = $request->except('_token');
 
             $validator = Validator::make( $data, array(
