@@ -37,6 +37,7 @@ Route::get('/memes', 'LifeHackController@memesListing')->name('memes');
 Route::get('/category','CategoryController@index')->name('api-category');
 Route::get('/posts/{categoryId?}','PostController@index')->name('api-posts');
 Route::get('/polls','PollController@index')->name('api-polls');
+Route::post('/posts/total-views','PostController@postTotalViews')->name('api-post-total-views');
 /* */
 
 /* RSS Feed API  */

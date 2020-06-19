@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Validator;
 use App\Http\Controllers\Common\BaseApiController;
 use anlutro\LaravelSettings\Facade as Setting;
 use App\Models\Category;
@@ -274,5 +275,45 @@ class PostController extends BaseApiController
       }
 
    }
+
+    /**
+     * Post Views Increment
+     * @bodyParam postId integer required option id.
+     * @response 201 {
+     *  "status": true,
+     *  "data": [
+     *  ],
+     * "message": "Done successfully",
+     * "code": 201
+     * }
+     * @response 200 {
+     *  "status": false,
+     *  "message": "The post id field is required.",
+     *  "code": 200
+     * }
+     * @response 200 {
+     *  "status": false,
+     *  "message": "Invalid Request",
+     *  "code": 200
+     * }
+     */
+    public function postTotalViews(Request $request)
+    {
+        try {
+            $validator = Validator::make( $request->all(), [
+                    'postId' => 'required',
+                ]
+            );
+            if($validator->fails()) throw new \Exception($validator->messages()->first(), Response::HTTP_OK);
+
+            Post::where('id', $request->postId)
+                ->increment('total_views', 1);
+
+            return $this->successResponse([], 'Done successfully', Response::HTTP_CREATED);
+
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode());
+        }
+    }
 
 }

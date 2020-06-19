@@ -51,7 +51,7 @@
 								@foreach($posts as $key => $post)
 							    <tr>
 						      	<td style="vertical-align:middle">{{ $posts->firstItem() + $key }}</td>
-						      	<td style="vertical-align:middle">{{ $post->title }}</td>
+						      	<td style="vertical-align:middle">{{ $post->title }} <br /><small class="text-muted"> {{ $post->total_views ?: 0 }} Views</small></td>
                            <td style="vertical-align:middle">
                               @if($post->type && array_key_exists($post->type, \App\Models\Post::$postTypes))
                                  <p class="text-info" title="

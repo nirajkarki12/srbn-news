@@ -26,7 +26,7 @@ class Post extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-	    'title', 'description', 'type', 'content', 'is_full_width', 'note', 'source', 'source_url', 'source_url2', 'source_url3', 'audio_url', 'is_poll', 'status',
+	    'title', 'description', 'type', 'content', 'is_full_width', 'note', 'source', 'source_url', 'source_url2', 'source_url3', 'audio_url', 'is_poll', 'total_views', 'status',
 	];
 
    /**

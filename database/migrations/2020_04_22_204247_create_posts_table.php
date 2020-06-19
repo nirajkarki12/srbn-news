@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreatePostsTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations.`
      *
      * @return void
      */
@@ -27,6 +27,7 @@ class CreatePostsTable extends Migration
             $table->string('source_url3')->nullable();
             $table->string('audio_url')->nullable();
             $table->boolean('is_poll')->default(0);
+            $table->integer('total_views')->default(0);
             $table->boolean('status')->default(1);
             $table->unsignedBigInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('set null');
