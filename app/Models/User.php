@@ -7,7 +7,6 @@ use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Cviebrock\EloquentSluggable\Sluggable;
 use App\Notifications\Auth\VerifyEmailQueued;
-use App\Notifications\Auth\ResetPasswordQueued;
 use App\Models\Category;
 use App\Models\Polloption;
 
@@ -23,7 +22,7 @@ class User extends Authenticatable implements JWTSubject
    * @var array
    */
    protected $fillable = [
-      'name', 'email', 'image_file', 'image', 'address', 'password', 'social_id', 'provider', 'phone'
+      'name', 'email', 'image_file', 'image', 'address', 'social_id', 'provider', 'phone'
    ];
 
    /**
@@ -32,7 +31,7 @@ class User extends Authenticatable implements JWTSubject
    * @var array
    */
    protected $hidden = [
-      'password', 'remember_token','social_id','provider'
+      'remember_token','social_id','provider'
    ];
 
    /**
@@ -88,18 +87,8 @@ class User extends Authenticatable implements JWTSubject
          'email' => $this->email,
          'image' => $this->image,
          'address' => $this->address,
+         'phone' => $this->phone,
       ];
-   }
-
-   /**
-   * Send the password reset notification.
-   *
-   * @param  string  $token
-   * @return void
-   */
-   public function sendPasswordResetNotification($token)
-   {
-      $this->notify(new ResetPasswordQueued($token));
    }
 
    public function sluggable()
