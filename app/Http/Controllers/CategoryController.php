@@ -41,7 +41,8 @@ class CategoryController extends BaseApiController
    *   {
    *    "id": 3,
    *    "name": "Entertainment",
-   *    "description": null,
+   *    "name_np": "Entertainment",
+   *    "position": 2,
    *    "image": null,
    *    "created_at": "2020-04-14 15:10"
    *   }

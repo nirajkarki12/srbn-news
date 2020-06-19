@@ -64,7 +64,8 @@ fetch(url, {
         {
             "id": 2,
             "name": "News",
-            "description": null,
+            "name_np": "News",
+            "position": 1,
             "image": null,
             "created_at": "2020-04-14 15:00"
         }
@@ -149,7 +150,8 @@ fetch(url, {
         {
             "id": 2,
             "name": "News",
-            "description": null,
+            "name_np": "News",
+            "position": 1,
             "image": null,
             "created_at": "2020-04-14 15:00"
         },
@@ -191,7 +193,7 @@ fetch(url, {
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/list/horoscope?%3Flang%3D=reiciendis" \
+    -G "http://localhost/srbn-news/public/api/list/horoscope?%3Flang%3D=error" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -202,7 +204,7 @@ const url = new URL(
 );
 
 let params = {
-    "?lang=": "reiciendis",
+    "?lang=": "error",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -264,18 +266,18 @@ Header: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/horoscope/beatae?%3Flang%3D=at" \
+    -G "http://localhost/srbn-news/public/api/horoscope/inventore?%3Flang%3D=dignissimos" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/horoscope/beatae"
+    "http://localhost/srbn-news/public/api/horoscope/inventore"
 );
 
 let params = {
-    "?lang=": "at",
+    "?lang=": "dignissimos",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -339,7 +341,7 @@ Header: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/predict/horoscope/?timeline=quasi&id=labore&lang%3Den=delectus" \
+    -G "http://localhost/srbn-news/public/api/predict/horoscope/?timeline=dolor&id=sint&lang%3Den=et" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -350,9 +352,9 @@ const url = new URL(
 );
 
 let params = {
-    "timeline": "quasi",
-    "id": "labore",
-    "lang=en": "delectus",
+    "timeline": "dolor",
+    "id": "sint",
+    "lang=en": "et",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -422,14 +424,14 @@ Header: X-Authorization: Bearer {token},
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/memes/like/eum" \
+    -G "http://localhost/srbn-news/public/api/memes/like/distinctio" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/memes/like/eum"
+    "http://localhost/srbn-news/public/api/memes/like/distinctio"
 );
 
 let headers = {
@@ -502,14 +504,14 @@ Header: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/life-hacks/like/aut" \
+    -G "http://localhost/srbn-news/public/api/life-hacks/like/rerum" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/srbn-news/public/api/life-hacks/like/aut"
+    "http://localhost/srbn-news/public/api/life-hacks/like/rerum"
 );
 
 let headers = {
@@ -586,7 +588,7 @@ Active Life Hacs
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/life-hacks?lang%3Den=vel&%3Fpage%3D=18" \
+    -G "http://localhost/srbn-news/public/api/life-hacks?lang%3Den=aut&%3Fpage%3D=2" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -597,8 +599,8 @@ const url = new URL(
 );
 
 let params = {
-    "lang=en": "vel",
-    "?page=": "18",
+    "lang=en": "aut",
+    "?page=": "2",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -693,7 +695,7 @@ Active Memes
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/memes?%3Fpage%3D=13" \
+    -G "http://localhost/srbn-news/public/api/memes?%3Fpage%3D=9" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -704,7 +706,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "13",
+    "?page=": "9",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -800,7 +802,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/polls" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"optionId":4}'
+    -d '{"optionId":7}'
 
 ```
 
@@ -816,7 +818,7 @@ let headers = {
 };
 
 let body = {
-    "optionId": 4
+    "optionId": 7
 }
 
 fetch(url, {
@@ -896,7 +898,7 @@ All polls list
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/polls?%3Fpage%3D=17&%3Flang%3Den=adipisci" \
+    -G "http://localhost/srbn-news/public/api/polls?%3Fpage%3D=6&%3Flang%3Den=saepe" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -907,8 +909,8 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "17",
-    "?lang=en": "adipisci",
+    "?page=": "6",
+    "?lang=en": "saepe",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -942,17 +944,22 @@ fetch(url, {
                 "description": "News Long Description",
                 "type": "Image|Video",
                 "content": "Image URL|Video URL",
+                "is_full_width": 0,
                 "note": "News notes",
                 "source": "News Source",
+                "source_url2": null,
+                "source_url3": null,
                 "source_url": "Source URL",
                 "audio_url": "URL|null",
                 "lang": "en",
+                "total_views": 1,
                 "created_at": "2020-04-14 15:00",
                 "categories": [
                     {
                         "id": 2,
                         "name": "News",
-                        "description": null,
+                        "name_np": "News",
+                        "position": 1,
                         "image": null,
                         "created_at": "2020-04-14 15:00"
                     }
@@ -1038,7 +1045,7 @@ Header for User&#039;s Category Posts: X-Authorization: Bearer {token}
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=12" \
+    -G "http://localhost/srbn-news/public/api/posts/user?%3Fpage%3D=11" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -1049,7 +1056,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "12",
+    "?page=": "11",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -1098,7 +1105,8 @@ fetch(url, {
                     {
                         "id": 2,
                         "name": "News",
-                        "description": null,
+                        "name_np": "News",
+                        "position": 1,
                         "image": null,
                         "created_at": "2020-04-14 15:00"
                     }
@@ -1167,7 +1175,7 @@ All posts list
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=4&%3Flang%3Den=maxime" \
+    -G "http://localhost/srbn-news/public/api/posts/?%3Fpage%3D=13&%3Flang%3Den=rem" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -1178,8 +1186,8 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "4",
-    "?lang=en": "maxime",
+    "?page=": "13",
+    "?lang=en": "rem",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -1228,7 +1236,8 @@ fetch(url, {
                     {
                         "id": 2,
                         "name": "News",
-                        "description": null,
+                        "name_np": "News",
+                        "position": 1,
                         "image": null,
                         "created_at": "2020-04-14 15:00"
                     }
@@ -1296,7 +1305,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/posts/total-views" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"postId":15}'
+    -d '{"postId":4}'
 
 ```
 
@@ -1312,7 +1321,7 @@ let headers = {
 };
 
 let body = {
-    "postId": 15
+    "postId": 4
 }
 
 fetch(url, {
@@ -1378,7 +1387,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/quotes" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"quote":16}'
+    -d '{"quote":18}'
 
 ```
 
@@ -1394,7 +1403,7 @@ let headers = {
 };
 
 let body = {
-    "quote": 16
+    "quote": 18
 }
 
 fetch(url, {
@@ -1463,7 +1472,7 @@ Active Quotes
 
 ```bash
 curl -X GET \
-    -G "http://localhost/srbn-news/public/api/quotes?%3Fpage%3D=11" \
+    -G "http://localhost/srbn-news/public/api/quotes?%3Fpage%3D=8" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}"
 ```
@@ -1474,7 +1483,7 @@ const url = new URL(
 );
 
 let params = {
-    "?page=": "11",
+    "?page=": "8",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -1735,7 +1744,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/social/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"nulla","email":"rerum","image":"doloremque","social_id":"aut","provider":"repellat"}'
+    -d '{"name":"explicabo","email":"deserunt","image":"impedit","social_id":"quia","provider":"dolorum"}'
 
 ```
 
@@ -1751,11 +1760,11 @@ let headers = {
 };
 
 let body = {
-    "name": "nulla",
-    "email": "rerum",
-    "image": "doloremque",
-    "social_id": "aut",
-    "provider": "repellat"
+    "name": "explicabo",
+    "email": "deserunt",
+    "image": "impedit",
+    "social_id": "quia",
+    "provider": "dolorum"
 }
 
 fetch(url, {
@@ -1821,7 +1830,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/phone/login" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"phone":17}'
+    -d '{"phone":9}'
 
 ```
 
@@ -1837,7 +1846,7 @@ let headers = {
 };
 
 let body = {
-    "phone": 17
+    "phone": 9
 }
 
 fetch(url, {
@@ -1908,7 +1917,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/register" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"name":"rem","email":"nesciunt","address":"nostrum","phone":15,"image":"aspernatur"}'
+    -d '{"name":"dolores","email":"fugiat","address":"dignissimos","phone":13,"image":"autem"}'
 
 ```
 
@@ -1924,11 +1933,11 @@ let headers = {
 };
 
 let body = {
-    "name": "rem",
-    "email": "nesciunt",
-    "address": "nostrum",
-    "phone": 15,
-    "image": "aspernatur"
+    "name": "dolores",
+    "email": "fugiat",
+    "address": "dignissimos",
+    "phone": 13,
+    "image": "autem"
 }
 
 fetch(url, {
@@ -2137,7 +2146,8 @@ fetch(url, {
             {
                 "id": 2,
                 "name": "News",
-                "description": null,
+                "name_np": "News",
+                "position": 1,
                 "image": null,
                 "created_at": "2020-04-14 15:00"
             }
@@ -2197,7 +2207,7 @@ curl -X POST \
     "http://localhost/srbn-news/public/api/user/profile/update" \
     -H "Content-Type: application/json" \
     -H "X-Authorization: Bearer {token}" \
-    -d '{"image":"optio"}'
+    -d '{"image":"molestiae"}'
 
 ```
 
@@ -2213,7 +2223,7 @@ let headers = {
 };
 
 let body = {
-    "image": "optio"
+    "image": "molestiae"
 }
 
 fetch(url, {
