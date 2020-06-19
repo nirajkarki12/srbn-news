@@ -19,9 +19,12 @@ class CreatePostsTable extends Migration
             $table->text('description');
             $table->integer('type')->default(1);
             $table->string('content');
+            $table->integer('is_full_width')->default(0);
             $table->string('note')->nullable();
             $table->string('source')->nullable();
             $table->string('source_url')->nullable();
+            $table->string('source_url2')->nullable();
+            $table->string('source_url3')->nullable();
             $table->string('audio_url')->nullable();
             $table->boolean('is_poll')->default(0);
             $table->boolean('status')->default(1);
