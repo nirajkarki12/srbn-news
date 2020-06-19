@@ -331,7 +331,8 @@ class UserController extends BaseApiController
    *     {
    *        "id": 2,
    *        "name": "News",
-   *        "description": null,
+   *        "name_np": "News",
+   *        "position": 1,
    *        "image": null,
    *        "created_at": "2020-04-14 15:00"
    *     }

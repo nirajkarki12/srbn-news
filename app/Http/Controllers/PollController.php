@@ -45,17 +45,22 @@ class PollController extends BaseApiController
      *     "description": "News Long Description",
      *     "type": "Image|Video",
      *     "content": "Image URL|Video URL",
+     *     "is_full_width": 0,
      *     "note": "News notes",
      *     "source": "News Source",
+     *     "source_url2": null,
+     *     "source_url3": null,
      *     "source_url": "Source URL",
      *     "audio_url": "URL|null",
      *     "lang":"en",
+     *     "total_views": 1,
      *     "created_at": "2020-04-14 15:00",
      *     "categories": [
      *      {
      *        "id": 2,
      *        "name": "News",
-     *        "description": null,
+     *        "name_np": "News",
+     *        "position": 1,
      *        "image": null,
      *        "created_at": "2020-04-14 15:00"
      *      }

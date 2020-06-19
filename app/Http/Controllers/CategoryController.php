@@ -33,7 +33,8 @@ class CategoryController extends BaseApiController
    *   {
    *    "id": 2,
    *    "name": "News",
-   *    "description": null,
+   *    "name_np": "News",
+   *    "position": 1,
    *    "image": null,
    *    "created_at": "2020-04-14 15:00"
    *   },
@@ -58,7 +59,7 @@ class CategoryController extends BaseApiController
    {
       try {
 
-         $categories = Category::orderBy('name', 'asc')
+         $categories = Category::orderBy('position', 'asc')
                      ->where(['status' => 1])
                      ->get();
 
@@ -72,17 +73,17 @@ class CategoryController extends BaseApiController
                   })->toArray();
 
          if(count($categories) === 0) throw new \Exception("Categories not found", Response::HTTP_OK);
-        
+
          return $this->successResponse($categories, 'Categories data fetched successfully');
 
       } catch (\Exception $e) {
          return $this->errorResponse($e->getMessage(), $e->getCode());
       }
-        
+
    }
 
    /**
-   * User's Categories 
+   * User's Categories
    * Header: X-Authorization: Bearer {token}
    * @response {
    *  "status": true,
@@ -90,7 +91,8 @@ class CategoryController extends BaseApiController
    *   {
    *    "id": 2,
    *    "name": "News",
-   *    "description": null,
+   *    "name_np": "News",
+   *    "position": 1,
    *    "image": null,
    *    "created_at": "2020-04-14 15:00"
    *   }
@@ -129,7 +131,7 @@ class CategoryController extends BaseApiController
 
          if(count($ids) === 0) throw new \Exception("Categories not found", Response::HTTP_OK);
 
-         $categories = Category::orderBy('name', 'asc')
+         $categories = Category::orderBy('position', 'asc')
                      ->where('status', 1)
                      ->whereIn('categories.id', $ids)
                      ->get();
@@ -142,12 +144,12 @@ class CategoryController extends BaseApiController
                         'slug'
                      ]);
                   });
-        
+
          return $this->successResponse($categories, 'Categories data fetched successfully');
 
       } catch (\Exception $e) {
          return $this->errorResponse($e->getMessage(), $e->getCode());
       }
-        
+
    }
 }
