@@ -39,9 +39,9 @@
 						      <th>Title</th>
                         <th>Type</th>
 						      <th width="30%">Description</th>
-						      <th>Note</th>
                         <th>Source</th>
                         <th>Categories</th>
+						      <th>Poll</th>
 						      <th>Status</th>
 						      <th class="text-center" width="11%">Action</th>
 						    </tr>
@@ -51,9 +51,9 @@
 								@foreach($posts as $key => $post)
 							    <tr>
 						      	<td style="vertical-align:middle">{{ $posts->firstItem() + $key }}</td>
-						      	<td style="vertical-align:middle">{{ $post->title }}</td>
+						      	<td style="vertical-align:middle">{{ $post->title }} <br /><small class="text-muted"> {{ $post->total_views ?: 0 }} Views</small></td>
                            <td style="vertical-align:middle">
-                              @if($post->type && array_key_exists($post->type, \App\Models\Post::$postTypes)) 
+                              @if($post->type && array_key_exists($post->type, \App\Models\Post::$postTypes))
                                  <p class="text-info" title="
                                     <img src='{{ $post->content }}'>
                                     ">
@@ -62,11 +62,11 @@
                               @endif
                            </td>
 						      	<td style="vertical-align:middle" class="minimize text-justify">{!! $post->description ?: '-' !!}</td>
-                           <td style="vertical-align:middle">
-                              <p class="text-muted">
-                                 {{ $post->note ?: '-' }}
-                              </p>
-                           </td>
+{{--                           <td style="vertical-align:middle">--}}
+{{--                              <p class="text-muted">--}}
+{{--                                 {{ $post->note ?: '-' }}--}}
+{{--                              </p>--}}
+{{--                           </td>--}}
                            <td style="vertical-align:middle">
                               @if($post->source)
                                  <a href="{{ $post->source_url }}" target="_new" title="{{ $post->source }}">{{ $post->source }}</a>
@@ -86,6 +86,18 @@
                               </ol>
                               <a href="javascript:void(0)" class="show_less" style="display:none"><i>Show less</i></a>
                            </td>
+                            <td style="vertical-align:middle">
+                                @if($post->poll)
+                                    <p class="text-primary">{{ $post->poll->question }}</p>
+                                    <ul style="padding-left: 15px;">
+                                        @foreach($post->poll->options as $option)
+                                        <li>{{ $option['value'] }} ~ <span class="text-muted"> {{ $option['total'] }}</span></li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    -
+                                @endif
+                            </td>
 						      	<td style="vertical-align:middle">{{ $post->status ? 'Published' : 'Unpublished' }}</td>
 							      <td style="vertical-align:middle" class="text-center">
            							<a href="{{route('admin.post.edit' , array('slug' => $post->slug, 'page' => $posts->currentPage()))}}" title="Edit a Post">
@@ -152,27 +164,27 @@
       });
 
       var minimized_elements = $('.minimize');
-    
-      minimized_elements.each(function(){    
-         var t = $(this).text();        
+
+      minimized_elements.each(function(){
+         var t = $(this).text();
          if(t.length < 220) return;
 
          $(this).html(
             t.slice(0, 220) + '<span>... </span><a href="javascript:void(0)" class="more">Read more&raquo;&raquo;</a>'+
             '<p style="display:none;">'+ t.slice(220, t.length) + '<br /> <a href="javascript:void(0)" class="less">&raquo;Show less&laquo;</a></p>'
          );
-           
-       }); 
-       
+
+       });
+
        $('a.more', minimized_elements).click(function(event){
            event.preventDefault();
            $(this).hide().prev().hide();
-           $(this).next().show();        
+           $(this).next().show();
        });
-       
+
        $('a.less', minimized_elements).click(function(event){
            event.preventDefault();
-           $(this).parent().hide().prev().show().prev().show();    
+           $(this).parent().hide().prev().show().prev().show();
        });
    });
 

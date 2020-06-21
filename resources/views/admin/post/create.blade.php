@@ -34,20 +34,19 @@
               </div>
 
               <div class="col-sm-9 pull-left">
-
-                <div class="radio">
-                  <label>
-                    <input type="radio" name="lang" id="yes_option" value="en" @if(old('lang') == 'en' || !old('lang')) checked @endif>
-                      English
-                  </label>
-                  &nbsp;&nbsp;
-                  <label>
-                    <input type="radio" name="lang" id="no_option" value="ne" @if(old('lang') == 'ne' && old('lang')) checked @endif>
-                      Nepali
-                  </label>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="lang" id="yes_option" value="en" @if(old('lang') == 'en' || !old('lang')) checked @endif>
+                          English
+                      </label>
+                      &nbsp;&nbsp;
+                      <label>
+                        <input type="radio" name="lang" id="no_option" value="ne" @if(old('lang') == 'ne' && old('lang')) checked @endif>
+                          Nepali
+                      </label>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
 
              <div class="form-group">
@@ -68,15 +67,6 @@
               </div>
             </div>
 
-            <!-- <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="source_nepali" class=" control-label">Source in Nepali</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                  <input type="text" class="form-control" id="source_nepali" name="source_nepali" value="{{ old('source_nepali') }}"  placeholder="Post Source in Nepali">
-              </div>
-            </div> -->
-
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="title" class=" control-label">Title</label>
@@ -85,15 +75,6 @@
                   <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}"  placeholder="Post Title" required>
               </div>
             </div>
-
-            <!-- <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="title_nepali" class=" control-label">Title in Nepali</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                  <input type="text" class="form-control" id="title_nepali" name="title_nepali" value="{{ old('title_nepali') }}"  placeholder="Post Title in Nepali" required>
-              </div>
-            </div> -->
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -120,16 +101,6 @@
               </div>
             </div>
 
-
-            <!-- <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="description_nepali" class=" control-label">Description in Nepali</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                <textarea class="form-control" id="description_nepali" name="description_nepali" rows="3" cols="80">{{ old('description_nepali') }}</textarea>
-              </div>
-            </div> -->
-
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="note" class=" control-label">Note</label>
@@ -138,15 +109,6 @@
                   <textarea class="form-control" id="note" name="note" rows="2" cols="80">{{ old('note') }}</textarea>
               </div>
             </div>
-
-            <!-- <div class="form-group">
-              <div class="col-sm-2 pull-left">
-                <label for="note_nepali" class=" control-label">Note in Nepali</label>
-              </div>
-              <div class="col-sm-9 pull-left">
-                  <textarea class="form-control" id="note_nepali" name="note_nepali" rows="2" cols="80">{{ old('note_nepali') }}</textarea>
-              </div>
-            </div> -->
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -171,6 +133,25 @@
               </div>
             </div>
 
+            <div class="form-group" id="full_width_content" style="display: none">
+                <div class="col-sm-2 pull-left">
+                    <label for="full_width_yes" class=" control-label">Video Full Width</label>
+                </div>
+                <div class="col-sm-9 pull-left">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="is_full_width" id="full_width_yes" value="1" @if(old('is_full_width') == '1') checked @endif>
+                            Yes
+                        </label>
+                        &nbsp;
+                        <label>
+                            <input type="radio" name="is_full_width" id="full_width_no" value="0" @if(old('is_full_width') == '0' || !old('is_full_width')) checked @endif>
+                            No
+                        </label>
+                  </div>
+                </div>
+            </div>
+
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="audio_url" class=" control-label">Audio</label>
@@ -182,6 +163,24 @@
                     <button type="button" class="btn btn-default ckfinder_popup">Upload File</button>
                 </div>
             </div>
+
+              <div class="form-group">
+                  <div class="col-sm-2 pull-left">
+                      <label for="source_url2" class=" control-label">Source URL 2</label>
+                  </div>
+                  <div class="col-sm-9 pull-left">
+                      <input type="url" class="form-control" id="source_url2" name="source_url2" value="{{ old('source_url2') }}"  placeholder="Source URL 2">
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-sm-2 pull-left">
+                      <label for="source_url3" class=" control-label">Source URL 3</label>
+                  </div>
+                  <div class="col-sm-9 pull-left">
+                      <input type="url" class="form-control" id="source_url3" name="source_url3" value="{{ old('source_url3') }}"  placeholder="Source URL 3">
+                  </div>
+              </div>
 
               <div class="form-group">
                   <div class="col-sm-2 pull-left">
@@ -290,9 +289,11 @@
     function toggleType(type){
       if(type == '{{ \App\Models\Post::TYPE_VIDEO}}') {
          $('#image').css('display', 'none');
+         $('#full_width_content').css('display', 'flex');
          $('#content').parents('.form-group').find('label').html('Video URL');
       }else {
-         if($('#image').attr('src')) $('#image').css('display', 'block');
+          $('#full_width_content').css('display', 'none');
+          if($('#image').attr('src')) $('#image').css('display', 'block');
          $('#content').parents('.form-group').find('label').html('Image URL');
       }
     }

@@ -91,9 +91,12 @@ class PostController extends BaseController
             $post->content = $data['content'];
             $post->source = $data['source'] ?: $data['source_url'];
             $post->source_url = $data['source_url'];
+            $post->source_url2 = $data['source_url2'] ?: null;
+            $post->source_url3 = $data['source_url3'] ?: null;
             $post->audio_url = $data['audio_url'];
             $post->status = $data['status'];
             $post->lang = $data['lang'];
+            $post->is_full_width = array_key_exists('is_full_width', $data) ? $data['is_full_width'] : 0;
             $post->save();
 
             if(isset($data['category']))
@@ -205,9 +208,12 @@ class PostController extends BaseController
             $post->content = $data['content'];
             $post->source = $data['source'] ?: $data['source_url'];
             $post->source_url = $data['source_url'];
+            $post->source_url2 = $data['source_url2'] ?: null;
+            $post->source_url3 = $data['source_url3'] ?: null;
             $post->audio_url = $data['audio_url'];
             $post->status = $data['status'];
             $post->lang = $data['lang'];
+            $post->is_full_width = array_key_exists('is_full_width', $data) ? $data['is_full_width'] : 0;
             $post->save();
 
             if(isset($data['category']))

@@ -41,6 +41,12 @@
                 </a>
             </li>
 
+            <li id="category">
+                <a href="{{route('admin.category')}}">
+                    <i class="fa fa-folder-o"></i> <span>Categories</span>
+                </a>
+            </li>
+
             <li class="treeview" id="attribute">
                 <a href="{{route('admin.lifehack')}}">
                     <i class="fa fa-life-ring"></i> <span>Life Hacks</span> <i class="fa fa-angle-left pull-right"></i>
@@ -70,16 +76,6 @@
                     <li id="view-attribute"><a href="{{route('admin.horoscope')}}"><i class="fa fa-th-list"></i>List Zodiac Signs</a></li>
                     <li id="add-attribute"><a href="{{route('admin.prediction.create')}}"><i class="fa fa-plus"></i>Add Prediction</a></li>
                     <li id="view-attribute"><a href="{{route('admin.prediction')}}"><i class="fa fa-th-list"></i>List Predictions</a></li>
-                </ul>
-            </li>
-
-            <li class="treeview" id="attribute">
-                <a href="{{route('admin.category')}}">
-                    <i class="fa fa-folder-o"></i> <span>Category</span> <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li id="add-attribute"><a href="{{route('admin.category.create')}}"><i class="fa fa-plus"></i>Add Category</a></li>
-                    <li id="view-attribute"><a href="{{route('admin.category')}}"><i class="fa fa-th-list"></i>List Categories</a></li>
                 </ul>
             </li>
 

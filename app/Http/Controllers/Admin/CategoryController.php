@@ -28,23 +28,13 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $categories = Category::orderBy('created_at', 'desc')
+        $categories = Category::orderBy('position', 'asc')
                      ->paginate(Setting::get('data_per_page', 25));
 
         if($categories->count() == 0 && $categories->currentPage() !== 1) {
             return redirect()->route('admin.category');
         }
         return view('admin.category.list', compact('categories'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('admin.category.create');
     }
 
     /**
@@ -61,6 +51,8 @@ class CategoryController extends BaseController
 
             $validator = Validator::make( $data, array(
                    'name' => 'required|max:255',
+                   'name_np' => 'required|max:255',
+                   'position' => 'required|integer|min:1',
                 )
             );
             if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
@@ -88,9 +80,16 @@ class CategoryController extends BaseController
      */
     public function edit(string $slug)
     {
+        $categories = Category::orderBy('position', 'asc')
+            ->paginate(Setting::get('data_per_page', 25));
+
+        if($categories->count() == 0 && $categories->currentPage() !== 1) {
+            return redirect()->route('admin.category', ['slug', $slug]);
+        }
+
         $categoryEdit = Category::where('slug', $slug)->first();
 
-        return view('admin.category.edit', compact('categoryEdit'));
+        return view('admin.category.list', compact('categories', 'categoryEdit'));
     }
 
     /**
@@ -106,7 +105,9 @@ class CategoryController extends BaseController
             $data = $request->except('_token');
 
             $validator = Validator::make( $data, array(
-                   'name' => 'required|max:255',
+                    'name' => 'required|max:255',
+                    'name_np' => 'required|max:255',
+                    'position' => 'required|integer|min:1',
                 )
             );
 
@@ -139,7 +140,7 @@ class CategoryController extends BaseController
     {
         try {
             if(!$slug) throw new \Exception("Error Processing Request", 1);
-            
+
             if(!$category = Category::where('slug', $slug)->first()) throw new \Exception("Error Processing Request", 1);
 
             if(!Helper::deleteImage($category->image_file, 'category')) throw new Exception("Error Processing Request", 1);
@@ -147,7 +148,7 @@ class CategoryController extends BaseController
             if(!$category->delete()) throw new \Exception("Error Processing Request", 1);
 
             return redirect()->route('admin.category', ['page' => $page])->with('flash_success', 'Category removed Successfully');
-               
+
         } catch (\Exception $e) {
             return back()->with('flash_error', $e->getMessage());
         }

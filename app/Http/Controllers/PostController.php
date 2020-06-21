@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Validator;
 use App\Http\Controllers\Common\BaseApiController;
 use anlutro\LaravelSettings\Facade as Setting;
 use App\Models\Category;
@@ -43,17 +44,23 @@ class PostController extends BaseApiController
    *     "description": "News Long Description",
    *     "type": "Image|Video",
    *     "content": "Image URL|Video URL",
-   *     "note": "News notes",
-   *     "source": "News Source",
-   *     "source_url": "Source URL",
-   *     "audio_url": "URL|null",
+    *     "is_full_width": 0,
+    *     "note": "News notes",
+    *     "source": "News Source",
+    *     "source_url": "Source URL",
+    *     "source_url2": null,
+    *     "source_url3": null,
+    *     "audio_url": "URL|null",
+    *     "is_poll": "true/false",
+    *     "total_views": 1,
    *     "lang":"en",
    *     "created_at": "2020-04-14 15:00",
    *     "categories": [
    *      {
    *        "id": 2,
    *        "name": "News",
-   *        "description": null,
+   *        "name_np": "News",
+   *        "position": 1,
    *        "image": null,
    *        "created_at": "2020-04-14 15:00"
    *      }
@@ -161,17 +168,23 @@ class PostController extends BaseApiController
    *     "description": "News Long Description",
    *     "type": "Image|Video",
    *     "content": "Image URL|Video URL",
+   *     "is_full_width": 0,
    *     "note": "News notes",
    *     "source": "News Source",
    *     "source_url": "Source URL",
-   *     "audio_url": "URL|null",
+   *     "source_url2": null,
+   *     "source_url3": null,
+    *     "audio_url": "URL|null",
    *     "is_poll": "true/false",
+   *     "total_views": 1,
+   *     "lang":"en",
    *     "created_at": "2020-04-14 15:00",
    *     "categories": [
    *      {
    *        "id": 2,
    *        "name": "News",
-   *        "description": null,
+   *        "name_np": "News",
+   *        "position": 1,
    *        "image": null,
    *        "created_at": "2020-04-14 15:00"
    *      }
@@ -274,5 +287,45 @@ class PostController extends BaseApiController
       }
 
    }
+
+    /**
+     * Post Views Increment
+     * @bodyParam postId integer required option id.
+     * @response 201 {
+     *  "status": true,
+     *  "data": [
+     *  ],
+     * "message": "Done successfully",
+     * "code": 201
+     * }
+     * @response 200 {
+     *  "status": false,
+     *  "message": "The post id field is required.",
+     *  "code": 200
+     * }
+     * @response 200 {
+     *  "status": false,
+     *  "message": "Invalid Request",
+     *  "code": 200
+     * }
+     */
+    public function postTotalViews(Request $request)
+    {
+        try {
+            $validator = Validator::make( $request->all(), [
+                    'postId' => 'required',
+                ]
+            );
+            if($validator->fails()) throw new \Exception($validator->messages()->first(), Response::HTTP_OK);
+
+            Post::where('id', $request->postId)
+                ->increment('total_views', 1);
+
+            return $this->successResponse([], 'Done successfully', Response::HTTP_CREATED);
+
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode());
+        }
+    }
 
 }

@@ -147,6 +147,25 @@
               </div>
             </div>
 
+            <div class="form-group" id="full_width_content" style="display: none">
+                  <div class="col-sm-2 pull-left">
+                      <label for="full_width_yes" class=" control-label">Video Full Width</label>
+                  </div>
+                  <div class="col-sm-9 pull-left">
+                      <div class="radio">
+                          <label>
+                              <input type="radio" name="is_full_width" id="full_width_yes" value="1" @if((old('is_full_width') ?: $postEdit->is_full_width) == 1) checked @endif>
+                              Yes
+                          </label>
+                          &nbsp;
+                          <label>
+                              <input type="radio" name="is_full_width" id="full_width_no" value="0" @if((old('is_full_width') ?: $postEdit->is_full_width) == 0) checked @endif>
+                              No
+                          </label>
+                      </div>
+                  </div>
+              </div>
+
             <div class="form-group">
               <div class="col-sm-2 pull-left">
                 <label for="audio_url" class=" control-label">Audio URL</label>
@@ -159,6 +178,24 @@
                 </div>
 
             </div>
+
+              <div class="form-group">
+                  <div class="col-sm-2 pull-left">
+                      <label for="source_url2" class=" control-label">Source URL 2</label>
+                  </div>
+                  <div class="col-sm-9 pull-left">
+                      <input type="url" class="form-control" id="source_url2" name="source_url2" value="{{ old('source_url2') ?: $postEdit->source_url2 }}"  placeholder="Source URL 2">
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-sm-2 pull-left">
+                      <label for="source_url3" class=" control-label">Source URL 3</label>
+                  </div>
+                  <div class="col-sm-9 pull-left">
+                      <input type="url" class="form-control" id="source_url3" name="source_url3" value="{{ old('source_url3') ?: $postEdit->source_url3 }}"  placeholder="Source URL 3">
+                  </div>
+              </div>
 
               <div class="form-group">
                   <div class="col-sm-2 pull-left">
@@ -291,9 +328,11 @@
     function toggleType(type){
       if(type == '{{ \App\Models\Post::TYPE_VIDEO}}') {
          $('#image').css('display', 'none');
+          $('#full_width_content').css('display', 'flex');
          $('#content').parents('.form-group').find('label').html('Video URL');
       }else {
-         if($('#image').attr('src')) $('#image').css('display', 'block');
+          $('#full_width_content').css('display', 'none');
+          if($('#image').attr('src')) $('#image').css('display', 'block');
          $('#content').parents('.form-group').find('label').html('Image URL');
       }
     }
