@@ -26,7 +26,7 @@ Route::group(['middleware'=>['jwt.verify']],function(){
    /* profile change API */
    Route::post('/user/profile/update','userController@changeProfile')->name('update-profile');
 });
-Route::get('predict/horoscope/{id?}','HoroscopeController@getPredictions');
+Route::get('predict/horoscope','HoroscopeController@getPredictions');
 
 Route::get('/quotes','QuoteController@index')->name('api-quotes');
 
