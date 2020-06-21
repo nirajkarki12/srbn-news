@@ -143,12 +143,7 @@ class HoroscopeController extends BaseApiController
                 if(!$horoscope = $user->horoscope()->first()) throw new \Exception('User has not selected horoscope', 200);
             }
 
-
-
-            // $prediction = Prediction::query();
             $prediction = $horoscope->prediction();
-
-            // $prediction = $prediction->where('horoscope_id', $horoscope->id);
 
             if($timeline == 'daily') {
 
