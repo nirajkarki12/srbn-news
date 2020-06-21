@@ -41,7 +41,7 @@
                 </a>
             </li>
 
-            <li id="category">
+            <li id="category-menu">
                 <a href="{{route('admin.category')}}">
                     <i class="fa fa-folder-o"></i> <span>Categories</span>
                 </a>
