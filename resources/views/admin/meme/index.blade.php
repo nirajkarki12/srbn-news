@@ -33,6 +33,7 @@
 						    <tr>
 						      <th width="4%">#</th>
 						      <th>Image</th>
+						      <th>Source</th>
 						      <th>Like Count</th>
 						      <th class="text-center" width="11%">Action</th>
 						    </tr>
@@ -50,6 +51,7 @@
                                             <img src="{{ $meme->image }}" class="img-responsive" style="height:100px;">
                                         @endif
                                     </td>
+                                    <td>{{$meme->source}}</td>
                                     <td>{{$meme->likes->count()}}</td>
                                     <td style="vertical-align:middle" class="text-center">
                                         <a href="{{route('admin.meme.create' , $meme)}}" title="Edit a Meme">

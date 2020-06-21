@@ -40,6 +40,15 @@
               </div>
             </div>
 
+            <div class="form-group">
+              <div class="col-sm-2 pull-left">
+                <label for="source" class="control-label">Source</label>
+              </div>
+              <div class="col-sm-9 pull-left">
+                <input type="text" id="source" name="source" class="form-control" placeholder="Enter the source of meme" value="{{old('source')?:($meme?$meme->source:'')}}">
+              </div>
+            </div>
+
           </div>
 
           <div class="box-footer">
