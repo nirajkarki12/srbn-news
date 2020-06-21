@@ -281,18 +281,6 @@
       },
    });
 
-   ClassicEditor
-   .create( document.querySelector('#description_nepali'), {
-      toolbar: {
-         items: [
-            'bold', 'italic', 'underline', 'strikethrough', '|',
-            'fontColor', 'fontBackgroundColor', 'link', '|',
-            'insertTable', 'bulletedList', 'numberedList','|',
-            'blockQuote', 'subscript', 'superscript', 'horizontalLine',
-         ]
-      },
-   });
-
    function selectFileWithCKFinder( elementId, selector ) {
        CKFinder.modal( {
            chooseFiles: true,
