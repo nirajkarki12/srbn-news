@@ -196,7 +196,7 @@ class LifeHackController extends BaseApiController
             }
 
             return $this->successResponse($lifehack->withCount('likes')->with('translation')->first(), 'request successful');
-        } catch (\Throwable $th) {
+        } catch (\Throwable $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode());
         }
     }
