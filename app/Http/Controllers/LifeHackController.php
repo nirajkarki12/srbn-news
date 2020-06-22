@@ -16,7 +16,7 @@ use App\Models\Like;
 **/
 class LifeHackController extends BaseApiController
 {
-   
+
     public function __construct()
     {
         parent::__construct();
@@ -59,13 +59,13 @@ class LifeHackController extends BaseApiController
      * "message": "Life Hacks data fetched successfully",
      * "code": 200
      * }
-     * 
+     *
      * @response 200 {
      *  "status": false,
      *  "message": "Life Hacks not found",
      *  "code": 200
      * }
-     * 
+     *
      * @response 200 {
      *  "status": false,
      *  "message": "Invalid Request",
@@ -98,6 +98,7 @@ class LifeHackController extends BaseApiController
      *    {
      *     "id": 1,
      *     "image": "image url",
+     *     "source":"Nepal Magazine",
      *     "likes_count": 10,
      *     "is_liked": true,
      *     "created_at": "2020-04-14 15:00",
@@ -118,13 +119,13 @@ class LifeHackController extends BaseApiController
      * "message": "Memes data fetched successfully",
      * "code": 200
      * }
-     * 
+     *
      * @response 200 {
      *  "status": false,
      *  "message": "Memes not found",
      *  "code": 200
      * }
-     * 
+     *
      * @response 200 {
      *  "status": false,
      *  "message": "Invalid Request",
@@ -145,12 +146,12 @@ class LifeHackController extends BaseApiController
     }
 
 
-    
+
 
     /**
     *Like Unlike Life Hack
     * Header: X-Authorization: Bearer {token}
-    *@urlParam lifehack required life hack id 
+    *@urlParam lifehack required life hack id
     *@response {
     *"status": true,
     *   "data": {
@@ -172,7 +173,7 @@ class LifeHackController extends BaseApiController
     *  "message": "Life hack not found",
     *  "code": 200
     * }
-    * 
+    *
     * @response 200 {
     *  "status": false,
     *  "message": "Invalid Request",
@@ -205,7 +206,7 @@ class LifeHackController extends BaseApiController
     /**
     *Like Unlike Memes
     *Header: X-Authorization: Bearer {token},
-    *@urlParam meme required meme id 
+    *@urlParam meme required meme id
     *@response {
     *"status": true,
     *   "data": {
@@ -225,7 +226,7 @@ class LifeHackController extends BaseApiController
     *  "message": "Meme not found",
     *  "code": 200
     * }
-    * 
+    *
     * @response 200 {
     *  "status": false,
     *  "message": "Invalid Request",

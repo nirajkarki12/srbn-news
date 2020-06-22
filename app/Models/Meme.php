@@ -5,7 +5,7 @@ namespace App\Models;
 
 class Meme extends MainModel
 {
-    protected $fillable = ['image'];
+    protected $fillable = ['image','source'];
 
     protected $appends = ['is_liked'];
 
@@ -13,7 +13,7 @@ class Meme extends MainModel
     public function getIsLikedAttribute() {
 
         if(!$this->user()) return false;
-        
+
         return (bool) $this->likes()->where('user_id', $this->user()->id)->first();
     }
 
@@ -27,7 +27,7 @@ class Meme extends MainModel
 
     public static function boot() {
         parent::boot();
-        
+
         static::deleting(function($meme){
             $meme->likes()->delete();
         });
