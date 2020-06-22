@@ -132,7 +132,7 @@ class HoroscopeController extends BaseApiController
 
             $timeline = request('timeline');
 
-            if(!$timeline) throw new \Exception('No timeline present', Response::HTTP_OK);
+            // if(!$timeline) throw new \Exception('No timeline present', Response::HTTP_OK);
 
             if(request('id')) {
 
@@ -143,29 +143,43 @@ class HoroscopeController extends BaseApiController
                 if(!$horoscope = $user->horoscope()->first()) throw new \Exception('User has not selected horoscope', 200);
             }
 
-            $prediction = $horoscope->prediction();
+            $prediction = collect();
 
-            if($timeline == 'daily') {
+            // if($timeline == 'daily') {
 
-                $prediction = $prediction->where('prediction_date', Carbon::today())->where('type', 'daily')->first();
+            //     $prediction = $prediction->where('prediction_date', Carbon::today())->where('type', 'daily')->first();
 
-            } else if($timeline == 'tomorrow') {
+            // } else if($timeline == 'tomorrow') {
 
-                $prediction = $prediction->where('prediction_date', Carbon::tomorrow())->where('type','daily')->first();
+            //     $prediction = $prediction->where('prediction_date', Carbon::tomorrow())->where('type','daily')->first();
 
-            } else if($timeline == 'weekly') {
+            // } else if($timeline == 'weekly') {
 
-                $prediction = $prediction->whereBetween('prediction_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->where('type', 'weekly')->first();
+            //     $prediction = $prediction->whereBetween('prediction_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->where('type', 'weekly')->first();
 
-            } else if($timeline == 'monthly') {
+            // } else if($timeline == 'monthly') {
 
-                $prediction = $prediction->whereBetween('prediction_date',[Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->where('type', 'monthly')->first();
+            //     $prediction = $prediction->whereBetween('prediction_date',[Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->where('type', 'monthly')->first();
 
-            } else if($timeline == 'yearly') {
+            // } else if($timeline == 'yearly') {
 
-                $prediction = $prediction->whereBetween('prediction_date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->where('type', 'yearly')->first();
+            //     $prediction = $prediction->whereBetween('prediction_date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->where('type', 'yearly')->first();
 
-            }
+            // }
+
+            $daily = Prediction::where('horoscope_id', request('id'))->where('prediction_date', Carbon::today())->where('type','daily')->get();
+
+            $weekly = Prediction::where('horoscope_id', request('id'))->whereBetween('prediction_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->where('type','weekly')->get();
+
+            $monthly = Prediction::where('horoscope_id', request('id'))->whereBetween('prediction_date', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->where('type','monthly')->get();
+
+            $yearly = Prediction::where('horoscope_id', request('id'))->whereBetween('prediction_date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->where('type','yearly')->get();
+
+
+
+            // return response()->json($yearly);
+
+            $prediction = $prediction->merge($daily)->merge($weekly)->merge($monthly)->merge($yearly);
 
             if(!$prediction) throw new \Exception('Nothing to show', Response::HTTP_OK);
 
