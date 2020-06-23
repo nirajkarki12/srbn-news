@@ -82,6 +82,9 @@ class QuoteController extends BaseApiController
         try {
             // if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_OK);
             $user = $this->guard->user();
+
+            $lang = request('lang')?:'en';
+
             $quotes = Quote::selectRaw(
                 'quotes.id,
                 quotes.quote,
@@ -95,6 +98,7 @@ class QuoteController extends BaseApiController
                 ->with('translation')
                 ->groupBy('quotes.id')
                 ->where('quotes.status', true)
+                ->where('quotes.type', $lang)
                 ;
 
             $quotes = $quotes->paginate(Setting::get('data_per_page', 25));
@@ -147,6 +151,10 @@ class QuoteController extends BaseApiController
                 ]
             );
             if($validator->fails()) throw new \Exception($validator->messages()->first(), Response::HTTP_OK);
+
+
+
+
 
             if(!$quote = Quote::where(['id' => $request->quote, 'status' => true])->first()) throw new \Exception("Quote not found", Response::HTTP_OK);
 

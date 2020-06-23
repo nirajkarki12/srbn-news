@@ -13,23 +13,15 @@ class QuotesImport implements ToModel, WithHeadingRow
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
-    public function model(array $row)
-    {
-        $quote = new Quote([
-            'quote' => $row['quote_english'],
-            'author' => $row['author_english'],
-            'status'   => 1
-        ]);
+    public function model(array $row) {
 
-        if($quote->save() && $row['quote_nepali'] && $row['author_nepali']) {
-            $quote->translation()->create([
-                'quote' => $row['quote_nepali'],
-                'author' => $row['author_nepali']
+        $quote = new Quote([
+            'quote' => $row['quote'],
+            'author' => $row['author'],
+            'type'  => $row['type']?:'en',
+            'status' => 1,
             ]);
-        }
 
         return $quote;
-
     }
-
 }

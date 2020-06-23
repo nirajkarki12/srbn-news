@@ -177,7 +177,6 @@ class HoroscopeController extends BaseApiController
 
 
 
-            // return response()->json($yearly);
 
             $prediction = $prediction->merge($daily)->merge($weekly)->merge($monthly)->merge($yearly);
 
