@@ -25,11 +25,16 @@ class Meme extends MainModel
         return $this->morphMany(Like::class, 'likeable');
     }
 
+    public function bookmarks() {
+        return $this->morphMany(Bookmark::class, 'bookmarkable');
+    }
+
     public static function boot() {
         parent::boot();
 
         static::deleting(function($meme){
             $meme->likes()->delete();
+            $meme->bookmarks()->delete();
         });
     }
 }

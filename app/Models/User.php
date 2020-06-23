@@ -65,6 +65,14 @@ class User extends Authenticatable implements JWTSubject
       return $this->belongsToMany(Polloption::class, 'user_polls');
    }
 
+    /**
+     * The bookmarks that belong to the user.
+     */
+    public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
    public function setImageFileAttribute($image) {
       if($image) {
          $this->attributes['image_file'] = $image;

@@ -51,8 +51,16 @@ class Post extends Model
       return $this->hasOne(Poll::class)->select('id', 'question','post_id');
    }
 
-    public function translation() {
-        return $this->hasOne(PostTranslation::class)->select('post_id','title','description','source','note', 'audio_url');
+    public function bookmarks() {
+        return $this->morphMany(Bookmark::class, 'bookmarkable');
+    }
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($post){
+            $post->bookmarks()->delete();
+        });
     }
 
 	public function sluggable()

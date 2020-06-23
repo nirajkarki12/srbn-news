@@ -37,6 +37,18 @@ class Quote extends MainModel
       return $this->belongsToMany(User::class, 'quote_likes');
    }
 
+    public function bookmarks() {
+        return $this->morphMany(Bookmark::class, 'bookmarkable');
+    }
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($quote){
+            $quote->bookmarks()->delete();
+        });
+    }
+
 
    public function translation() {
        return $this->hasOne(QuoteTranslation::class)->select('quote_id','quote','author');

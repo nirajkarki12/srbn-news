@@ -27,6 +27,7 @@ Route::group(['middleware'=>['jwt.verify']],function(){
     Route::post('/user/profile/update','userController@changeProfile')->name('update-profile');
 
     /* Bookmark API  */
+    Route::get('/bookmark','BookmarkController@index')->name('api-bookmarks');
     Route::post('/bookmark','BookmarkController@addBookmark')->name('api-bookmark-add');
     /* */
 });

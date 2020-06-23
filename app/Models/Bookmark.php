@@ -7,19 +7,19 @@ use phpDocumentor\Reflection\Types\Self_;
 
 class Bookmark extends Model
 {
-    const POLL = 'poll';
     const POST = 'post';
     const MEME = 'meme';
     const LIFE_HACK = 'lifehack';
+    const QUOTE = 'quote';
 
     public static $bookmarkTypes = [
-        Self::POLL,
         Self::POST,
         Self::MEME,
         Self::LIFE_HACK,
+        Self::QUOTE,
     ];
 
-    protected $fillable = ['user_id','type','type_id'];
+    protected $fillable = ['user_id','bookmarkable_type','bookmarkable_id'];
 
     /**
      * The attributes that should be cast to native types.
@@ -33,5 +33,9 @@ class Bookmark extends Model
 
     public function user() {
         return $this->belongsTo(User::class);
+    }
+
+    public function bookmarkable() {
+        return $this->morphTo();
     }
 }
