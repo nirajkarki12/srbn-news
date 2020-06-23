@@ -26,7 +26,8 @@ class BookmarkController extends BaseApiController
     }
 
     /**
-     * All Bookmarks
+     * Get All Bookmarks
+     * Header: X-Authorization: Bearer {token}
      * @response {
      *  "status": true,
      *  "data": [
@@ -107,7 +108,7 @@ class BookmarkController extends BaseApiController
 
     /**
     * Add a Bookmark
-    * Header: X-Authorization: Bearer {token},
+    * Header: X-Authorization: Bearer {token}
     * @bodyParam type string required post/meme/lifehack/quote.
     * @bodyParam typeId integer required id of post/meme/lifehack/quote.
     * @response {
