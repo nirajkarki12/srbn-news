@@ -98,26 +98,41 @@
           <form class="form-group" action="{{route('admin.quote.store')}}" method="POST" role="form" enctype="multipart/form-data">
               {{ csrf_field() }}
 
+
+              <div class="form-group">
+                 <div class="col-sm-2 pull-left">
+                    <label for="yes_option" class=" control-label">Type</label>
+                 </div>
+
+                 <div class="col-sm-9 pull-left">
+
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="type" id="yes_option" value="en" @if(old('type') == 'en' || !old('type')) checked @endif>
+                        English
+                    </label>
+                    &nbsp;&nbsp;
+                    <label>
+                      <input type="radio" name="type" id="no_option" value="ne" @if(old('type') == 'ne' || old('type')) checked @endif>
+                        Nepali
+                    </label>
+                  </div>
+                </div>
+
               <div class="box-body">
                 <div class="form-group">
                   <label for="quote">Quote</label>
                     <textarea id="quote" name="quote" class="form-control" placeholder="Write your Quote">{{ old('quote') }}</textarea>
                 </div>
 
-                <div class="form-group">
-                  <label for="nepali">Quote Nepali</label>
-                    <textarea id="nepali" name="quote_nepali" class="form-control" placeholder="Write your Quote in nepali">{{ old('quote_nepali') }}</textarea>
-                </div>
+
+
 
               <div class="form-group">
                   <label for="author">Author</label>
                   <input type="text" class="form-control" id="author" name="author" value="{{ old('author') }}" placeholder="Quote Author">
               </div>
 
-              <div class="form-group">
-                  <label for="author">Author Nepali</label>
-                  <input type="text" class="form-control" id="author_nepali" name="author_nepali" value="{{ old('author_nepali') }}" placeholder="Quote Author">
-              </div>
 
               <div class="clearfix"></div>
               <hr />
@@ -169,16 +184,33 @@
           <form class="form-group" action="{{route('admin.quote.update', [ 'id' => $quoteEdit->id, 'page' => isset($_REQUEST['page']) ? $_REQUEST['page'] : null ])}}" method="POST" role="form">
               {{ csrf_field() }}
 
+
+              <div class="form-group">
+                 <div class="col-sm-2 pull-left">
+                    <label for="yes_option" class=" control-label">Type</label>
+                 </div>
+
+                 <div class="col-sm-9 pull-left">
+
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="type" id="yes_option" value="en" @if((old('type') ?: $quoteEdit->type) == 'en') checked @endif>
+                        English
+                    </label>
+                    &nbsp;&nbsp;
+                    <label>
+                      <input type="radio" name="type" id="no_option" value="ne" @if((old('type') ?: $quoteEdit->type) == 'ne') checked @endif>
+                        Nepali
+                    </label>
+                  </div>
+                </div>
+
               <div class="box-body">
                 <div class="form-group">
                   <label for="quote">Quote</label>
                     <textarea id="quote" name="quote" class="form-control" placeholder="Write your Quote">{{ old('quote') ?: $quoteEdit->quote }}</textarea>
                 </div>
 
-                <div class="form-group">
-                  <label for="quote">Quote Nepali</label>
-                    <textarea id="quote_nepali" name="quote_nepali" class="form-control" placeholder="Write your Quote">{{ old('quote_nepali') ?: ($quoteEdit->translation?$quoteEdit->translation->quote:'') }}</textarea>
-                </div>
 
 
 
@@ -189,12 +221,7 @@
               <div class="clearfix"></div>
               <hr />
 
-              <div class="form-group">
-                  <label for="author">Author Nepali</label>
-                  <input type="text" class="form-control" id="author_nepali" name="author_nepali" value="{{ old('author_nepali') ?: ($quoteEdit->translation?$quoteEdit->translation->author:'') }}" placeholder="Quote Author">
-              </div>
-              <div class="clearfix"></div>
-              <hr />
+
 
               <div class="form-group">
                  <div class="col-sm-2 pull-left">
