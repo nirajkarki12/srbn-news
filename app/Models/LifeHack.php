@@ -12,7 +12,7 @@ class LifeHack extends MainModel
     public function getIsLikedAttribute() {
 
         if(!$this->user()) return false;
-        
+
         return (bool) $this->likes()->where('user_id', $this->user()->id)->first();
     }
 
@@ -29,15 +29,20 @@ class LifeHack extends MainModel
         return $this->morphMany(Like::class, 'likeable');
     }
 
+    public function bookmarks() {
+        return $this->morphMany(Bookmark::class, 'bookmarkable');
+    }
+
     public function setImageAttribute($image) {
         $this->attributes['image'] = \URL::to('storage/lifehacks/'.$image);
     }
 
     public static function boot() {
         parent::boot();
-        
+
         static::deleting(function($lifehack){
             $lifehack->likes()->delete();
+            $lifehack->bookmarks()->delete();
         });
     }
 
