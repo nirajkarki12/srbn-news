@@ -18,7 +18,7 @@ class QuotesImport implements ToModel, WithHeadingRow
         $quote = new Quote([
             'quote' => $row['quote'],
             'author' => $row['author'],
-            'type'  => $row['type'],
+            'type'  => $row['type']?:'en',
             'status' => 1,
             ]);
 
