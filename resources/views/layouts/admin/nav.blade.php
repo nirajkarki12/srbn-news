@@ -89,6 +89,16 @@
                 </ul>
             </li>
 
+            <li class="treeview" id="adgroups">
+                <a href="{{route('admin.adgroup')}}">
+                    <i class="fa fa-picture-o"></i> <span>Adgroup</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li id="add-post"><a href="{{route('admin.adgroup.create')}}"><i class="fa fa-plus"></i>Add a Ads</a></li>
+                    <li id="view-post"><a href="{{route('admin.adgroup')}}"><i class="fa fa-th-list"></i>List Adgroup</a></li>
+                </ul>
+            </li>
+
         </ul>
 
     </section>

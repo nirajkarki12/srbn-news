@@ -85,6 +85,16 @@ Route::group(['prefix' => 'admin'], function(){
     Route::post('quote/update/{id}/{page?}', 'QuoteController@update')->name('admin.quote.update');
     /* */
 
+    /* ADGROUP CRUD  */
+    Route::get('adgroup', 'AdgroupController@index')->name('admin.adgroup');
+    Route::get('adgroup/create', 'AdgroupController@create')->name('admin.adgroup.create');
+    Route::get('adgroup/edit/{adgroup}', 'AdgroupController@edit')->name('admin.adgroup.edit');
+    Route::get('adgroup/remove/{adgroup}/{page?}', 'AdgroupController@destroy')->name('admin.adgroup.destroy');
+
+    Route::post('adgroup/store', 'AdgroupController@store')->name('admin.adgroup.store');
+    Route::post('adgroup/update/{adgroup}/{page?}', 'AdgroupController@update')->name('admin.adgroup.update');
+    /* */
+
 });
 
 
