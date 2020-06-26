@@ -47,6 +47,16 @@ Route::group(['prefix' => 'admin'], function(){
       Route::post('store/{prediction?}', 'PredictionController@store')->name('admin.prediction.store');
    });
 
+
+   Route::group(['prefix' => 'jobs'], function(){
+       Route::get('category', 'JobsCategoryController@index')->name('jobs.category');
+       Route::get('company', 'CompanyController@index')->name('jobs.company');
+       Route::get('delete/{jobCategory}', 'JobsCategoryController@destroy')->name('jobs.category.delete');
+       Route::get('company/{company}', 'CompanyController@destroy')->name('jobs.company.delete');
+       Route::post('category/store/{jobCategory?}', 'JobsCategoryController@store')->name('jobs.category.store');
+       Route::post('company/store/{company?}', 'CompanyController@store')->name('jobs.company.store');
+   });
+
 	/* Category CRUD	*/
 	Route::get('category', 'CategoryController@index')->name('admin.category');
 	Route::get('category/edit/{slug}', 'CategoryController@edit')->name('admin.category.edit');
