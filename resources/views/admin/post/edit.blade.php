@@ -7,7 +7,7 @@
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>Dasboard</a></li>
     <li><a href="{{route('admin.post')}}"><i class="fa fa-newspaper-o"></i> Posts</a></li>
-    <li class="active"><i class="fa fa-plus"></i> Edit a Post</li>
+    <li class="active"><i class="fa fa-pencil-square-o"></i> Edit a Post</li>
 @endsection
 
 @include('ckfinder::setup')

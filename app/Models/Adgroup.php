@@ -9,6 +9,24 @@ class Adgroup extends Model
 {
     use Notifiable;
 
-    protected $fillable = ['title','ads'];
+    protected $fillable = ['title', 'show_after', 'publish_date'];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'publish_date' => 'datetime:Y-m-d H:i',
+        'created_at' => 'datetime:Y-m-d H:i',
+        'updated_at' => 'datetime:Y-m-d H:i',
+    ];
+
+    /**
+     * The bookmarks that belong to the user.
+     */
+    public function ads()
+    {
+        return $this->hasMany(Ad::class, 'adgroup_id');
+    }
 }

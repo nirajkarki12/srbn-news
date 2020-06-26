@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>@yield('title')</title>
-    
+
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -15,6 +15,8 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="{{ asset('vendor/admin-css/plugins/datepicker/datepicker3.css')}}">
 
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
@@ -78,7 +80,7 @@
 
     <!-- jQuery 2.2.0 -->
     <script src="{{asset('vendor/admin-css/plugins/jQuery/jQuery-2.2.0.min.js')}}"></script>
-    <script src="{{asset('https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js')}}"></script>
+    <script src="{{asset('vendor/jquery/jquery-ui.js')}}"></script>
 
     <!-- Bootstrap 3.3.6 -->
     <script src="{{asset('vendor/admin-css/bootstrap/js/bootstrap.min.js')}}"></script>
@@ -91,6 +93,7 @@
 
     <script src="{{asset('vendor/admin-css/plugins/input-mask/jquery.inputmask.extensions.js')}}"></script>
 
+   <script src="{{asset('vendor/admin-css/plugins/datepicker/bootstrap-datepicker.js')}}"></script>
     <!-- SlimScroll -->
     <script src="{{asset('vendor/admin-css/plugins/slimScroll/jquery.slimscroll.min.js')}}"></script>
     <!-- FastClick -->
