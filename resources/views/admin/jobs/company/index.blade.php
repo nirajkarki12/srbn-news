@@ -18,8 +18,6 @@
             <div class="box box-primary">
                 <div class="box-header">
                     <h3 class="box-title">List of Companies</h3>
-                    <a href="{{route('jobs.company')}}?lang=en" class="label label-{{(isset($_GET['lang']) && $_GET['lang']=='en' || !isset($_GET['lang']))?'warning':'success'}}">en</a>
-                    <a href="{{route('jobs.company')}}?lang=ne" class="label label-{{(isset($_GET['lang'])&& $_GET['lang']=='ne')?'warning':'success'}}">ne</a>
                     <div class="box-tools pull-right">
                         <a href="#" data-toggle="modal" data-target="#companyModal" class="btn pull-right" title="Add a Category">
                             <span class="fa fa-plus"> New Company</span>
@@ -50,9 +48,9 @@
                                     <td>
                                         <img src="{{$company->image}}" alt="image" style="height:35px">
                                     </td>
-                                    <td style="vertical-align:middle">{{ $company->name_text }}</td>
-                                    <td style="vertical-align: middle">{{substr($company->description_text,0, 120).'...'}}</td>
-                                    <td>{{$company->address_text}}</td>
+                                    <td style="vertical-align:middle">{{ $company->name }}</td>
+                                    <td style="vertical-align: middle">{{substr($company->description,0, 120).'...'}}</td>
+                                    <td>{{$company->address}}</td>
                                     <td>{{$company->phone}}</td>
                                     <td style="vertical-align:middle" class="text-center">
                                         <span class="btn btn-warning btn-xs" onclick="edit({{$company}})" style="cursor: pointer" title="Edit company">

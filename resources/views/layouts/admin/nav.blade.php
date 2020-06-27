@@ -68,12 +68,13 @@
             </li>
 
             <li class="treeview" id="attribute">
-                <a href="{{route('admin.meme')}}">
-                    <i class="fa fa-frown-o"></i> <span>Vacancy</span> <i class="fa fa-angle-left pull-right"></i>
+                <a href="{{route('admin.vacancy')}}">
+                    <i class="fa fa-tasks"></i> <span>Vacancy</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li id="add-attribute"><a href="{{route('jobs.category')}}"><i class="fa fa-category"></i>Category</a></li>
+                    <li id="add-attribute"><a href="{{route('jobs.category')}}"><i class="fa fa-list"></i>Category</a></li>
                     <li id="view-attribute"><a href="{{route('jobs.company')}}"><i class="fa fa-th-list"></i>Company</a></li>
+                    <li id="view-attribute"><a href="{{route('admin.vacancy')}}"><i class="fa fa-th-list"></i>Jobs</a></li>
                 </ul>
             </li>
 

@@ -57,6 +57,12 @@ Route::group(['prefix' => 'admin'], function(){
        Route::post('company/store/{company?}', 'CompanyController@store')->name('jobs.company.store');
    });
 
+   Route::group(['prefix'=>'vacancy'], function(){
+       Route::get('/','VacancyController@index')->name('admin.vacancy');
+       Route::post('store/{vacancy?}','VacancyController@store')->name('admin.vacancy.store');
+       Route::get('delete/{vacancy?}','VacancyController@destroy')->name('admin.vacancy.delete');
+   });
+
 	/* Category CRUD	*/
 	Route::get('category', 'CategoryController@index')->name('admin.category');
 	Route::get('category/edit/{slug}', 'CategoryController@edit')->name('admin.category.edit');

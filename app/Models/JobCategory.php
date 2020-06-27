@@ -19,4 +19,8 @@ class JobCategory extends MainModel
         $this->attributes['image'] = \URL::to('storage/jobs/'.$image);
     }
 
+    public function vacancies() {
+        return $this->belongsToMany(Vacancy::class);
+    }
+
 }

@@ -37,6 +37,7 @@ Route::get('/quotes','QuoteController@index')->name('api-quotes');
 
 Route::get('/life-hacks', 'LifeHackController@lifeHackListing')->name('life-hacks');
 Route::get('/memes', 'LifeHackController@memesListing')->name('memes');
+Route::get('/vacancies', 'VacancyApiController@index')->name('vacancies');
 
 /* Category/Post/Polls API  */
 Route::get('/category','CategoryController@index')->name('api-category');
