@@ -129,7 +129,6 @@ class PollController extends BaseApiController
             ])
                 ->with('categories')
                 ->with('poll')
-                ->with('poll.options')
                 ->where('lang', $lang)
                 ->orderBy('created_at', 'desc')
                 ->where('status', 1);
