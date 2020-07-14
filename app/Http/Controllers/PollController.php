@@ -132,7 +132,8 @@ class PollController extends BaseApiController
                 ->with('poll.options')
                 ->where('lang', $lang)
                 ->orderBy('created_at', 'desc')
-                ->where('status', 1);
+                ->where('status', 1)
+                ->where('is_poll', 1);
 
             if($categoryId) {
                 $paginator = $paginator->whereHas('categories', function($q) use($categoryId) {
