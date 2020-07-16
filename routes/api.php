@@ -21,7 +21,7 @@ Route::group(['middleware'=>['jwt.verify']],function(){
     Route::get('/life-hacks/like/{lifehack}', 'LifeHackController@handleLifeHackLike')->name('lifehack.handlelike');
 
     Route::get('horoscope/{horoscope}','HoroscopeController@choose');
-
+    Route::get('predict/horoscope','HoroscopeController@getPredictions');
 
     /* profile change API */
     Route::post('/user/profile/update','userController@changeProfile')->name('update-profile');
@@ -31,7 +31,6 @@ Route::group(['middleware'=>['jwt.verify']],function(){
     Route::post('/bookmark','BookmarkController@addBookmark')->name('api-bookmark-add');
     /* */
 });
-Route::get('predict/horoscope','HoroscopeController@getPredictions');
 
 Route::get('/quotes','QuoteController@index')->name('api-quotes');
 
