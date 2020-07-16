@@ -137,14 +137,45 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="videoWrapper">
               <div class="col-sm-2 pull-left">
-                <label for="content" class=" control-label">URL</label>
+                <label for="content" class=" control-label">Youtube URL</label>
               </div>
               <div class="col-sm-9 pull-left">
-                  <img class="img-responsive" id="image" src="@if($selectedType == \App\Models\Post::TYPE_IMAGE) {{ $postEdit->content }} @endif" style="margin-bottom:10px;width:180px;display:none;">
-                  <input type="url" class="form-control" id="content" name="content" value="{{ old('content') ?: $postEdit->content }}"  placeholder="URL">
+                  <input type="url" class="form-control" id="content" name="youtubeUrl" value="{{ $postEdit->galleries ? $postEdit->galleries->first()->url : '' }}"  placeholder="URL">
               </div>
+            </div>
+
+            <div class="form-group row" id="galleryWrapper">
+                <div class="col-sm-2 pull-left">
+                    <label for="content" class=" control-label">Gallery</label>
+                </div>
+                <div class="col-md-9 pull-left">
+                  <div class="dropzone-wrapper">
+                      <div class="dropzone-desc">
+                          <i class="fa fa-picture-o"></i>
+                          <p>Click here to upload.</p>
+                      </div>
+                      <input type="button" id="ckfinder-popup" class="btn btn-info dropzone">
+                  </div>
+
+                  <ul class="row text-center text-lg-left ckfinder-list">
+                      @if($postEdit->type != \App\Models\Post::TYPE_VIDEO && $postEdit->galleries && count($postEdit->galleries) > 0)
+                          @foreach($postEdit->galleries as $gallery)
+                              <li class="col-lg-3 col-md-4 col-6">
+                                  <a class="remove-image" href="javascript:void(0)">
+                                    <img class="img-fluid img-thumbnail" src="{{ $gallery->url }}" />
+                                    <span class="fa fa-times"> Click to remove</span>
+                                    <span class="arrows">
+                                        <i class="fa fa-angle-double-left" aria-hidden="true"></i> Move to order <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                                    </span>
+                                  </a>
+                                  <input type="hidden" name="urls[]" value="{{ $gallery->url }}">
+                              </li>
+                          @endforeach
+                      @endif
+                  </ul>
+                </div>
             </div>
 
             <div class="form-group" id="full_width_content" style="display: none">
@@ -225,12 +256,8 @@
                               <input type="text" class="form-control" id="option2" name="options[]" value="{{ old('option2') }}" placeholder="Option 2">
                           </div>
                       @endif
-
-
                   </div>
               </div>
-
-
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -269,6 +296,37 @@
 @section('scripts')
 <script src="{{ asset('vendor/ckeditor5/build/ckeditor.js') }}"></script>
 <script type="text/javascript">
+
+    let browseButton = document.getElementById( 'ckfinder-popup' );
+    let imageHolder = document.getElementsByClassName('ckfinder-list');
+
+    browseButton.onclick = function() {
+        galleryPopup( 'ckfinder-input-1' );
+    };
+
+    function galleryPopup( elementId ) {
+        CKFinder.modal( {
+            chooseFiles: true,
+            width: 800,
+            height: 600,
+            onInit: function( finder ) {
+                finder.on( 'files:choose', function(evt) {
+                    let files = evt.data.files.models;
+                    for (let i = 0; i < files.length; i++) {
+                        let imageUrl = files[i].getUrl();
+                        $(imageHolder).append('<li class="col-lg-3 col-md-4 col-6"><a class="remove-image" href="javascript:void(0)"><img class="img-fluid img-thumbnail" src="' + imageUrl + '" /><span class="fa fa-times"> Click to remove</span><span class="arrows"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Move to order <i class="fa fa-angle-double-right" aria-hidden="true"></i></span></a><input type="hidden" name="urls[]" value="' + imageUrl +'"></li>');
+                    }
+                });
+
+                finder.on( 'file:choose:resizedImage', function( evt ) {
+                    var output = document.getElementById( elementId );
+                    output.value = evt.data.resizedUrl;
+                } );
+            }
+        } );
+    }
+
+
    ClassicEditor
    .create( document.querySelector('#description'), {
       toolbar: {
@@ -300,6 +358,17 @@
        } );
    }
   $(function () {
+      $('body').on('click', 'a.remove-image', function (e) {
+          e.preventDefault();
+          $(this).parent('li').remove();
+      });
+
+      $('body').find('.ckfinder-list').sortable({
+          update: function(event, ui) {
+              dropIndex = ui.item.index();
+          }
+      });
+
       $('.ckfinder_popup').click(function () {
           selectFileWithCKFinder( 'ckfinder-input-1', this );
       });
@@ -315,13 +384,13 @@
 
     function toggleType(type){
       if(type == '{{ \App\Models\Post::TYPE_VIDEO}}') {
-         $('#image').css('display', 'none');
+         $('#galleryWrapper').css('display', 'none');
+          $('#videoWrapper').css('display', 'flex');
           $('#full_width_content').css('display', 'flex');
-         $('#content').parents('.form-group').find('label').html('Video URL');
       }else {
+          $('#videoWrapper').css('display', 'none');
+          $('#galleryWrapper').css('display', 'flex');
           $('#full_width_content').css('display', 'none');
-          if($('#image').attr('src')) $('#image').css('display', 'block');
-         $('#content').parents('.form-group').find('label').html('Image URL');
       }
     }
 
