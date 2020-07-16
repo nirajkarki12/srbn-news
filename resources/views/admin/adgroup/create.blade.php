@@ -65,7 +65,7 @@
                   <div class="dropzone-wrapper">
                       <div class="dropzone-desc">
                           <i class="fa fa-picture-o"></i>
-                          <p>Choose an image file.</p>
+                          <p>Click here to upload.</p>
                       </div>
                       <input type="button" id="ckfinder-popup" class="btn btn-info dropzone">
                   </div>

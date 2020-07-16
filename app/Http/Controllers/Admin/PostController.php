@@ -13,6 +13,7 @@ use App\Http\Controllers\NotificationController;
 use App\Models\User;
 use App\Models\Poll;
 use App\Models\Polloption;
+use App\Models\Gallery;
 
 class PostController extends BaseController
 {
@@ -67,17 +68,17 @@ class PostController extends BaseController
 
             $data = $request->except('_token');
 
-            // dd($data);
             $validator = Validator::make( $data, [
-                   'title' => 'required|max:255',
-                //    'category' => 'required',
-                   'description' => 'required|min:50',
-                   'type' => 'required',
-                   'content' => 'required|url',
-                   'source' => 'nullable|max:150',
-                   'source_url' => 'nullable|url',
-                   'audio_url' => 'nullable|url',
-                   'status' => 'required',
+                'title' => 'required|max:255',
+                'category' => 'required',
+                'description' => 'required|min:50',
+                'type' => 'required',
+                'urls' => 'required_if:type,'.(Post::TYPE_IMAGE),
+                'youtubeUrl' => 'url|required_if:type,'.(Post::TYPE_VIDEO),
+                'source' => 'nullable|max:150',
+                'source_url' => 'nullable|url',
+                'audio_url' => 'nullable|url',
+                'status' => 'required',
                ]
             );
             if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
@@ -88,7 +89,6 @@ class PostController extends BaseController
             $post->description = $data['description'];
             $post->note = $data['note'];
             $post->type = $data['type'];
-            $post->content = $data['content'];
             $post->source = $data['source'] ?: $data['source_url'];
             $post->source_url = $data['source_url'];
             $post->source_url2 = $data['source_url2'] ?: null;
@@ -98,6 +98,17 @@ class PostController extends BaseController
             $post->lang = $data['lang'];
             $post->is_full_width = array_key_exists('is_full_width', $data) ? $data['is_full_width'] : 0;
             $post->save();
+
+            if($request->type == Post::TYPE_IMAGE && is_array($request->urls)) {
+                $urls = [];
+                foreach ($request->urls as $url) {
+                    array_push($urls, new Gallery(['url' => $url]));
+                }
+                $post->galleries()->saveMany($urls);
+            }elseif($request->type == Post::TYPE_VIDEO) {
+                $videoUrl = new Gallery(['url' => $request->youtubeUrl]);
+                $post->galleries()->save($videoUrl);
+            }
 
             if(isset($data['category']))
             {
@@ -188,12 +199,17 @@ class PostController extends BaseController
                    'category' => 'required',
                    'description' => 'required|min:50',
                    'type' => 'required',
-                   'content' => 'required|url',
+                   'urls' => 'required_if:type,'.(Post::TYPE_IMAGE),
+                   'youtubeUrl' => 'url|required_if:type,'.(Post::TYPE_VIDEO),
                    'source' => 'nullable|max:150',
                    'source_url' => 'nullable|url',
                    'audio_url' => 'nullable|url',
                    'status' => 'required',
-               ]
+               ],
+                [],
+                [
+                    'urls' => "Gallery"
+                ]
             );
 
             if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
@@ -205,7 +221,6 @@ class PostController extends BaseController
             $post->description = $data['description'];
             $post->note = $data['note'];
             $post->type = $data['type'];
-            $post->content = $data['content'];
             $post->source = $data['source'] ?: $data['source_url'];
             $post->source_url = $data['source_url'];
             $post->source_url2 = $data['source_url2'] ?: null;
@@ -220,6 +235,21 @@ class PostController extends BaseController
             {
                 $post->categories()->detach();
                 $post->categories()->attach($data['category']);
+            }
+
+            if($request->type == Post::TYPE_IMAGE && is_array($request->urls)) {
+                $post->galleries()->delete();
+                $urls = [];
+                foreach ($request->urls as $url) {
+                    array_push($urls, new Gallery(['url' => $url]));
+                }
+                $post->galleries()->saveMany($urls);
+                $post->update();
+            }elseif($request->type == Post::TYPE_VIDEO) {
+                $post->galleries()->delete();
+                $videoUrl = new Gallery(['url' => $request->youtubeUrl]);
+                $post->galleries()->save($videoUrl);
+                $post->update();
             }
 
              if($request->question) {

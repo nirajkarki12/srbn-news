@@ -43,7 +43,6 @@ class PostController extends BaseApiController
    *     "title": "News Title",
    *     "description": "News Long Description",
    *     "type": "Image|Video",
-   *     "content": "Image URL|Video URL",
     *     "is_full_width": 0,
     *     "note": "News notes",
     *     "source": "News Source",
@@ -64,7 +63,19 @@ class PostController extends BaseApiController
    *        "image": null,
    *        "created_at": "2020-04-14 15:00"
    *      }
-   *     ]
+   *     ],
+   *    "galleries": [
+   *    {
+   *        "id": 39,
+   *        "url": "Image URL|Video URL",
+   *        "post_id": 4
+   *    },
+   *    {
+   *        "id": 40,
+   *        "url": "Image URL|Video URL",
+   *        "post_id": 4
+   *    }
+   *    ]
    *    }
    *   ],
    *   "first_page_url": "URL/api/posts?page=1",
@@ -111,6 +122,7 @@ class PostController extends BaseApiController
                   '),
                ])
                ->with('categories')
+               ->with('galleries')
                ->where('lang', $lang)
                ->orderBy('created_at', 'desc')
                ->where('status', 1);
@@ -157,6 +169,7 @@ class PostController extends BaseApiController
    * User's Posts List
    * Header for User's Category Posts: X-Authorization: Bearer {token}
    * @queryParam ?page= next page - pagination
+    * @queryParam ?lang=en user preffered language en for english and ne for nepali
    * @response {
    *  "status": true,
    *  "data": {
@@ -167,7 +180,6 @@ class PostController extends BaseApiController
    *     "title": "News Title",
    *     "description": "News Long Description",
    *     "type": "Image|Video",
-   *     "content": "Image URL|Video URL",
    *     "is_full_width": 0,
    *     "note": "News notes",
    *     "source": "News Source",
@@ -188,7 +200,19 @@ class PostController extends BaseApiController
    *        "image": null,
    *        "created_at": "2020-04-14 15:00"
    *      }
-   *     ]
+   *     ],
+    *    "galleries": [
+    *    {
+    *        "id": 39,
+    *        "url": "Image URL|Video URL",
+    *        "post_id": 4
+    *    },
+    *    {
+    *        "id": 40,
+    *        "url": "Image URL|Video URL",
+    *        "post_id": 4
+    *    }
+    *    ]
    *    }
    *   ],
    *   "first_page_url": "URL/api/posts/user?page=1",
@@ -226,10 +250,11 @@ class PostController extends BaseApiController
       try {
 
          if(!$user = $this->guard->user()) throw new \Exception("User not found", Response::HTTP_OK);
+          $lang = request('lang')?:'en';
 
          $paginator = Post::select([
-               'posts.*',
-               DB::raw('
+                'posts.*',
+                DB::raw('
                      (
                         CASE
                         WHEN posts.type = ' .Post::TYPE_IMAGE .' THEN "' .Post::$postTypes[Post::TYPE_IMAGE] .'"'
@@ -238,9 +263,11 @@ class PostController extends BaseApiController
                         END
                      ) AS type
                   '),
-               ])
+                ])
                 ->with('categories')
+                ->with('galleries')
                 ->orderBy('created_at', 'desc')
+                ->where('lang', $lang)
                 ->where('status', 1);
 
          $ids = [];

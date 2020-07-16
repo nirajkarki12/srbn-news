@@ -67,8 +67,8 @@ return [
     |
     */
 
-    // 'timezone' => 'UTC',
-    'timezone'  => 'Asia/Kathmandu',
+     'timezone' => 'UTC',
+//    'timezone'  => 'Asia/Kathmandu',
 
     /*
     |--------------------------------------------------------------------------
