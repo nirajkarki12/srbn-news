@@ -24,43 +24,66 @@
            </div>
         </div>
 
-        <form class="form-horizontal" action="{{route('admin.prediction.store', $prediction)}}" method="POST" enctype="multipart/form-data" role="form">
-          {{ csrf_field() }}
-          <div class="box-body">
+    <form class="form-horizontal" action="{{route('admin.prediction.store', $prediction)}}" method="POST" enctype="multipart/form-data" role="form">
+      {{ csrf_field() }}
+      <div class="box-body">
 
           <div class="form-group">
               <div class="col-sm-2 pull-left">
-                <label for="horoscope_id" class=" control-label">Zodiac/Horoscope </label>
+                  <label for="yes_option" class=" control-label">Type</label>
+              </div>
+
+              <div class="col-sm-9 pull-left">
+                  <div class="radio">
+                      <label>
+                          <input type="radio" name="lang" id="yes_option" value="en" @if((old('lang') == 'en') || ($prediction && $prediction->horoscope->lang == 'en')) checked @endif>
+                          Zodiac
+                      </label>
+                      &nbsp;&nbsp;
+                      <label>
+                          <input type="radio" name="lang" id="no_option" value="ne" @if((old('lang') == 'ne') || ($prediction && $prediction->horoscope->lang == 'ne')) checked @endif>
+                          रशिफल
+                      </label>
+                  </div>
+              </div>
+          </div>
+
+          <div class="form-group" id="group1" style="display: none">
+              <div class="col-sm-2 pull-left">
+                <label for="zodiac1" class=" control-label">Zodiac </label>
               </div>
               <div class="col-sm-9 pull-left">
-                <select name="horoscope_id" id="horoscope_id" class="form-control" required>
+                <select name="zodiac1" id="zodiac1" class="form-control" >
                     <option value="">Select Horoscope</option>
-                    @foreach($horoscopes as $horoscope)
-                        <option value="{{$horoscope->id}}" {{($prediction&&($prediction->horoscope_id==$horoscope->id))?'selected':''}}>{{$horoscope->name_nepali.'/'.$horoscope->name_english}}</option>
+                    @foreach($horoscopes1 as $horoscope)
+                        <option value="{{$horoscope->id}}" {{( old('zodiac1') ? old('zodiac1') == $horoscope->id : $prediction&&($prediction->horoscope_id==$horoscope->id))?'selected':''}}>{{$horoscope->name}}</option>
                     @endforeach
                 </select>
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="group2" style="display: none">
               <div class="col-sm-2 pull-left">
-                <label for="nepali" class=" control-label">Nepali</label>
+                  <label for="zodiac2" class=" control-label">रशिफल </label>
               </div>
               <div class="col-sm-9 pull-left">
-                <textarea class="form-control" id="nepali" name="nepali" rows="3" cols="80" required>{{ old('nepali')?:($prediction?$prediction->nepali:'') }}</textarea>
+                  <select name="zodiac2" id="zodiac2" class="form-control" >
+                      <option value="">Select Horoscope</option>
+                      @foreach($horoscopes2 as $horoscope)
+                          <option value="{{$horoscope->id}}" {{ old('zodiac2') ? old('zodiac2') == $horoscope->id : ($prediction&&($prediction->horoscope_id==$horoscope->id))?'selected':''}}>{{$horoscope->name}}</option>
+                      @endforeach
+                  </select>
               </div>
             </div>
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
-                <label for="english" class=" control-label">English</label>
+                <label for="data" class=" control-label">Data</label>
               </div>
               <div class="col-sm-9 pull-left">
-                <textarea class="form-control" id="english" name="english" rows="3" cols="80" required>{{ old('english')?:($prediction?$prediction->english:'') }}</textarea>
+                <textarea class="form-control" id="data" name="data" rows="3" cols="80" required>{{ old('data')?:($prediction?$prediction->data:'') }}</textarea>
               </div>
             </div>
-
-            
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
@@ -69,10 +92,10 @@
               <div class="col-sm-9 pull-left">
                 <select name="type" id="type" class="form-control" required>
                     <option value="">Select Timeline</option>
-                    <option value="daily" {{($prediction && ($prediction->type=='daily')?'selected':'')}}>Daily</option>
-                    <option value="weekly" {{($prediction && ($prediction->type=='weekly')?'selected':'')}}>Weekly</option>
-                    <option value="monthly" {{($prediction && ($prediction->type=='monthly')?'selected':'')}}>Monthly</option>
-                    <option value="yearly" {{($prediction && ($prediction->type=='yearly')?'selected':'')}}>Yearly</option>
+                    <option value="daily" {{ old('type') && old('type') == 'daily' ? 'selected' : ($prediction && ($prediction->type=='daily')?'selected':'')}}>Daily</option>
+                    <option value="weekly" {{ old('type') && old('type') == 'weekly' ? 'selected' : ($prediction && ($prediction->type=='weekly')?'selected':'')}}>Weekly</option>
+                    <option value="monthly" {{ old('type') && old('type') == 'monthly' ? 'selected' : ($prediction && ($prediction->type=='monthly')?'selected':'')}}>Monthly</option>
+                    <option value="yearly" {{ old('type') && old('type') == 'yearly' ? 'selected' : ($prediction && ($prediction->type=='yearly')?'selected':'')}}>Yearly</option>
                 </select>
               </div>
             </div>
@@ -82,7 +105,7 @@
                 <label for="type" class=" control-label">Date/Start Date</label>
               </div>
               <div class="col-sm-9 pull-left">
-                <input type="date" name="prediction_date" style="width: 100%;border-radius: 0px;border: solid 1px #ccc;" required value="{{old('prediciton_date')?:($prediction?\Carbon\Carbon::parse($prediction->prediction_date)->format('Y-m-d'):'')}}">
+                <input type="date" class="form-control" name="prediction_date" style="width: 100%;border-radius: 0px;border: solid 1px #ccc;" required value="{{old('prediction_date') ?: ($prediction?\Carbon\Carbon::parse($prediction->prediction_date)->format('Y-m-d'):'')}}">
               </div>
             </div>
 
@@ -114,4 +137,29 @@
 
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.6/js/star-rating.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        var lang = $('input[name="lang"]:checked').val();
+        if(lang == 'ne') {
+            $('#group2').css('display', 'flex');
+            $('#group1').css('display', 'none');
+        }else if(lang == 'en') {
+            $('#group1').css('display', 'flex');
+            $('#group2').css('display', 'none');
+        }
+
+        $('input[name="lang"]').on('change', function () {
+            let lang = $(this).val();
+            if(lang == 'ne') {
+                $('#group2').css('display', 'flex');
+                $('#group1').css('display', 'none');
+            }else if(lang == 'en') {
+                $('#group1').css('display', 'flex');
+                $('#group2').css('display', 'none');
+            }
+        });
+
+    });
+
+</script>
 @endsection

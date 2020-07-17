@@ -15,13 +15,11 @@ class CreateHoroscopesTable extends Migration
     {
         Schema::create('horoscopes', function (Blueprint $table) {
             $table->id();
-            $table->string('name_nepali');
-            $table->string('name_english');
-            $table->string('image_nepali');
-            $table->string('image_english');
+            $table->string('name');
+            $table->string('image');
             $table->integer('order');
-            $table->text('info_nepali')->nullable();
-            $table->text('info_english')->nullable();
+            $table->string('info')->nullable();
+            $table->string('lang');
             $table->timestamps();
         });
     }

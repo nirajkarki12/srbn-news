@@ -25,55 +25,93 @@
             </div>
         </div>
         <div class="box-body">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#1stData" data-toggle="tab">रशिफल</a></li>
+                    <li><a href="#2ndData" data-toggle="tab">Zodiac</a></li>
+                </ul>
 
-        	@if(count($horoscopes) > 0)
+                <div class="tab-content">
+                    <div class="active tab-pane" id="1stData">
+                        @if(count($horoscopes1) > 0)
 
-          	<table id="example1" class="table table-bordered table-striped">
-							<thead>
-						    <tr>
-						      <th width="4%">#</th>
-						      <th >Nepali</th>
-						      <th >English</th>
-						      <th >Info Nepali</th>
-						      <th >Info English</th>
-						      <th >Order</th>
-						      <th class="text-center" width="11%">Action</th>
-						    </tr>
-							</thead>
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="4%">#</th>
+                                    <th >Name</th>
+                                    <th >Icon</th>
+                                    <th >info</th>
+                                    <th >Order</th>
+                                    <th class="text-center" width="11%">Action</th>
+                                </tr>
+                            </thead>
 
-							<tbody>
-								@foreach($horoscopes as $key => $horo)
-							    <tr>
+                            <tbody>
+                            @foreach($horoscopes1 as $key => $horo)
+                                <tr>
                                     <td style="vertical-align:middle">{{ $key+1 }}</td>
-                                    <td style="vertical-align:middle">
-                                        <img src="{{$horo->image_nepali}}" alt="image" style="height:35px">
-                                        {{ $horo->name_nepali }}
-                                    </td>
-                                    <td style="vertical-align:middle">
-                                        <img src="{{$horo->image_english}}" alt="image" style="height:35px">
-                                        {{ $horo->name_english }}
-                                    </td>
-                                    <td style="vertical-align:middle">{{$horo->info_nepali}}</td>
-                                    <td style="vertical-align:middle">{{$horo->info_english}}</td>
+                                    <td>{{ $horo->name }}</td>
+                                    <td style="vertical-align:middle"><img src="{{$horo->image}}" alt="image" style="height:35px"></td>
+                                    <td style="vertical-align:middle">{{$horo->info}}</td>
                                     <td style="vertical-align:middle">{{$horo->order}}</td>
-                            
-                                    
                                     <td style="vertical-align:middle" class="text-center">
                                         <a href="{{route('admin.horoscope.create' , $horo)}}" title="Edit a Horoscope">
                                             <span class="fa fa-pencil-square-o fa-lg"></span>
                                         </a>
-                                        &nbsp;
                                         <a href="{{route('admin.horoscope.delete' , $horo)}}" title="Delete a Horoscope" onclick="return confirm('Are you sure?')">
                                             <span class="fa fa-times fa-lg"></span>
                                         </a>
                                     </td>
-							    </tr>
-								@endforeach
-							</tbody>
-						</table>
-					@else
-						<h3 class="no-result">No results found</h3>
-					@endif
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                        @else
+                            <h3 class="no-result">No results found</h3>
+                        @endif
+                    </div>
+                    <div class="tab-pane" id="2ndData">
+                        @if(count($horoscopes2) > 0)
+
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th width="4%">#</th>
+                                    <th >Name</th>
+                                    <th >Icon</th>
+                                    <th >info</th>
+                                    <th >Order</th>
+                                    <th class="text-center" width="11%">Action</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                @foreach($horoscopes2 as $key => $horo)
+                                    <tr>
+                                        <td style="vertical-align:middle">{{ $key+1 }}</td>
+                                        <td>{{ $horo->name }}</td>
+                                        <td style="vertical-align:middle"><img src="{{$horo->image}}" alt="image" style="height:35px"></td>
+                                        <td style="vertical-align:middle">{{$horo->info}}</td>
+                                        <td style="vertical-align:middle">{{$horo->order}}</td>
+                                        <td style="vertical-align:middle" class="text-center">
+                                            <a href="{{route('admin.horoscope.create' , $horo)}}" title="Edit a Horoscope">
+                                                <span class="fa fa-pencil-square-o fa-lg"></span>
+                                            </a>
+                                            <a href="{{route('admin.horoscope.delete' , $horo)}}" title="Delete a Horoscope" onclick="return confirm('Are you sure?')">
+                                                <span class="fa fa-times fa-lg"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                            <h3 class="no-result">No results found</h3>
+                        @endif
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
     </div>

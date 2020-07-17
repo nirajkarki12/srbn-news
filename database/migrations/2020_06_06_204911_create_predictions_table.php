@@ -15,14 +15,12 @@ class CreatePredictionsTable extends Migration
     {
         Schema::create('predictions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('horoscope_id');
-            $table->text('nepali');
-            $table->text('english');
+            $table->text('data');
             $table->enum('type',['daily','weekly','monthly','yearly'])->default('daily');
             $table->float('rating')->default(1);
-            $table->timestamp('prediction_date')->nullable();
-
-            $table->foreign('horoscope_id')->references('id')->on('horoscopes');
+            $table->date('prediction_date')->nullable();
+            $table->unsignedBigInteger('horoscope_id');
+            $table->foreign('horoscope_id')->references('id')->on('horoscopes')->onUpdate('cascade');
             $table->timestamps();
         });
     }

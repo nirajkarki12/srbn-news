@@ -18,8 +18,9 @@ class PredictionController extends BaseController
     }
 
     public function create(Prediction $prediction = null) {
-        $horoscopes = Horoscope::orderBy('order', 'asc')->get();
-        return view('admin.prediction.create', compact('prediction','horoscopes'));
+        $horoscopes1 = Horoscope::where('lang', 'en')->orderBy('order', 'asc')->get();
+        $horoscopes2 = Horoscope::where('lang', 'ne')->orderBy('order', 'asc')->get();
+        return view('admin.prediction.create', compact('prediction','horoscopes1', 'horoscopes2'));
     }
 
     public function store(Request $request, Prediction $prediction = null) {
@@ -32,20 +33,27 @@ class PredictionController extends BaseController
             if(!$prediction) {
 
                 $validator = Validator::make( $data, array(
-                        'horoscope_id'   => 'required',
-                        'nepali'   => 'required',
-                        'english'  => 'required',
                         'type'  => 'required',
+                        'zodiac1' => 'required_without:zodiac2',
+                        'zodiac2' => 'required_without:zodiac1',
+                        'data'   => 'required',
                         'rating' => 'required',
-                    )
+                    ),
+                    [],
+                    [
+                        'zodiac1' => 'zodiac',
+                        'zodiac2' => 'रशिफल',
+                    ]
                 );
 
                 if($validator->fails()) throw new \Exception($validator->messages()->first(), 1);
             }
+            $horoscopeId = $request->type == 'en' ? $request->zodiac1 : $request->zodiac2;
+            $data['horoscope_id'] = $horoscopeId;
 
             if(!$prediction) {
                 if(Prediction::where('prediction_date', $request->prediction_date)
-                    ->where('horoscope_id', $request->horoscope_id)
+                    ->where('horoscope_id', $horoscopeId)
                     ->where('type', $request->type)
                     ->first()) throw new \Exception('Date already inserted');
             }
