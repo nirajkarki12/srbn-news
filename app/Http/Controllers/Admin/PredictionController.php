@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Common\BaseController;
 use Validator;
+use Carbon\Carbon;
 use anlutro\LaravelSettings\Facade as Setting;
 use App\Http\Helpers\Helper;
 use App\Models\Prediction;
@@ -12,9 +13,25 @@ use App\Models\Horoscope;
 
 class PredictionController extends BaseController
 {
-    public function index() {
-        $predictions = Prediction::orderBy('created_at', 'desc')->paginate(Setting::get('data_per_page', 25));
-        return view('admin.prediction.index', compact('predictions'));
+    public function index(Request $request) {
+        $predictionDate = $request->prediction_date ?: Carbon::today();
+        $lang = $request->lang ?: 'ne';
+        $type = $request->type ?: 'daily';
+
+        $predictions = Prediction::select('predictions.*')
+            ->join('horoscopes', 'horoscopes.id', 'horoscope_id')
+            ->where('horoscopes.lang', $lang)
+            ->where('type', $type)
+            ->where(function ($q) use ($predictionDate) {
+                $q->where('start_date', '<=', $predictionDate);
+                $q->where('end_date', '>=', $predictionDate);
+            })
+            ->orderBy('horoscopes.order', 'asc')
+            ->paginate(Setting::get('data_per_page', 25));
+        return view('admin.prediction.index', compact('predictions'))
+            ->with('lang', $lang)
+            ->with('prediction_date', $predictionDate)
+            ->with('type', $type);
     }
 
     public function create(Prediction $prediction = null) {

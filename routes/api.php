@@ -49,5 +49,9 @@ Route::get('/rss-feed','RssController@index')->name('api-rss-feed');
 Route::get('/rss-feed/{id}','RssController@getFeedData')->name('api-rss-feed.data');
 /* */
 
+/* Adgroup API  */
+Route::get('/adgroup','AdgroupController@index')->name('api-adgroup');
+/* */
+
 
 
