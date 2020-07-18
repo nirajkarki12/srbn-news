@@ -18,6 +18,7 @@ class CreateAdgroupsTable extends Migration
             $table->string('title');
             $table->integer('show_after')->default(1);
             $table->date('publish_date');
+            $table->date('expiry_date');
             $table->timestamps();
         });
     }

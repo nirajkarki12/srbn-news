@@ -18,21 +18,21 @@ class HoroscopeController extends BaseApiController
 {
 
     /**
-    *List Horoscope
-    *@queryParam ?lang= language parameter en for english ne for nepali
-    *@response {
+    * List Horoscope
+    * @queryParam ?lang= language parameter en for english ne for nepali
+    * @response {
     * "status": true,
     * "data": [
     *     {
-    *         "id": 2,
-    *         "created_at": "2020-06-06T14:20:08.000000Z",
-    *         "updated_at": "2020-06-06T14:25:47.000000Z",
-    *         "is_selected": false,
-    *         "total_users": 0,
-    *         "name": "Ariesw",
+    *         "id": 1,
+    *         "name": "Aeries",
     *         "info": "english info",
     *         "image": "http://127.0.0.1:8000/storage/horoscopes/a53fb48246b0b5d36c5e4400b3e17d73cc3a042f.png",
-    *         "users": []
+    *         "order": 1,
+    *         "lang": "en/ne",
+    *         "is_selected": "true/false",
+    *         "created_at": "2020-06-06T14:20:08.000000Z",
+    *         "updated_at": "2020-06-06T14:25:47.000000Z"
     *     }
     * ],
     * "message": "Horoscopes fetched successfully",
@@ -42,7 +42,9 @@ class HoroscopeController extends BaseApiController
 
     public function listHoroscopes() {
         try {
-            $horoscopes = Horoscope::withCount('users')->orderBy('order','asc')->get();
+            $lang = request('lang') ?: 'ne';
+
+            $horoscopes = Horoscope::where('lang', $lang)->orderBy('order','asc')->get();
             return $this->successResponse($horoscopes->makeHidden('users'), 'Horoscopes fetched successfully');
         } catch (\Throwable $th) {
             return $this->errorResponse($th->getMessage());
@@ -53,18 +55,19 @@ class HoroscopeController extends BaseApiController
     *Select Unselect Horoscope
     *Header: X-Authorization: Bearer {token}
     *@urlParam horoscope required horoscope id
-    *@queryParam ?lang= preferred language en for english, ne for nepali
     *@response {
     *    "status": true,
     *    "data": {
-    *        "id": 2,
-    *        "created_at": "2020-06-06T14:20:08.000000Z",
-    *        "updated_at": "2020-06-06T14:25:47.000000Z",
-    *        "users_count": 1,
-    *        "is_selected": true,
-    *        "name": "Meshw",
-    *        "info": "nepali info",
-    *        "image": "http://127.0.0.1:8000/storage/horoscopes/619c82bbd8e7fd5798b1137f5150a13f4346f4a8.jpg"
+    *         "id": 1,
+    *         "name": "Aeries",
+    *         "info": "english info",
+    *         "image": "http://127.0.0.1:8000/storage/horoscopes/a53fb48246b0b5d36c5e4400b3e17d73cc3a042f.png",
+    *         "order": 1,
+    *         "lang": "en/ne",
+    *         "is_selected": true,
+    *         "users_count": 4,
+    *         "created_at": "2020-06-06T14:20:08.000000Z",
+    *         "updated_at": "2020-06-06T14:25:47.000000Z"
     *    },
     *    "message": "Request successfull",
     *    "code": 200
@@ -78,111 +81,114 @@ class HoroscopeController extends BaseApiController
 
             $is_any = $user->horoscope()->first();
 
-
             if(!$is_any) {
-
                 // if none present it build
                 $user->horoscope()->attach($horoscope);
 
             } else {
-
                 if($is_any != $horoscope) {
                     $user->horoscope()->detach($is_any->id);
                     $user->horoscope()->attach($horoscope->id);
                 }
-
-
             }
+
 
             return $this->successResponse($user->horoscope()->withCount('users')->first()->makeHidden('users'), 'Request successfull');
 
         } catch (\Throwable $th) {
-            //throw $th;
+            return $this->errorResponse($th->getMessage());
         }
     }
 
     /**
-    *Fetch Prediction
-    *Header: X-Authorization: Bearer {token}
-    *@queryParam timeline required timeline period to show daily, tomorrow, weekly, monthly, yearly
-    *@queryParam id required timeline horoscope id
-    *@queryParam lang=en  language of the user en for english, ne for nepali
+    * Fetch Prediction
+    * @queryParam timeline required timeline period to show daily, weekly, monthly, yearly
+    * @queryParam lang=en  language of the user en for english, ne for nepali
+    * @queryParam user  user id of logged in user
     * @response {
     *    "status": true,
-    *    "data": {
-    *        "id": 2,
-    *        "horoscope_id": 2,
-    *        "type": "daily",
-    *        "rating": 3.2,
-    *        "text": "sdjfkj"
-    *    },
+    *    "data": [
+    *   {
+    *       "name": "Aries",
+    *       "data": "The energy is lively today, giving your spirits a lift and bringing out your inner artist. You'll feel your zeal return, which can propel you forward if you've felt stuck in a rut for an extended period of time. You may feel more appreciated at home and at work, too. Take advantage of this special time.",
+    *       "rating": 3.8,
+    *       "start_date": "2020-07-18",
+    *       "end_date": "2020-07-18",
+    *       "is_selected": null
+    *   },
+    *   {
+    *       "name": "Taurus",
+    *       "data": "The advice you give to friends today might not be warmly received, but it will sink in nevertheless. Don't think that just because they don't thank you for what you said that they didn't listen to it. Passing on what you have learned from past mistakes is something undeniably valuable, and they know that. They're glad you care enough to open up about what you know but not necessarily eager to do as you say.",
+    *       "rating": 3.8,
+    *       "start_date": "2020-07-18",
+    *       "end_date": "2020-07-18",
+    *       "is_selected": null
+    *   }
+    *    ],
     *    "message": "data fetched successfully",
     *    "code": 200
     *}
     *@response 200{
     *   "status": false,
-    *   "message": "Nothing to show",
+    *   "message": "Data not found",
     *   "code": 200
     *}
     **/
     public function getPredictions() {
         try {
-
-            $user = auth('api')->user();
-
             $timeline = request('timeline');
+            $lang = request('lang') ?: 'ne';
+            $userId = request('user') ?: false;
 
-            // if(!$timeline) throw new \Exception('No timeline present', Response::HTTP_OK);
-
-            if(request('id')) {
-
-                if(!$horoscope = Horoscope::where('id', request('id') )->first()) throw new \Exception('No horoscope found', 200);
-
-            } else {
-
-                if(!$horoscope = $user->horoscope()->first()) throw new \Exception('User has not selected horoscope', 200);
+            $data = Prediction::select(['name', 'data', 'rating', 'start_date', 'end_date'])
+                ->join('horoscopes', 'horoscopes.id', 'horoscope_id')
+                ->where('horoscopes.lang', $lang)
+                ->groupBy('name')
+                ->orderBy('horoscopes.order', 'asc')
+                ;
+            if($userId) {
+                $data->addSelect(\DB::raw('CASE WHEN horoscope_user.id THEN TRUE ELSE FALSE END as is_selected2'))
+                    ->leftJoin('horoscope_user', function($join) use ($userId) {
+                        $join->on('horoscope_user.horoscope_id', 'horoscopes.id');
+                        $join->on('horoscope_user.user_id', \DB::raw("'".$userId."'"));
+                    });
+            }else {
+                $data->addSelect(\DB::raw('null as is_selected'));
             }
 
-            $prediction = collect();
+            switch ($timeline) {
+                case 'daily':
+                    $data->where('start_date', Carbon::today())
+                        ->where('type','daily');
+                    break;
+                case 'weekly':
+                    $data->where(function ($q) {
+                            $q->where('start_date', '<=', Carbon::today());
+                            $q->where('end_date', '>=', Carbon::today());
+                        })
+                        ->where('type','weekly');
 
-            // if($timeline == 'daily') {
+                    break;
+                case 'monthly':
+                    $data->where(function ($q) {
+                            $q->where('start_date', '<=', Carbon::today());
+                            $q->where('end_date', '>=', Carbon::today());
+                        })
+                        ->where('type','monthly');
+                    break;
+                case 'yearly':
+                    $data->where(function ($q) {
+                            $q->where('start_date', '<=', Carbon::today());
+                            $q->where('end_date', '>=', Carbon::today());
+                        })
+                        ->where('type','yearly');
+                    break;
+                default:
+                    throw new \Exception('Invalid timeline');
+            }
+            if(!$data = $data->get()) throw new \Exception('Data not found');
 
-            //     $prediction = $prediction->where('prediction_date', Carbon::today())->where('type', 'daily')->first();
-
-            // } else if($timeline == 'tomorrow') {
-
-            //     $prediction = $prediction->where('prediction_date', Carbon::tomorrow())->where('type','daily')->first();
-
-            // } else if($timeline == 'weekly') {
-
-            //     $prediction = $prediction->whereBetween('prediction_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->where('type', 'weekly')->first();
-
-            // } else if($timeline == 'monthly') {
-
-            //     $prediction = $prediction->whereBetween('prediction_date',[Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->where('type', 'monthly')->first();
-
-            // } else if($timeline == 'yearly') {
-
-            //     $prediction = $prediction->whereBetween('prediction_date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->where('type', 'yearly')->first();
-
-            // }
-
-            $daily = Prediction::where('horoscope_id', request('id'))->where('prediction_date', Carbon::today())->where('type','daily')->get();
-
-            $weekly = Prediction::where('horoscope_id', request('id'))->whereBetween('prediction_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->where('type','weekly')->get();
-
-            $monthly = Prediction::where('horoscope_id', request('id'))->whereBetween('prediction_date', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->where('type','monthly')->get();
-
-            $yearly = Prediction::where('horoscope_id', request('id'))->whereBetween('prediction_date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])->where('type','yearly')->get();
-
-
-
-
-            $prediction = $prediction->merge($daily)->merge($weekly)->merge($monthly)->merge($yearly);
-
-            if(!$prediction) throw new \Exception('Nothing to show', Response::HTTP_OK);
-
-            return $this->successResponse($prediction, 'data fetched successfully');
+            return $this->successResponse($data, 'data fetched successfully');
 
         } catch (\Throwable $th) {
 

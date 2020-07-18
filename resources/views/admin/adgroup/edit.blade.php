@@ -61,6 +61,21 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <div class="col-sm-2 pull-left">
+                        <label for="expiry_date" class=" control-label">Expiry Date</label>
+                    </div>
+
+                    <div class="col-sm-9 pull-left">
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right" id="expiry_date" name="expiry_date" value="{{ old('expiry_date') ? old('expiry_date')->format('Y-m-d') : $adgroup->expiry_date->format('Y-m-d') }}"  placeholder="Pick expiry date" required>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group row">
                     <div class="col-md-12">
                         <div class="dropzone-wrapper">
@@ -146,6 +161,12 @@
 
         //Date picker
         $('#publish_date').datepicker({
+            autoclose: true,
+            format: "yyyy-mm-dd",
+            todayHighlight: true,
+        });
+
+        $('#expiry_date').datepicker({
             autoclose: true,
             format: "yyyy-mm-dd",
             todayHighlight: true,

@@ -39,6 +39,7 @@
                         <th>Show After</th>
                         <th>Total Ads</th>
                         <th>Publish Date</th>
+                        <th>Expiry Date</th>
                         <th class="text-center" width="11%">Action</th>
                     </tr>
                 </thead>
@@ -51,6 +52,7 @@
                             <td style="vertical-align:middle">{{ $adgroup->show_after }} Scroll</td>
                             <td style="vertical-align:middle">{{ count($adgroup->ads) }}</td>
                             <td style="vertical-align:middle">{{ $adgroup->publish_date ? $adgroup->publish_date->format(Setting::get('date_format', 'j F, Y')) : '-' }}</td>
+                            <td style="vertical-align:middle">{{ $adgroup->expiry_date ? $adgroup->expiry_date->format(Setting::get('date_format', 'j F, Y')) : '-' }}</td>
                             <td style="vertical-align:middle" class="text-center">
                                 <a href="{{route('admin.adgroup.edit' , array('adgroup' => $adgroup->id, 'page' => $adgroups->currentPage()))}}" title="Edit a Adgroup">
                                     <span class="fa fa-pencil-square-o fa-lg"></span>

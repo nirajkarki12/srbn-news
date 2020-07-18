@@ -102,11 +102,24 @@
 
             <div class="form-group">
               <div class="col-sm-2 pull-left">
-                <label for="type" class=" control-label">Date/Start Date</label>
+                <label for="start_date" class=" control-label">Start/End Date</label>
               </div>
-              <div class="col-sm-9 pull-left">
-                <input type="date" class="form-control" name="prediction_date" style="width: 100%;border-radius: 0px;border: solid 1px #ccc;" required value="{{old('prediction_date') ?: ($prediction?\Carbon\Carbon::parse($prediction->prediction_date)->format('Y-m-d'):'')}}">
-              </div>
+                <div class="col-sm-4 pull-left">
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" class="form-control" name="start_date" id="start_date" style="width: 100%;border-radius: 0px;border: solid 1px #ccc;" required value="{{old('start_date') ? old('end_date')->format('Y-m-d') : ($prediction ? \Carbon\Carbon::parse($prediction->start_date)->format('Y-m-d'):'')}}">
+                    </div>
+                </div>
+                <div class="col-sm-5 pull-left" id="endDateWrapper">
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" class="form-control" name="end_date" id="end_date" style="width: 100%;border-radius: 0px;border: solid 1px #ccc;" value="{{old('end_date') ? old('end_date')->format('Y-m-d') : ($prediction ? \Carbon\Carbon::parse($prediction->end_date)->format('Y-m-d'):'')}}">
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -140,12 +153,18 @@
 <script type="text/javascript">
     $(function () {
         var lang = $('input[name="lang"]:checked').val();
+        var type = $('#type :checked').val();
         if(lang == 'ne') {
             $('#group2').css('display', 'flex');
             $('#group1').css('display', 'none');
         }else if(lang == 'en') {
             $('#group1').css('display', 'flex');
             $('#group2').css('display', 'none');
+        }
+        if(type == 'daily') {
+            $('#endDateWrapper').css('display', 'none');
+        }else {
+            $('#endDateWrapper').css('display', 'flex');
         }
 
         $('input[name="lang"]').on('change', function () {
@@ -157,6 +176,27 @@
                 $('#group1').css('display', 'flex');
                 $('#group2').css('display', 'none');
             }
+        });
+
+        $('#type').on('change', function () {
+            let type = $(this).val();
+            if(type == 'daily') {
+                $('#endDateWrapper').css('display', 'none');
+            }else {
+                $('#endDateWrapper').css('display', 'flex');
+            }
+        });
+
+        $('#start_date').datepicker({
+            autoclose: true,
+            format: "yyyy-mm-dd",
+            todayHighlight: true,
+        });
+
+        $('#end_date').datepicker({
+            autoclose: true,
+            format: "yyyy-mm-dd",
+            todayHighlight: true,
         });
 
     });

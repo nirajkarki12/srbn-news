@@ -18,9 +18,11 @@ class CreatePredictionsTable extends Migration
             $table->text('data');
             $table->enum('type',['daily','weekly','monthly','yearly'])->default('daily');
             $table->float('rating')->default(1);
-            $table->date('prediction_date')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->unsignedBigInteger('horoscope_id');
             $table->foreign('horoscope_id')->references('id')->on('horoscopes')->onUpdate('cascade');
+            $table->unique(['type', 'horoscope_id', 'start_date', 'end_date']);
             $table->timestamps();
         });
     }

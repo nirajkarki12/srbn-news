@@ -33,8 +33,7 @@
                     <tr>
                         <th width="4%">#</th>
                         <th >Zodiac/Horoscope Sign</th>
-                        <th >Nepali</th>
-                        <th >English</th>
+                        <th >Data</th>
                         <th >Type</th>
                         <th >Date/Start Date</th>
                         <th >Rating</th>
@@ -46,14 +45,13 @@
                     @foreach($predictions as $key => $predict)
                     <tr>
                         <td style="vertical-align:middle">{{ $predictions->firstItem() + $key }}</td>
-                        <td style="vertical-align:middle">{{ $predict->horoscope->name_nepali.'/'.$predict->horoscope->name_english }}</td>
-                        <td style="vertical-align:middle">{{ $predict->nepali }}</td>
-                        <td style="vertical-align:middle">{{$predict->english}}</td>
+                        <td style="vertical-align:middle">{{ $predict->horoscope->name }}</td>
+                        <td style="vertical-align:middle">{{ $predict->data }}</td>
                         <td style="vertical-align:middle">{{$predict->type}}</td>
                         <td style="vertical-align:middle">{{\Carbon\Carbon::parse($predict->prediction_date)->format('d M Y')}}</td>
                         <td style="vertical-align:middle">{{$predict->rating.' stars'}}</td>
-                
-                        
+
+
                         <td style="vertical-align:middle" class="text-center">
                             <a href="{{route('admin.prediction.create' , $predict)}}" title="Edit a Prediction">
                                 <span class="fa fa-pencil-square-o fa-lg"></span>

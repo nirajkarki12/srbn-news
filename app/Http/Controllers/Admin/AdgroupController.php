@@ -59,6 +59,7 @@ class AdgroupController extends BaseController
                     'title' => 'required|max:255',
                     'show_after' => 'required|numeric',
                     'publish_date' => 'required|date',
+                    'expiry_date' => 'required|date',
                     'images' => 'required',
                 ]
             );
@@ -68,6 +69,7 @@ class AdgroupController extends BaseController
             $adgroup->title = $request->title;
             $adgroup->show_after = $request->show_after;
             $adgroup->publish_date = $request->publish_date;
+            $adgroup->expiry_date = $request->expiry_date;
             $adgroup->save();
 
             if(is_array($request->images)) {
@@ -110,6 +112,7 @@ class AdgroupController extends BaseController
                     'title' => 'required|max:255',
                     'show_after' => 'required|numeric',
                     'publish_date' => 'required|date',
+                    'expiry_date' => 'required|date',
                     'images' => 'required',
                ]
             );
@@ -118,6 +121,7 @@ class AdgroupController extends BaseController
             $adgroup->title = $request->title;
             $adgroup->show_after = $request->show_after;
             $adgroup->publish_date = $request->publish_date;
+            $adgroup->expiry_date = $request->expiry_date;
             $adgroup->save();
 
             if(is_array($request->images)) {

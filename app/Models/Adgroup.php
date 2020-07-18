@@ -9,7 +9,7 @@ class Adgroup extends Model
 {
     use Notifiable;
 
-    protected $fillable = ['title', 'show_after', 'publish_date'];
+    protected $fillable = ['title', 'show_after', 'publish_date', 'expiry_date'];
 
     /**
      * The attributes that should be cast to native types.
@@ -18,6 +18,7 @@ class Adgroup extends Model
      */
     protected $casts = [
         'publish_date' => 'datetime:Y-m-d H:i',
+        'expiry_date' => 'datetime:Y-m-d H:i',
         'created_at' => 'datetime:Y-m-d H:i',
         'updated_at' => 'datetime:Y-m-d H:i',
     ];
