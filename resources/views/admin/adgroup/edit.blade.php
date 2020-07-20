@@ -56,7 +56,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="text" class="form-control pull-right" id="publish_date" name="publish_date" value="{{ old('publish_date') ? old('publish_date')->format('Y-m-d') : $adgroup->publish_date->format('Y-m-d') }}"  placeholder="Pick publish date" required>
+                            <input type="text" class="form-control pull-right" id="publish_date" name="publish_date" value="{{ old('publish_date') ?: $adgroup->publish_date->format('Y-m-d') }}"  placeholder="Pick publish date" required>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="text" class="form-control pull-right" id="expiry_date" name="expiry_date" value="{{ old('expiry_date') ? old('expiry_date')->format('Y-m-d') : $adgroup->expiry_date->format('Y-m-d') }}"  placeholder="Pick expiry date" required>
+                            <input type="text" class="form-control pull-right" id="expiry_date" name="expiry_date" value="{{ old('expiry_date') ?: $adgroup->expiry_date->format('Y-m-d') }}"  placeholder="Pick expiry date" required>
                         </div>
                     </div>
                 </div>

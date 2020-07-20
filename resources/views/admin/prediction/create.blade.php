@@ -109,7 +109,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="text" class="form-control" name="start_date" id="start_date" style="width: 100%;border-radius: 0px;border: solid 1px #ccc;" required value="{{old('start_date') ? old('start_date')->format('Y-m-d') : ($prediction ? \Carbon\Carbon::parse($prediction->start_date)->format('Y-m-d'):'')}}">
+                        <input type="text" class="form-control" name="start_date" id="start_date" style="width: 100%;border-radius: 0px;border: solid 1px #ccc;" required value="{{old('start_date') ?: ($prediction ? \Carbon\Carbon::parse($prediction->start_date)->format('Y-m-d'):'')}}">
                     </div>
                 </div>
                 <div class="col-sm-5 pull-left" id="endDateWrapper">
@@ -117,7 +117,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="text" class="form-control" name="end_date" id="end_date" style="width: 100%;border-radius: 0px;border: solid 1px #ccc;" value="{{old('end_date') ? old('end_date')->format('Y-m-d') : ($prediction ? \Carbon\Carbon::parse($prediction->end_date)->format('Y-m-d'):'')}}">
+                        <input type="text" class="form-control" name="end_date" id="end_date" style="width: 100%;border-radius: 0px;border: solid 1px #ccc;" value="{{old('end_date') ?: ($prediction ? \Carbon\Carbon::parse($prediction->end_date)->format('Y-m-d'):'')}}">
                     </div>
                 </div>
             </div>
