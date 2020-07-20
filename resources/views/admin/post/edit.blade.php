@@ -142,7 +142,7 @@
                 <label for="content" class=" control-label">Youtube URL</label>
               </div>
               <div class="col-sm-9 pull-left">
-                  <input type="url" class="form-control" id="content" name="youtubeUrl" value="{{ $postEdit->galleries ? $postEdit->galleries->first()->url : '' }}"  placeholder="URL">
+                  <input type="url" class="form-control" id="content" name="youtubeUrl" value="{{ $postEdit->galleries && count($postEdit->galleries) > 0 ? $postEdit->galleries->first()->url : '' }}"  placeholder="URL">
               </div>
             </div>
 

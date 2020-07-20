@@ -38,7 +38,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <input type="text" class="form-control" id="prediction_date" name="prediction_date" required placeholder="Prediction Date">
+                                        <input type="text" class="form-control" id="prediction_date" name="prediction_date" value="{!! isset($_REQUEST) && array_key_exists('prediction_date', $_REQUEST) ? $_REQUEST['prediction_date'] : \Carbon\Carbon::today()->format('Y-m-d') !!}" required placeholder="Prediction Date">
                                     </div>
                             </div>
                             <div class="form-group col-sm-4">
@@ -138,7 +138,7 @@
                 autoclose: true,
                 format: "yyyy-mm-dd",
                 todayHighlight: true,
-            }).datepicker("setDate", "0");
+            });
 
         });
 
